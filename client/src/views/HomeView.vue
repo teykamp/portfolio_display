@@ -1,5 +1,5 @@
 <template>
-  <div class="center" style="flex-direction: column">
+  <div class="center">
     <h1>Search Profile Here</h1>
     <input type="text" placeholder="Name of User" style="border: 1px solid black" />
     <h1>Want to make your own <i>snazzy</i> portfolio? Look no further!</h1>

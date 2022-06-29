@@ -17,3 +17,10 @@ export default Vue.extend({
   }),
 });
 </script>
+
+<style>
+  p {
+    margin: 0px;
+    padding: 0%;
+  }
+</style>

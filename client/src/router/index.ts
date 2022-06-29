@@ -14,11 +14,17 @@ const routes = [
     path: '/create',
     name: 'CreatePortfo',
     component: () => import('../views/CreatePortfolio.vue')
-  }
+  },
+  {
+    path: '/display/:name',
+    name: 'PortfolioDisplay',
+    component: () => import('../views/PortfolioDisplay.vue')
+  },
 ]
 
 const router = new VueRouter({
-  routes
+  routes,
+  mode: 'history'
 })
 
 export default router

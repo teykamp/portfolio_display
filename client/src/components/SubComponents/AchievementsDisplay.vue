@@ -1,0 +1,25 @@
+<template>
+  <div>
+    <p>{{ relevantInfo }}</p>
+  </div>
+</template>
+
+<script>
+export default {
+  props: [
+    'relevantInfo'
+  ]
+}
+</script>
+
+<style scoped>
+
+  @import url('../../UniversalStyles.css');
+
+  div {
+    background-color: blueviolet;
+  }
+  p {
+    margin-bottom: 0%;
+  }
+</style>

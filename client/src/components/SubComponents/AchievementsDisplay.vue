@@ -19,7 +19,4 @@ export default {
   div {
     background-color: blueviolet;
   }
-  p {
-    margin-bottom: 0%;
-  }
 </style>

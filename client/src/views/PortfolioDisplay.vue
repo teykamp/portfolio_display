@@ -2,7 +2,7 @@
   <div>
 
     <div v-for="data in testData" :key="data.id">
-      <component-display-factory :relevantInfo="data" :componentType="data" />
+      <component-display-factory :relevantInfo="data.info" :componentType="data.type" />
     </div>
 
   </div>
@@ -19,7 +19,7 @@ export default {
 
   data: () => {
     return {
-      testData: ['Achievements', 'Education', 'Projects', 'Achievements', 'Projects', 'IDK', 'lmao', 'greifing']
+      testData: [{type: 'Achievements', info: "I've done big things!"}, {type: 'Projects', info: "I've made big things!"}, {type: 'Education', info: "I've learned big things!"}]
     }
   }
 }

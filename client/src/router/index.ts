@@ -16,7 +16,7 @@ const routes = [
     component: () => import('../views/CreatePortfolio.vue')
   },
   {
-    path: '/display/:name',
+    path: '/display/:user',
     name: 'PortfolioDisplay',
     component: () => import('../views/PortfolioDisplay.vue')
   },

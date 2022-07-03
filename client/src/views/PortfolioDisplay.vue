@@ -3,7 +3,7 @@
 
     <!-- Error With Profile Display -->
     <div v-if="errorDisplay">
-      <h1>{{ errorDisplay }}</h1>
+      <ErrorDisplay :userError="errorDisplay" :userName="this.user.name" />
     </div>
 
     <!-- Porfolio Display -->
@@ -23,18 +23,24 @@ import ComponentDisplayFactory from '../components/ComponentDisplayFactory.vue'
 import DatabaseServices from '../DatabaseServices'
 import parseProfileData from '../utils/ParseProfileData'
 
+import ErrorDisplay from '../components/ErrorDisplay.vue'
+
 export default {
 
   components: {
-    ComponentDisplayFactory
+    ComponentDisplayFactory,
+    ErrorDisplay
   },
   async created() {
 
     this.user = await DatabaseServices.getUserByUsername(this.$route.params.user);
 
-    if (!this.user) return this.errorDisplay = 'There has been an issue connecting with our servers, this may be an internet connectivity issue.';
+    // There has been an issue connecting with our servers, this may be an internet connectivity issue.
+    if (!this.user) return this.errorDisplay = 'no server conection';
+    // "user not found"
     if (this.user?.error) return this.errorDisplay = this.user.error;
-    if (!this.user.visibility) return this.errorDisplay = `This portfolio has been marked as private, contact ${this.user.name} to gain access!`;
+    // This portfolio has been marked as private, contact ${this.user.name} to gain access!
+    if (!this.user.visibility) return this.errorDisplay = 'account set private';
 
     this.testData = parseProfileData(this.user);
     console.log(this.testData)

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Projects:</h1>
+    <h1>Experiences:</h1>
     <p>{{ relevantInfo }}</p>
   </div>
 </template>
@@ -15,6 +15,6 @@ export default {
 
 <style scoped>
   div {
-    background-color: rgb(219, 169, 30);
+    background-color: rgb(189, 29, 162);
   }
 </style>

@@ -1,8 +1,8 @@
 <template>
   <div>
 
-    <div v-if="componentType === 'Achievements'">
-      <Achievements :relevantInfo="relevantInfo" />
+    <div v-if="componentType === 'Accomplishments'">
+      <Accomplishments :relevantInfo="relevantInfo" />
     </div>
 
     <div v-else-if="componentType === 'Projects'">
@@ -11,6 +11,10 @@
 
     <div v-else-if="componentType === 'Education'">
       <Education :relevantInfo="relevantInfo" />
+    </div>
+
+    <div v-else-if="componentType === 'Experiences'">
+      <Experiences :relevantInfo="relevantInfo" />
     </div>
 
     <!-- Fallback -->
@@ -22,15 +26,17 @@
 </template>
 
 <script>
-import Achievements from './SubComponents/AchievementsDisplay.vue'
+import Accomplishments from './SubComponents/AccomplishmentsDisplay.vue'
 import Projects from './SubComponents/ProjectsDisplay.vue'
 import Education from './SubComponents/EducationDisplay.vue'
+import Experiences from './SubComponents/ExperiencesDisplay.vue'
 
 export default {
   components: {
-    Achievements,
+    Accomplishments,
     Projects,
-    Education
+    Education,
+    Experiences
   },
   props: [
     'componentType',

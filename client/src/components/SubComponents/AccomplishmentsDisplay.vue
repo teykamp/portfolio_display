@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>Accomplishments:</h1>
     <p>{{ relevantInfo }}</p>
   </div>
 </template>

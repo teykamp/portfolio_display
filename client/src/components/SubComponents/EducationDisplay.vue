@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>Education:</h1>
     <p>{{ relevantInfo }}</p>
   </div>
 </template>

@@ -11,7 +11,7 @@ function apiTestUser(username) {
     
         // Ordered from most to least important
         projects: {
-          pageRank: 1,
+          pageRank: 10,
           content: [{
             name: "Math Race",
             technologies: [{
@@ -76,7 +76,7 @@ function apiTestUser(username) {
         },
         
         // true for public ... false for private
-        visibility: true
+        visibility: false
     }
     case 'thomas':
       return {

@@ -26,7 +26,7 @@ export default function parseProfileData(portfolioJSONBundle) {
     content: portfolioJSONBundle.education.content
   });
 
-  output.sort((a, b) => b.content.pageRank - a.content.pageRank);
+  
 
-  return output;
+  return output.sort((a, b) => a.pageRank - b.pageRank);
 }

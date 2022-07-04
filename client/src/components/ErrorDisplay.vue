@@ -3,10 +3,20 @@
     <v-container
       fill-height fluid
       class="container">
+        <!-- User not defined -->
         <div v-if="errorType === 'no server conection'">
-          <h1>There has been an issue connecting with our servers, this may be an internet connectivity issue.</h1>
+          <v-alert
+          prominent
+          type="error"
+          icon="mdi-cloud-alert"
+          >
+            <div class="errorPadding">
+              There has been an issue connecting with our servers, this may be an internet connectivity issue.
+            </div>
+          </v-alert>
         </div>
 
+        <!-- User not found -->
         <div v-else-if="errorType === 'user not found'">
           <v-alert
           prominent
@@ -22,13 +32,13 @@
                 </div>
               </v-col>
               <v-col class="shrink">
-                <!-- SEARCH AGAIN BUTTON -->
                 <v-btn href="/">Search Again</v-btn>
               </v-col>
             </v-row>
           </v-alert>  
         </div>
 
+        <!-- Private Account -->
         <div v-else-if="errorType === 'account set private'">
           <v-alert
             prominent
@@ -44,9 +54,17 @@
           </v-alert>
         </div>
 
-        <!-- fallback -->
+        <!-- Fallback -->
         <div v-else>
-          <h1>There has been an error loading the page.</h1>
+          <v-alert
+          prominent
+          type="error"
+          icon="mdi-cloud-alert"
+          >
+            <div class="errorPadding">
+              There has been an error loading this page.
+            </div>
+          </v-alert>
         </div>
     </v-container>
   </div>

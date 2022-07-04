@@ -1,7 +1,15 @@
 <template>
   <div>
-    <Intro />
-    <Main />
+
+    <div v-if="showIntro">
+      <Intro />
+    </div>
+
+    <div v-else>
+      <Main />
+    </div>
+
+    <b-button v-on:click="showIntro = !showIntro">Toggle Intro/Main</b-button>
   </div>
 </template>
 
@@ -13,6 +21,16 @@ export default {
   components: {
     Main,
     Intro
+  },
+  data: () => {
+    return {
+      showIntro: true,
+      userData: {
+        name: '',
+        headshotURL: '',
+        professionalTitle: '',
+      }
+    }
   }
 }
 </script>

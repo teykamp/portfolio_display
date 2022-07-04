@@ -22,8 +22,8 @@ The things you need before cloning the repository.
 ```npm install -g sass```
 * [Typescript](https://www.typescriptlang.org/id/download)
 ```npm install typescript --save-dev```
-* [Vuetify](https://vuetifyjs.com/en/getting-started/installation/)
-```npm i vuetify```
+* [Element Plus](https://element-plus.org/en-US/guide/installation.html#version)
+```npm install element-plus --save```
 * [VueUse](https://vueuse.org/guide/)
 ```npm i @vueuse/core```
 
@@ -72,4 +72,3 @@ The things you need before cloning the repository.
 ```
 <!-- for when the readme gets too long -->
 <p align="right"><a href="#top">Back to Top</a></p>
-

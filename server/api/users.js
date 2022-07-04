@@ -76,7 +76,7 @@ function apiTestUser(username) {
         },
         
         // true for public ... false for private
-        visibility: false
+        visibility: true
     }
     case 'thomas':
       return {

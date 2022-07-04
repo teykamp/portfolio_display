@@ -2,15 +2,23 @@
   <div>
 
     <!-- Error With Profile Display -->
-    <div v-if="errorDisplay">
-      <ErrorDisplay :userError="errorDisplay" :userName="this.user.name" />
+    <div v-if="error">
+      <Error :errorType="error" :username="this.user.name" />
     </div>
 
     <!-- Porfolio Display -->
     <div v-else>
 
-      <div v-for="data in testData" :key="data.id">
-        <component-display-factory :relevantInfo="data.content" :componentType="data.category" />
+      <div>
+        <Header :data="headerData" />
+      </div>
+
+      <div v-for="component in componentArray" :key="component.id">
+        <component-display-factory :relevantInfo="component.content" :componentType="component.category" />
+      </div>
+
+      <div>
+        <Footer :data="footerData" />
       </div>
 
     </div>
@@ -22,35 +30,49 @@
 import ComponentDisplayFactory from '../components/ComponentDisplayFactory.vue'
 import DatabaseServices from '../DatabaseServices'
 import parseProfileData from '../utils/ParseProfileData'
-
-import ErrorDisplay from '../components/ErrorDisplay.vue'
+import Error from '../components/ErrorDisplay.vue'
+import Header from '../components/PortfolioHeader.vue'
+import Footer from '../components/PortfolioFooter.vue'
 
 export default {
 
   components: {
     ComponentDisplayFactory,
-    ErrorDisplay
+    Error,
+    Header,
+    Footer
   },
   async created() {
 
     this.user = await DatabaseServices.getUserByUsername(this.$route.params.user);
 
     // There has been an issue connecting with our servers, this may be an internet connectivity issue.
-    if (!this.user) return this.errorDisplay = 'no server conection';
+    if (!this.user) return this.error = 'no server conection';
     // "user not found"
-    if (this.user?.error) return this.errorDisplay = this.user.error;
+    if (this.user?.error) return this.error = this.user.error;
     // This portfolio has been marked as private, contact ${this.user.name} to gain access!
-    if (!this.user.visibility) return this.errorDisplay = 'account set private';
+    if (!this.user.visibility) return this.error = 'account set private';
 
-    this.testData = parseProfileData(this.user);
-    console.log(this.testData)
+    this.componentArray = parseProfileData(this.user);
+
+    this.headerData = {
+      name: this.user.name,
+      headshotURL: this.user.headshotURL,
+      professionalTitle: this.user.professionalTitle
+    }
+
+    this.footerData = {
+      disclaimer: 'Legal Disclaimer, and Stuff...'
+    }
 
   },
   data: () => {
     return {
-      testData: [{type: 'Achievements', info: "I've done big things!"}, {type: 'Projects', info: "I've made big things!"}, {type: 'Education', info: "I've learned big things!"}],
+      componentArray: [],
+      headerData: {},
+      footerData: {},      
       user: undefined,
-      errorDisplay: ''
+      error: undefined
     }
   }
 }

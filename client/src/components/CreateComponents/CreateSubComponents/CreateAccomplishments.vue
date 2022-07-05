@@ -13,11 +13,19 @@
       </div>
     </div>
 
+    <b-button @click="$parent.editComponentView = false; emitDataToGrandparent()">Back</b-button>
+
   </div>
 </template>
 
 <script>
 export default {
+  props: [
+    'userData'
+  ],
+  created() {
+    if (this.userData?.accomplishments) this.accomplishments = this.userData.accomplishments.content;
+  },
   data: () => {
     return {
       accomplishments: []
@@ -34,6 +42,12 @@ export default {
         description: '',
         date: ''
       })
+    },
+    emitDataToGrandparent() {
+      this.$parent.$emit('update-component-data', {
+        componentType: 'accomplishments',
+        content: this.accomplishments
+      });
     }
   }
 }

@@ -28,13 +28,12 @@
     
     <div v-else>
 
-      <education v-if="componentName === 'Education'" />
-      <projects v-else-if="componentName === 'Projects'" />
-      <accomplishments v-else-if="componentName === 'Accomplishments'" />
-      <experiences v-else-if="componentName === 'Experiences'" />
-      <h1 v-else>Unrecognized Component Type '{{ componentName}}'</h1>
+      <education v-if="componentName === 'Education'" :userData="userData" />
+      <projects v-else-if="componentName === 'Projects'" :userData="userData" />
+      <accomplishments v-else-if="componentName === 'Accomplishments'" :userData="userData" />
+      <experiences v-else-if="componentName === 'Experiences'" :userData="userData" />
 
-      <b-button @click="editComponentView = false">Back</b-button>
+      <h1 v-else>Unrecognized Component Type '{{ componentName }}'</h1>
 
     </div>
 
@@ -58,6 +57,9 @@ export default Vue.extend({
     Education,
     draggable
   },
+  props: [
+    'userData'
+  ],
   data: () => {
     return {
       portfolioComponents: [{id: 0, name: 'Projects', color: 'red'}, {id: 1, name: 'Education', color: 'yellow'}, {id: 2, name: 'Accomplishments', color: 'lightblue'}, {id: 3, name: 'Experiences', color: 'green'}],
@@ -72,11 +74,6 @@ export default Vue.extend({
     toggleEditView(componentName) {
       this.componentName = componentName;
       this.editComponentView = true;
-    }
-  },
-  watch: {
-    portfolioComponents() {
-      console.log(this.portfolioComponents[0].name)
     }
   }
 })

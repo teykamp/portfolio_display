@@ -6,10 +6,11 @@
     </div>
 
     <div v-else>
-      <Main />
+      <Main @update-component-data="updateComponentData($event)" :userData="userData" />
     </div>
 
     <b-button v-on:click="showIntro = !showIntro">Toggle Intro/Main</b-button>
+    
   </div>
 </template>
 
@@ -30,6 +31,25 @@ export default {
         headshotURL: '',
         professionalTitle: '',
         visibility: true
+      }
+    }
+  },
+  methods: {
+    updateComponentData(dataObject) {
+      switch (dataObject.componentType) {
+        case 'projects':
+          this.userData.projects = { content: dataObject.content };
+          break;
+        case 'education':
+          this.userData.education = { content: dataObject.content };
+          break;
+        case 'experiences':
+          this.userData.experiences = { content: dataObject.content };
+          break;
+        case 'accomplishments':
+          this.userData.accomplishments = { content: dataObject.content };
+          break;
+        default: throw new Error(`Unrecognized Component Type ${dataObject.componentType}`);
       }
     }
   }

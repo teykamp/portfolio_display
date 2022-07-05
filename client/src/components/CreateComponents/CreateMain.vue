@@ -60,7 +60,7 @@ export default Vue.extend({
   },
   data: () => {
     return {
-      portfolioComponents: [{id: 0, name: 'Projects', color: 'red'}, {id: 1, name: 'Education', color: 'yellow'}, {id: 2, name: 'Accomplishments', color: 'blue'}, {id: 3, name: 'Experiences', color: 'green'}],
+      portfolioComponents: [{id: 0, name: 'Projects', color: 'red'}, {id: 1, name: 'Education', color: 'yellow'}, {id: 2, name: 'Accomplishments', color: 'lightblue'}, {id: 3, name: 'Experiences', color: 'green'}],
       editComponentView: false,
       componentName: undefined,
     }

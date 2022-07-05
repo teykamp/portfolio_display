@@ -41,6 +41,6 @@ export default {
 
 <style scoped>
 div {
-  background-color: rgb(197, 224, 45);
+  background-color: rgb(226, 255, 59);
 }
 </style>

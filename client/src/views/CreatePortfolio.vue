@@ -29,6 +29,7 @@ export default {
         name: '',
         headshotURL: '',
         professionalTitle: '',
+        visibility: true
       }
     }
   }

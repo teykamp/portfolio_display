@@ -2,46 +2,78 @@
   <div class="center">
     <p>Create Route</p>
     <p>Now, Choose Which Items You Wanted Added </p>
-    <button @click="addComponent()">Add</button>
-    <div class="draggable-container">
-      <draggable v-model="portfolioComponents" class="center">
-        <TransitionGroup name="list" tag="ul" class="draggable-list">
-          <li v-for="item in portfolioComponents" :key="item.id" :style="`background-color: ${item.color}`" class="draggable-item">
-          {{ item.name }}
-          </li>
-        </TransitionGroup>
-      </draggable>
+
+    <div v-if="!editComponentView">
+
+      <button @click="addComponent()">Add</button>
+      <div class="draggable-container">
+
+        <draggable v-model="portfolioComponents" class="center">
+          <TransitionGroup name="list" tag="ul" class="draggable-list">
+            <li v-for="item in portfolioComponents" :key="item.id" :style="`background-color: ${item.color}`" class="draggable-item" @click="toggleEditView(item.name)">
+              {{ item.name }}
+            </li>
+          </TransitionGroup>
+        </draggable>
+
+      </div>
+
     </div>
     
+    <div v-else>
+
+      <education v-if="componentName === 'Education'" />
+      <projects v-else-if="componentName === 'Projects'" />
+      <accomplishments v-else-if="componentName === 'Accomplishments'" />
+      <experiences v-else-if="componentName === 'Experiences'" />
+      <h1 v-else>Unrecognized Component Type '{{ componentName}}'</h1>
+
+      <b-button @click="editComponentView = false">Back</b-button>
+
+    </div>
 
     <b-button>Create</b-button>
   </div>
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import draggable from 'vuedraggable'
+import Vue from 'vue'
+import draggable from 'vuedraggable'
+import Projects from '../CreateComponents/CreateSubComponents/CreateProjects.vue'
+import Accomplishments from '../CreateComponents/CreateSubComponents/CreateAccomplishments.vue'
+import Experiences from '../CreateComponents/CreateSubComponents/CreateExperiences.vue'
+import Education from '../CreateComponents/CreateSubComponents/CreateEducation.vue'
 
-  export default Vue.extend({
-    data: () => {
-      return {
-        portfolioComponents: [{id: 0, name: 'Projects', color: 'red'}, {id: 1, name: 'Education', color: 'yellow'}, {id: 2, name: 'Achievements', color: 'blue'}, {id: 3, name: 'Expiriences', color: 'green'}]
-      }
-    },
-    methods: {
-      addComponent() {
-        this.portfolioComponents.push({id: 5, name: 'Test', color: 'orange'})
-      }
-    },
-    watch: {
-      portfolioComponents() {
-        console.log(this.portfolioComponents[0].name)
-      }
-    },
-    components: {
-      draggable
+export default Vue.extend({
+  components: {
+    Projects,
+    Accomplishments,
+    Experiences,
+    Education,
+    draggable
+  },
+  data: () => {
+    return {
+      portfolioComponents: [{id: 0, name: 'Projects', color: 'red'}, {id: 1, name: 'Education', color: 'yellow'}, {id: 2, name: 'Accomplishments', color: 'blue'}, {id: 3, name: 'Experiences', color: 'green'}],
+      editComponentView: false,
+      componentName: undefined,
     }
-  })
+  },
+  methods: {
+    addComponent() {
+      this.portfolioComponents.push({id: 5, name: 'Test', color: 'orange'})
+    },
+    toggleEditView(componentName) {
+      this.componentName = componentName;
+      this.editComponentView = true;
+    }
+  },
+  watch: {
+    portfolioComponents() {
+      console.log(this.portfolioComponents[0].name)
+    }
+  }
+})
 </script>
 
 <style scoped>

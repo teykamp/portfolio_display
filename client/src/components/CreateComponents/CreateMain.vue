@@ -1,7 +1,13 @@
 <template>
   <div class="center">
-    <p>Create Route</p>
-    <p>Now, Choose Which Items You Wanted Added </p>
+    <div style="max-width: 50%;">
+      <h3>We make building your porfolio easy. Follow these few steps to get up and running!</h3>
+      <p>1. Drag the portfolio items you want to include in your portfolio into 'my porfolio'.</p>
+      <p>2. Click on the different components you added to your portfolio to fill in and edit the content displayed in those components.</p>
+      <p>3. Rearrange your porfolios visual hierachy by simply dragging each component into the order you best see fit.</p>
+      <br>
+      <p>When you have added all the components, and filled in all the information, we encourage you to take a peak at how it will look when it is done. Hit the preview button on the top right corner!</p>
+    </div>
 
     <div v-if="!editComponentView">
 

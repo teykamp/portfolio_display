@@ -9,6 +9,7 @@
         <input type="text" placeholder="Organization" v-model="accomplishments[index].organization" />
         <input type="text" placeholder="Description" v-model="accomplishments[index].description" />
         <input type="text" placeholder="Date" v-model="accomplishments[index].date" />
+        <button @click="removeAccomplishment(index)">x</button>
       </div>
     </div>
 
@@ -23,6 +24,9 @@ export default {
     }
   },
   methods: {
+    removeAccomplishment(index) {
+      this.accomplishments.splice(index, 1);
+    },
     addAccomplishment() {
       this.accomplishments.push({
         title: '',
@@ -36,7 +40,7 @@ export default {
 </script>
 
 <style scoped>
-  div {
-    background-color: rgb(29, 189, 69);
-  }
+div {
+  background-color: rgb(29, 112, 189);
+}
 </style>

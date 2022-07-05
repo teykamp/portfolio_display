@@ -9,7 +9,16 @@ function apiTestUser(username) {
         headshotURL: "https://i1.sndcdn.com/avatars-000508491087-32hktm-t500x500.jpg",
         professionalTitle: "Student Developer at SNHU",
     
-        // Ordered from most to least important
+        education: {
+          pageRank: 100,
+          content: [{
+            institution: 'Southern New Hampshire University',
+            description: 'Currently doing my undergrad at SNHU!',
+            degreeType: 'BS',
+            date: null,
+          }]
+        },
+
         projects: {
           pageRank: 10,
           content: [{

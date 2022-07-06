@@ -10,7 +10,11 @@
     </div>
 
     <b-button v-on:click="showIntro = !showIntro">Toggle Intro/Main</b-button>
-    
+    <b-button variant="secondary">Preview Your Portfolio</b-button>
+
+    <pre>
+      {{ userData }}
+    </pre>
   </div>
 </template>
 
@@ -26,7 +30,8 @@ export default {
   data: () => {
     return {
       showIntro: true,
-      userData: {
+      userData: 
+      {
         name: '',
         headshotURL: '',
         professionalTitle: '',
@@ -36,21 +41,7 @@ export default {
   },
   methods: {
     updateComponentData(dataObject) {
-      switch (dataObject.componentType) {
-        case 'projects':
-          this.userData.projects = { content: dataObject.content };
-          break;
-        case 'education':
-          this.userData.education = { content: dataObject.content };
-          break;
-        case 'experiences':
-          this.userData.experiences = { content: dataObject.content };
-          break;
-        case 'accomplishments':
-          this.userData.accomplishments = { content: dataObject.content };
-          break;
-        default: throw new Error(`Unrecognized Component Type ${dataObject.componentType}`);
-      }
+      this.userData[dataObject.componentType].content = dataObject.content
     }
   }
 }

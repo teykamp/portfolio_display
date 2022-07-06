@@ -20,9 +20,10 @@
     
     <div v-else>
       <h3>Add Technologies Used{{ !projectSelected.name ? '' : ` For ${projectSelected.name}` }}</h3>
-      <button @click="projectSelected.technologies.push('')">+</button>
+      <button @click="projectSelected.technologies.push({ name: '', logo: '' })">+</button>
       <div v-for="(tech, index) in projectSelected.technologies" :key="tech.id">
-        <input type="text" placeholder="Technology Name" v-model="projectSelected.technologies[index]">
+        <input type="text" placeholder="Name" v-model="projectSelected.technologies[index].name">
+        <input type="text" placeholder="Logo" v-model="projectSelected.technologies[index].logo">
         <button @click="projectSelected.technologies.splice(index, 1)">x</button>
       </div>
       <button @click="techView = false">Return to Projects</button>
@@ -39,7 +40,7 @@ export default {
     'userData'
   ],
   created() {
-    if (this.userData?.projects) this.projects = this.userData.projects.content;
+    if (this.userData?.projects?.content) this.projects = this.userData.projects.content;
   },
   data: () => {
     return {

@@ -39,10 +39,10 @@
     
     <div v-else>
 
-      <education v-if="componentName === 'Education'" :userData="userData" />
-      <projects v-else-if="componentName === 'Projects'" :userData="userData" />
-      <accomplishments v-else-if="componentName === 'Accomplishments'" :userData="userData" />
-      <experiences v-else-if="componentName === 'Experiences'" :userData="userData" />
+      <education v-if="componentName === 'education'" :userData="userData" />
+      <projects v-else-if="componentName === 'projects'" :userData="userData" />
+      <accomplishments v-else-if="componentName === 'accomplishments'" :userData="userData" />
+      <experiences v-else-if="componentName === 'experiences'" :userData="userData" />
 
       <h1 v-else>Unrecognized Component Type '{{ componentName }}'</h1>
 
@@ -71,9 +71,34 @@ export default Vue.extend({
   props: [
     'userData'
   ],
+  created() {
+
+    /* loops through all components and makes sure that the components that already 
+    have been edited by user are shown on the 'added' components tab */
+    const addedComponents = [];
+    for (let i = 0; i < this.portfolioComponents.length; i++) {
+      if (this.userData[this.portfolioComponents[i].name]) {
+        this.addedPortfolioComponents.push(this.portfolioComponents[i]);
+        addedComponents.push(this.portfolioComponents[i]);
+      }
+    }
+
+    addedComponents.forEach(component => {
+      if (this.portfolioComponents.includes(component)) {
+        this.portfolioComponents.splice(this.portfolioComponents.indexOf(component), 1);
+      }
+    })
+
+    /* adds the pageRank back to the added components based on the order previously determined by user */
+    for (let i = 0; i < this.addedPortfolioComponents.length; i++) {
+      this.addedPortfolioComponents[i].pageRank = this.userData[this.addedPortfolioComponents[i].name].pageRank;
+    }
+
+    this.addedPortfolioComponents.sort((a, b) => a.pageRank - b.pageRank);
+  },
   data: () => {
     return {
-      portfolioComponents: [{id: 0, name: 'Projects', color: 'red'}, {id: 1, name: 'Education', color: 'yellow'}, {id: 2, name: 'Accomplishments', color: 'lightblue'}, {id: 3, name: 'Experiences', color: 'green'}],
+      portfolioComponents: [{id: 0, name: 'projects', color: 'red'}, {id: 1, name: 'education', color: 'yellow'}, {id: 2, name: 'accomplishments', color: 'lightblue'}, {id: 3, name: 'experiences', color: 'green'}],
       addedPortfolioComponents: [],
       editComponentView: false,
       componentName: undefined,
@@ -99,6 +124,21 @@ export default Vue.extend({
         group: "description",
         ghostClass: "ghost"
       };
+    }
+  },
+  watch: {
+    addedPortfolioComponents() {
+      // Update Page Rankings
+      for (let i = 0; i < this.addedPortfolioComponents.length; i++) {
+        const content = this.$parent.userData[this.addedPortfolioComponents[i].name]?.content ?? [];
+        this.$parent.userData[this.addedPortfolioComponents[i].name] = { pageRank: i, content: content };
+      }
+
+      for (let i = 0; i < this.portfolioComponents.length; i++) {
+        if (this.$parent.userData[this.portfolioComponents[i].name]) {
+          delete this.$parent.userData[this.portfolioComponents[i].name];
+        }
+      }
     }
   }
 })

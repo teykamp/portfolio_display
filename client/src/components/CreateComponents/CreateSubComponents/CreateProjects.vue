@@ -3,17 +3,29 @@
 
     <button @click="addProject()">Add Project</button>
     <br>
-    <div v-for="(project, index) in projects" :key="project.id">
-      <div class="center" style="flex-direction: row;">
-        <input type="text" placeholder="Name" v-model="projects[index].name" />
-        <input type="text" placeholder="Tech Used" v-model="projects[index].technologies" />
-        <input type="text" placeholder="Deployment URL" v-model="projects[index].linkToDeploy" />
-        <input type="text" placeholder="Repo URL" v-model="projects[index].linkToRepo" />
-        <input type="text" placeholder="Desc." v-model="projects[index].description" />
-        <input type="text" placeholder="Date" v-model="projects[index].date" />
-        <button @click="removeProject(index)">x</button>
-        <!-- <button @click="test(projects[index])">Test</button> -->
+    <div v-if="!techView">
+      <div v-for="(project, index) in projects" :key="project.id">
+        <div class="center" style="width: 75vw;">
+          <input type="text" placeholder="Name" v-model="projects[index].name" />
+          <button @click="editTechUsed(project)">Add Technologies Used ({{ projects[index].technologies.length }})</button>
+          <input type="text" placeholder="Deployment URL" v-model="projects[index].linkToDeploy" />
+          <input type="text" placeholder="Repo URL" v-model="projects[index].linkToRepo" />
+          <input type="text" placeholder="Desc." v-model="projects[index].description" />
+          <input type="text" placeholder="Date" v-model="projects[index].date" />
+          <button @click="removeProject(index)">x</button>
+          <!-- <button @click="test(projects[index])">Test</button> -->
+        </div>
       </div>
+    </div>
+    
+    <div v-else>
+      <h3>Add Technologies Used{{ !projectSelected.name ? '' : ` For ${projectSelected.name}` }}</h3>
+      <button @click="projectSelected.technologies.push('')">+</button>
+      <div v-for="(tech, index) in projectSelected.technologies" :key="tech.id">
+        <input type="text" placeholder="Technology Name" v-model="projectSelected.technologies[index]">
+        <button @click="projectSelected.technologies.splice(index, 1)">x</button>
+      </div>
+      <button @click="techView = false">Return to Projects</button>
     </div>
 
     <b-button @click="$parent.editComponentView = false; emitDataToGrandparent()">Back</b-button>
@@ -31,12 +43,18 @@ export default {
   },
   data: () => {
     return {
-      projects: []
+      projects: [],
+      techView: false,
+      projectSelected: ''
     }
   },
   methods: {
     test(item) {
       console.log(item)
+    },
+    editTechUsed(project) {
+      this.projectSelected = project;
+      this.techView = true;
     },
     removeProject(index) {
       this.projects.splice(index, 1);

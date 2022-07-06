@@ -6,10 +6,15 @@
     </div>
 
     <div v-else>
-      <Main />
+      <Main @update-component-data="updateComponentData($event)" :userData="userData" />
     </div>
 
     <b-button v-on:click="showIntro = !showIntro">Toggle Intro/Main</b-button>
+    <b-button variant="secondary">Preview Your Portfolio</b-button>
+
+    <pre>
+      {{ userData }}
+    </pre>
   </div>
 </template>
 
@@ -25,12 +30,18 @@ export default {
   data: () => {
     return {
       showIntro: true,
-      userData: {
+      userData: 
+      {
         name: '',
         headshotURL: '',
         professionalTitle: '',
         visibility: true
       }
+    }
+  },
+  methods: {
+    updateComponentData(dataObject) {
+      this.userData[dataObject.componentType].content = dataObject.content
     }
   }
 }

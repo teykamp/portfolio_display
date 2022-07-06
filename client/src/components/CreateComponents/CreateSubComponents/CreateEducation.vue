@@ -13,11 +13,19 @@
       </div>
     </div>
 
+    <b-button @click="$parent.editComponentView = false; emitDataToGrandparent()">Back</b-button>
+
   </div>
 </template>
 
 <script>
 export default {
+  props: [
+    'userData'
+  ],
+  created() {
+    if (this.userData?.education) this.education = this.userData.education.content;
+  },
   data: () => {
     return {
       education: []
@@ -34,6 +42,12 @@ export default {
         description: '',
         date: ''
       })
+    },
+    emitDataToGrandparent() {
+      this.$parent.$emit('update-component-data', {
+        componentType: 'education',
+        content: this.education
+      });
     }
   }
 }
@@ -41,6 +55,6 @@ export default {
 
 <style scoped>
 div {
-  background-color: rgb(197, 224, 45);
+  background-color: rgb(226, 255, 59);
 }
 </style>

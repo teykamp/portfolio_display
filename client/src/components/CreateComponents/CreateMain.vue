@@ -33,9 +33,12 @@
         </draggable>
       </div>
 
-    </div>
+      <button @click="$parent.userData.visibility = !$parent.userData.visibility">Toggle Account Visibility</button>
+      <div :style="`background-color: ${this.userData.visibility ? 'lime' : 'red' }`">
+        <p>{{ this.userData.visibility ? 'Public' : 'Private' }}</p>
+      </div>
 
-    
+    </div>
     
     <div v-else>
 
@@ -52,15 +55,14 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
+<script>
 import draggable from 'vuedraggable'
 import Projects from '../CreateComponents/CreateSubComponents/CreateProjects.vue'
 import Accomplishments from '../CreateComponents/CreateSubComponents/CreateAccomplishments.vue'
 import Experiences from '../CreateComponents/CreateSubComponents/CreateExperiences.vue'
 import Education from '../CreateComponents/CreateSubComponents/CreateEducation.vue'
 
-export default Vue.extend({
+export default {
   components: {
     Projects,
     Accomplishments,
@@ -141,7 +143,7 @@ export default Vue.extend({
       }
     }
   }
-})
+}
 </script>
 
 <style scoped>

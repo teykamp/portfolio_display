@@ -13,7 +13,7 @@
       </div>
     </div>
 
-    <b-button @click="$parent.editComponentView = false; emitDataToGrandparent()">Back</b-button>
+    <b-button @click="$parent.editComponentView = false; emitDataToGrandparent()">Back</b-button>``
 
   </div>
 </template>

@@ -20,6 +20,11 @@ const routes = [
     name: 'PortfolioDisplay',
     component: () => import('../views/PortfolioDisplay.vue')
   },
+  {
+    path: '/display/preview/:data',
+    name: 'PortfolioDisplayPreview',
+    component: () => import('../views/PortfolioDisplay.vue')
+  }
 ]
 
 const router = new VueRouter({

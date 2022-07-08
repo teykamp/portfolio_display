@@ -25,8 +25,8 @@ export default function parseProfileData(portfolioJSONBundle) {
     pageRank: portfolioJSONBundle.education.pageRank,
     content: portfolioJSONBundle.education.content
   });
+ 
+  const componentsContainingContent = displayedComponents.filter(obj => obj.content.length != 0);
 
-  
-
-  return displayedComponents.sort((a, b) => a.pageRank - b.pageRank);
+  return componentsContainingContent.sort((a, b) => a.pageRank - b.pageRank);
 }

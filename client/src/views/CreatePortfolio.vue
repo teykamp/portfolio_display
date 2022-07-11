@@ -68,7 +68,7 @@ export default {
       }
       return;
     }
-    /* distingushed be tween edit and create routes incl. pulling relevant editable user data */
+    /* distingushed between edit and create routes incl. pulling relevant editable user data */
     if (this.$route.params?.user) {
       /* check if user is autheticated here when auth is implemented */
       this.editMode = true;
@@ -78,6 +78,7 @@ export default {
 
       /* sets valid existing portfolio data to user data, editable by the connected sub components */
       this.userData = portfolioData;
+      this.showIntro = false;
     }
   },
   methods: {

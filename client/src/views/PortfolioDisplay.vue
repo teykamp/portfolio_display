@@ -1,13 +1,20 @@
 <template>
   <div>
 
-    <!-- Error With Profile Display -->
+    <!-- Error With Profile -->
     <div v-if="error">
       <Error :errorType="error" :username="this.user.name" />
     </div>
 
     <!-- Porfolio Display -->
     <div v-else>
+
+      <div> 
+        <b-button v-if="!previewMode" variant="warning" style="color: white;" 
+        @click="$router.push(`/edit/${$route.params.user}`)">Edit</b-button>
+        <b-button v-else variant="primary" style="color: white;"
+        @click="returnFromPreview()">Züruck</b-button>
+      </div>
 
       <div>
         <Header :data="headerData" />
@@ -45,7 +52,10 @@ export default {
   async created() {
 
     // if true, loads preview mode
-    if (this.$route.params?.data) return this.formatDataForDisplay(this.$route.params.data);
+    if (this.$route.params?.data) {
+      this.previewMode = true;
+      return this.formatDataForDisplay(this.$route.params.data);
+    }
 
     this.user = await DatabaseServices.getUserByUsername(this.$route.params.user);
 
@@ -65,11 +75,17 @@ export default {
       headerData: {},
       footerData: {},      
       user: undefined,
-      error: undefined
+      error: undefined,
+      previewMode: false
     }
   },
   methods: {
+    returnFromPreview() {
+      history.back();
+    },
     formatDataForDisplay(userData) {
+
+      /* sorts data into seperate categories for passing down sub-component specific info */
 
       this.componentArray = parseProfileData(userData);
 

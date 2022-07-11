@@ -13,6 +13,8 @@
       <h1>This portfolio has been marked as private, contact {{ username }} to gain access!</h1>
     </div>
 
+    <b-button @click="$router.push('/')">Züruck</b-button>
+
   </div>
 </template>
 

@@ -56,7 +56,9 @@
 
     </div>
 
-    <b-button>Create</b-button>
+    <b-button variant="success" @click="$parent.editMode ? updatePortfolioRemote() : createPortfolioRemote() ">
+    {{ $parent.editMode ? 'Save Changes' : 'Create Portfolio' }}</b-button>
+
   </div>
 </template>
 
@@ -122,6 +124,18 @@ export default {
       return (
         (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
       );
+    },
+    updatePortfolioRemote() {
+      if (this.$route.params?.user) {
+        alert(`${this.$route.params.user}s portfolio has been updated in the database`)
+      } else {
+        alert("I'm not sure what users' info needs to be updated...")
+      }
+      this.$router.push('/');
+    },
+    createPortfolioRemote() {
+      alert('Portfolio Has Been Created!');
+      this.$router.push('/');
     }
   },
   computed: {

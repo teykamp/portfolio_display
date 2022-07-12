@@ -56,8 +56,8 @@ export default {
       try {
         this.userData = JSON.parse(localStorage.userData);
         this.showIntro = false;
+        if (this.$route.params?.user) this.editMode = true;
         localStorage.removeItem('userData');
-        
       } catch (err) {
         /* if the JSON parse fails, the user is redirected back to the home screen as a fallback
         (hopefully doesn't happen, but better than completely crashing) */

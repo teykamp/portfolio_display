@@ -44,6 +44,9 @@ export default {
   },
   async created() {
 
+    // if true, loads preview mode
+    if (this.$route.params?.data) return this.formatDataForDisplay(this.$route.params.data);
+
     this.user = await DatabaseServices.getUserByUsername(this.$route.params.user);
 
     // There has been an issue connecting with our servers, this may be an internet connectivity issue.
@@ -53,18 +56,8 @@ export default {
     // This portfolio has been marked as private, contact ${this.user.name} to gain access!
     if (!this.user.visibility) return this.error = 'account set private';
 
-    this.componentArray = parseProfileData(this.user);
-
-    this.headerData = {
-      name: this.user.name,
-      headshotURL: this.user.headshotURL,
-      professionalTitle: this.user.professionalTitle
-    }
-
-    this.footerData = {
-      disclaimer: 'Legal Disclaimer, and Stuff...'
-    }
-
+    this.formatDataForDisplay(this.user);
+    
   },
   data: () => {
     return {
@@ -73,6 +66,22 @@ export default {
       footerData: {},      
       user: undefined,
       error: undefined
+    }
+  },
+  methods: {
+    formatDataForDisplay(userData) {
+
+      this.componentArray = parseProfileData(userData);
+
+      this.headerData = {
+        name: userData.name,
+        headshotURL: userData.headshotURL,
+        professionalTitle: userData.professionalTitle
+      }
+
+      this.footerData = {
+        disclaimer: 'Legal Disclaimer, and Stuff...'
+      }
     }
   }
 }

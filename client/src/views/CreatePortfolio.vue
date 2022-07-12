@@ -1,52 +1,51 @@
 <template>
-  <div class="center">
-    <p>Create Route</p>
-    <p>Draggable Selections</p>
+  <div>
 
-    <div>
-      <draggable v-model="portfolioComponents">
-        <TransitionGroup name="list" tag="ul">
-          <li v-for="item in portfolioComponents" :key="item.id">
-          {{ item.name }}
-          </li>
-        </TransitionGroup>
-      </draggable>
+    <div v-if="showIntro">
+      <Intro />
     </div>
-    
 
-    <b-button>Create</b-button>
+    <div v-else>
+      <Main @update-component-data="updateComponentData($event)" :userData="userData" />
+    </div>
+
+    <b-button v-on:click="showIntro = !showIntro">Toggle Intro/Main</b-button>
+    <b-button variant="primary" @click="sendUserToPreview()">Preview Your Portfolio</b-button>
+
+    <pre>
+      {{ userData }}
+    </pre>
   </div>
 </template>
 
-<script lang="ts">
-  import Vue from 'vue'
-  import draggable from 'vuedraggable'
+<script>
+import Intro from '../components/CreateComponents/CreateIntro.vue'
+import Main from '../components/CreateComponents/CreateMain.vue'
 
-  export default Vue.extend({
-    data: () => {
-      return {
-        portfolioComponents: [{id: 0, name: 'Projects'}, {id: 1, name: 'Education'}, {id: 2, name: 'Achievements'}, {id: 3, name: 'Projects'}]
+export default {
+  components: {
+    Main,
+    Intro
+  },
+  data: () => {
+    return {
+      showIntro: true,
+      userData: 
+      {
+        name: '',
+        headshotURL: '',
+        professionalTitle: '',
+        visibility: true
       }
-    },
-    methods: {
-    
-    },
-    watch: {
-      portfolioComponents() {
-        console.log(this.portfolioComponents[0].name)
-      }
-    },
-    components: {
-      draggable
     }
-  })
-</script>
-
-<style scoped>
-  /* @import url('../UniversalStyles.css'); */
-  .list-move, /* apply transition to moving elements */
-  .list-enter-active,
-  .list-leave-active {
-    transition: all 0.5s ease;
+  },
+  methods: {
+    updateComponentData(dataObject) {
+      this.userData[dataObject.componentType].content = dataObject.content;
+    },
+    sendUserToPreview() {
+      this.$router.push({ name: 'PortfolioDisplayPreview', params: { data: this.userData }});
+    }
   }
-</style>
+}
+</script>

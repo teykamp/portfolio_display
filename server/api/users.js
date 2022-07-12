@@ -9,9 +9,18 @@ function apiTestUser(username) {
         headshotURL: "https://i1.sndcdn.com/avatars-000508491087-32hktm-t500x500.jpg",
         professionalTitle: "Student Developer at SNHU",
     
-        // Ordered from most to least important
+        education: {
+          pageRank: -1,
+          content: [{
+            institution: 'Southern New Hampshire University',
+            description: 'Currently doing my undergrad at SNHU!',
+            degreeType: 'BS',
+            date: null,
+          }]
+        },
+
         projects: {
-          pageRank: 10,
+          pageRank: -10,
           content: [{
             name: "Math Race",
             technologies: [{
@@ -27,6 +36,7 @@ function apiTestUser(username) {
             Math race auto generates math questions at various difficulty levels. Practice 
             your skills in single player. Create an account to save your 
             lastest game results and stats`,
+            date: null
           }, {
             name: "Truth Tables",
             technologies: [{
@@ -36,6 +46,7 @@ function apiTestUser(username) {
             linkToDeploy: null,
             linkToRepo: "https://github.com/Yonava/truthtable",
             description: "Automates truth table equations / mathematics for computing snhu",
+            date: null
           }]
         },
     
@@ -76,7 +87,7 @@ function apiTestUser(username) {
         },
         
         // true for public ... false for private
-        visibility: false
+        visibility: true
     }
     case 'thomas':
       return {
@@ -96,6 +107,7 @@ function apiTestUser(username) {
             linkToDeploy: null,
             linkToRepo: "https://github.com/teykamp/visualizer",
             description: `Draw cool stuff... pathfinding... yay!`,
+            date: null
           }, {
             name: "AQTutorial",
             technologies: [{
@@ -105,6 +117,7 @@ function apiTestUser(username) {
             linkToDeploy: null,
             linkToRepo: "https://github.com/teykamp/AQTutorial",
             description: "asking people stuff about air quality",
+            date: null
           }]
         },
     

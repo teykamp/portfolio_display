@@ -1,32 +1,32 @@
 export default function parseProfileData(portfolioJSONBundle) {
   
-  let output = [];
+  let displayedComponents = [];
 
-  if (portfolioJSONBundle?.projects) output.push({
+  if (portfolioJSONBundle?.projects) displayedComponents.push({
     category: 'Projects',
     pageRank: portfolioJSONBundle.projects.pageRank,
     content: portfolioJSONBundle.projects.content
   });
 
-  if (portfolioJSONBundle?.accomplishments) output.push({
+  if (portfolioJSONBundle?.accomplishments) displayedComponents.push({
     category: 'Accomplishments',
     pageRank: portfolioJSONBundle.accomplishments.pageRank,
     content: portfolioJSONBundle.accomplishments.content
   });
 
-  if (portfolioJSONBundle?.experiences) output.push({
+  if (portfolioJSONBundle?.experiences) displayedComponents.push({
     category: 'Experiences',
     pageRank: portfolioJSONBundle.experiences.pageRank,
     content: portfolioJSONBundle.experiences.content
   });
 
-  if (portfolioJSONBundle?.education) output.push({
+  if (portfolioJSONBundle?.education) displayedComponents.push({
     category: 'Education',
     pageRank: portfolioJSONBundle.education.pageRank,
     content: portfolioJSONBundle.education.content
   });
+ 
+  const componentsContainingContent = displayedComponents.filter(obj => obj.content.length != 0);
 
-  
-
-  return output.sort((a, b) => a.pageRank - b.pageRank);
+  return componentsContainingContent.sort((a, b) => a.pageRank - b.pageRank);
 }

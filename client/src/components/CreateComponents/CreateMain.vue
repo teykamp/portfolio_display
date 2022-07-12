@@ -1,6 +1,11 @@
 <template>
   <div class="center">
-    <div style="max-width: 50%;">
+
+    <div v-if="$parent.editMode">
+      <h1>Edit Your Portfolio</h1>
+    </div>
+     
+    <div v-else style="max-width: 50%;">
       <h3>We make building your porfolio easy. Follow these few steps to get up and running!</h3>
       <p>1. Drag the portfolio items you want to include in your portfolio into 'my porfolio'.</p>
       <p>2. Click on the different components you added to your portfolio to fill in and edit the content displayed in those components.</p>
@@ -51,7 +56,9 @@
 
     </div>
 
-    <b-button>Create</b-button>
+    <b-button variant="success" @click="$parent.editMode ? updatePortfolioRemote() : createPortfolioRemote() ">
+    {{ $parent.editMode ? 'Save Changes' : 'Create Portfolio' }}</b-button>
+
   </div>
 </template>
 
@@ -117,6 +124,18 @@ export default {
       return (
         (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
       );
+    },
+    updatePortfolioRemote() {
+      if (this.$route.params?.user) {
+        alert(`${this.$route.params.user}s portfolio has been updated in the database`)
+      } else {
+        alert("I'm not sure what users' info needs to be updated...")
+      }
+      this.$router.push('/');
+    },
+    createPortfolioRemote() {
+      alert('Portfolio Has Been Created!');
+      this.$router.push('/');
     }
   },
   computed: {

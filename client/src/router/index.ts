@@ -29,7 +29,12 @@ const routes = [
     path: '/edit/:user',
     name: 'EditPortfolio',
     component: () => import('../views/CreatePortfolio.vue')
-  }
+  },
+  {
+    path: '*',
+    name: '404Error',
+    component: () => import('../views/404.vue')
+  },
 ]
 
 const router = new VueRouter({

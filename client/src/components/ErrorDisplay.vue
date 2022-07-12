@@ -2,7 +2,8 @@
   <div>
     <v-container
       fill-height fluid
-      class="container">
+      class="container"
+    >
         <!-- User not defined -->
         <div v-if="errorType === 'no server conection'">
           <v-alert

@@ -21,9 +21,25 @@
             type="error"
             icon="mdi-cloud-alert"
           >
-            <div class="errorPadding">
-              Sorry, this page could not be found.
-            </div>
+            <v-row
+              align="center"
+              no-gutters
+            >
+              <v-col class="grow">
+                <div class="errorPadding">
+                  Sorry, this page could not be found.
+                </div>
+              </v-col>
+              <v-col class="shrink">  
+                <v-btn
+                color="info"
+                outlined
+                href="/"
+                >
+                Home
+              </v-btn>
+            </v-col>
+           </v-row>
           </v-alert>
         </v-row>
       </v-container>
@@ -45,6 +61,7 @@ export default {
 }
 .errorPadding {
   padding-left: 20px;
+  padding-right: 20px;
 }
 .row {
   display: flex;

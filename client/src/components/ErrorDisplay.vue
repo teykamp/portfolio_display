@@ -33,7 +33,9 @@
                 </div>
               </v-col>
               <v-col class="shrink">
-                <v-btn href="/">Search Again</v-btn>
+                <v-btn href="/">
+                  Search Again
+                </v-btn>
               </v-col>
             </v-row>
           </v-alert>  

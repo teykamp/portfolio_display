@@ -8,7 +8,9 @@ app.use(bodyParser.json());
 app.use(cors());
 
 const users = require('./api/users');
+const auth = require('./api/auth');
 app.use('/api/users', users);
+app.use('/api/auth', auth);
 
 const PORT = process.env.PORT || 1010;
 

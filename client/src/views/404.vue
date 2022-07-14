@@ -2,11 +2,10 @@
   <div>
     <div class="container">
       <v-container
-        fill-height fluid  
+        fill-height 
+        fluid  
       >
-        <v-row
-          class="row"  
-        >
+        <v-row class="row">
           <v-sheet>
             <div class="text404">
               404

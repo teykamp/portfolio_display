@@ -1,7 +1,8 @@
 <template>
   <div>
     <v-container
-      fill-height fluid
+      fill-height 
+      fluid
       class="container"
     >
         <!-- User not defined -->
@@ -20,12 +21,13 @@
         <!-- User not found -->
         <div v-else-if="errorType === 'user not found'">
           <v-alert
-          prominent
-          type="error"
+            prominent
+            type="error"
           >
             <v-row 
               align="center"
-              justify="center">
+              justify="center"
+            >
               <v-col class="grow">
                 <div class="errorPadding">
                   <h5>User Not Found</h5>

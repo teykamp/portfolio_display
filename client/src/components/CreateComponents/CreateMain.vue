@@ -5,13 +5,8 @@
       <h1>Edit Your Portfolio</h1>
     </div>
      
-    <div v-else style="max-width: 50%;">
-      <h3>We make building your porfolio easy. Follow these few steps to get up and running!</h3>
-      <p>1. Drag the portfolio items you want to include in your portfolio into 'my porfolio'.</p>
-      <p>2. Click on the different components you added to your portfolio to fill in and edit the content displayed in those components.</p>
-      <p>3. Rearrange your porfolios visual hierachy by simply dragging each component into the order you best see fit.</p>
-      <br>
-      <p>When you have added all the components, and filled in all the information, we encourage you to take a peak at how it will look when it is done. Hit the preview button on the top right corner!</p>
+    <div v-else-if="!$parent.editMode && !editComponentView" style="max-width: 50%;">
+      <Steps />
     </div>
 
     <div class="center" style="flex-direction: row;" v-if="!editComponentView">
@@ -68,6 +63,7 @@ import Projects from '../CreateComponents/CreateSubComponents/CreateProjects.vue
 import Accomplishments from '../CreateComponents/CreateSubComponents/CreateAccomplishments.vue'
 import Experiences from '../CreateComponents/CreateSubComponents/CreateExperiences.vue'
 import Education from '../CreateComponents/CreateSubComponents/CreateEducation.vue'
+import Steps from './CreateSubComponents/StepByStep.vue'
 
 export default {
   components: {
@@ -75,7 +71,8 @@ export default {
     Accomplishments,
     Experiences,
     Education,
-    draggable
+    draggable,
+    Steps
   },
   props: [
     'userData'

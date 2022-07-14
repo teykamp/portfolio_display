@@ -5,16 +5,23 @@
     <br>
     <div v-if="!techView">
       <div v-for="(project, index) in projects" :key="project.id">
-        <div class="center" style="width: 75vw;">
-          <input type="text" placeholder="Name" v-model="projects[index].name" />
+        <v-card>
+          <v-input type="text" placeholder="Name" v-model="projects[index].name" />
           <button @click="editTechUsed(project)">Add Technologies Used ({{ projects[index].technologies.length }})</button>
-          <input type="text" placeholder="Deployment URL" v-model="projects[index].linkToDeploy" />
-          <input type="text" placeholder="Repo URL" v-model="projects[index].linkToRepo" />
-          <input type="text" placeholder="Desc." v-model="projects[index].description" />
-          <input type="text" placeholder="Date" v-model="projects[index].date" />
+          <v-input type="text" placeholder="Deployment URL" v-model="projects[index].linkToDeploy" />
+          <v-input type="text" placeholder="Repo URL" v-model="projects[index].linkToRepo" />
+          <v-input type="text" placeholder="Desc." v-model="projects[index].description" />
+          <!-- <input type="text" placeholder="Date" v-model="projects[index].date" /> -->
+          <h3>Select Month</h3>
+        
+          <v-row>
+            <v-date-picker type="month" v-model="projects[index].date" header-color="primary"
+            color="green lighten-1"></v-date-picker>
+          </v-row>
+      
           <button @click="removeProject(index)">x</button>
           <!-- <button @click="test(projects[index])">Test</button> -->
-        </div>
+        </v-card>
       </div>
     </div>
     

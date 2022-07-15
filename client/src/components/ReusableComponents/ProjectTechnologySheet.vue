@@ -1,8 +1,11 @@
 <template>
   <div>
-    <v-container class="overflow-hidden">
+    <v-container 
+      fluid
+      overflow-auto
+    >
       <v-col
-        v-for="technology in technologies" 
+        v-for="technology in technologies.slice(0, maxTechnologies)" 
         :key="technology.name"
         class="d-flex justify-space-around mb-6"
       >
@@ -37,6 +40,7 @@
 export default {
   props: [
     'technologies',
+    'maxTechnologies',
   ]
 }
 </script>

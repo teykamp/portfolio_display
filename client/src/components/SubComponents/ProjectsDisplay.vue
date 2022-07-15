@@ -37,12 +37,12 @@
             </v-card>
 
               <!-- Expand Card -->
-              <div v-if="project.description.length > 300">
+              <div v-if="project.description.length > 300 || project.technologies.length > 2">
                 <template>
                   <div class="text-center">
                     <v-dialog
                       v-model="dialog"
-                      width="500"
+                      width="800"
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn
@@ -52,12 +52,13 @@
                           small
                           fab
                           absolute
-                          right
-                          middle
+                          left
+                          bottom
                           v-bind="attrs"
                           v-on="on"
+                          class="moreButton"
                         >
-                          <v-icon>mdi-chevron-down</v-icon>
+                          MORE
                         </v-btn>
                       </template>
 
@@ -68,15 +69,21 @@
                           height="10"
                         >
                         </v-system-bar>
-                        <v-card-title class="text-h5">
-                          {{ project.name }}
-                        </v-card-title>
+                        <v-card
+                          class="overflow-auto"
+                          flex-direction="column"
+                          elevation="0"
+                        >
+                          <v-card-title class="text-h5">
+                            {{ project.name }}
+                          </v-card-title>
 
-                        <v-card-text>
-                          {{ project.description }}
-                        </v-card-text>
+                          <v-card-text>
+                            {{ project.description }}
+                          </v-card-text>
+                        </v-card>
 
-                        <TechnologyDisplay :technologies="project.technologies"/>
+                        <TechnologyDisplay :technologies="project.technologies" :maxTechnologies="project.technologies.length"/>
 
                         <v-divider></v-divider>
 
@@ -96,8 +103,10 @@
                 </template> 
               </div>
 
-              <TechnologyDisplay :technologies="project.technologies"/>
+              <!-- Main Card -->
+              <TechnologyDisplay :technologies="project.technologies" :maxTechnologies="2"/>
 
+              <!-- Link Buttons -->
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn 
@@ -140,3 +149,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.moreButton {
+  margin-bottom: 20px;
+}
+</style>

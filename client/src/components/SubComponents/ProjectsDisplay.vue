@@ -1,7 +1,6 @@
 <template>
   <div>
   <h1>Projects</h1>
-    <v-app>
       <v-container 
         fluid 
         fill-height
@@ -78,7 +77,7 @@
                         </v-card-text>
 
                         <TechnologyDisplay :technologies="project.technologies"/>
-                        
+
                         <v-divider></v-divider>
 
                         <v-card-actions>
@@ -120,7 +119,6 @@
           </v-col>
         </v-row>
       </v-container>
-    </v-app>
 
     <p>{{ relevantInfo }}</p>
   </div>

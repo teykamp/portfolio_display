@@ -37,7 +37,7 @@
             </v-card>
 
               <!-- Expand Card -->
-              <div v-if="project.description.length > 300 || project.technologies.length > 2">
+              <div v-if="project.description.length > 300 || project.technologies.length > 1">
                 <template>
                   <div class="text-center">
                     <v-dialog
@@ -128,8 +128,6 @@
           </v-col>
         </v-row>
       </v-container>
-
-    <p>{{ relevantInfo }}</p>
   </div>
 </template>
 

@@ -128,8 +128,6 @@
           </v-col>
         </v-row>
       </v-container>
-
-    <p>{{ relevantInfo }}</p>
   </div>
 </template>
 

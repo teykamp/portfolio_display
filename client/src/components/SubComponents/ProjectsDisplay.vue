@@ -37,7 +37,7 @@
             </v-card>
 
               <!-- Expand Card -->
-              <div v-if="project.description.length > 300 || project.technologies.length > 1">
+              <div v-if="project.description.length > 300 || project.technologies.length > 2">
                 <template>
                   <div class="text-center">
                     <v-dialog

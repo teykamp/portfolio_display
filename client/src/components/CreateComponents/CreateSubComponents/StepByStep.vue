@@ -96,7 +96,7 @@
           </v-card>
 
           <v-btn @click="dialog = false; e1 = 1" text>
-            Cancel
+            Let's Get Going!
           </v-btn>
         </v-stepper-content>
       </v-stepper-items>

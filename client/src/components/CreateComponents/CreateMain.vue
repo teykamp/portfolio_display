@@ -1,42 +1,76 @@
 <template>
-  <div class="center">
+  <div>
 
     <div v-if="$parent.editMode">
       <h1>Edit Your Portfolio</h1>
     </div>
      
-    <div v-else-if="!$parent.editMode && !editComponentView" style="max-width: 50%;">
+    <div v-else-if="!$parent.editMode && !editComponentView">
       <Steps />
     </div>
 
-    <div class="center" style="flex-direction: row;" v-if="!editComponentView">
+    <div v-if="!editComponentView">
 
-      <div class="draggable-container">
-        <p>Component List:</p>
-        <draggable v-model="portfolioComponents" v-bind="dragOptions" :move="onMove" class="center">
-          <TransitionGroup name="list" tag="ul" class="draggable-list">
-            <li v-for="item in portfolioComponents" :key="item.id" :style="`background-color: ${item.color}`" class="draggable-item">
-              {{ item.name }}
-            </li>
+      
+    <v-row>
+      <v-col>
+        <draggable v-model="portfolioComponents" v-bind="dragOptions" :move="onMove">
+          <TransitionGroup name="list"> 
+            <v-card 
+            v-for="item in portfolioComponents" 
+            :key="item.id" :color="`${item.color} lighten-1`"  
+            max-width="275"
+            >
+              
+              <v-row class="justify-space-between" 
+              no-gutters 
+              align="center"
+              justify="center">
+                <v-col >
+                  <v-card-title>{{ `${item.name[0].toUpperCase()}${item.name.substring(1)}` }}</v-card-title>
+                </v-col>
+                <v-col fill-height cols="2">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        mdi-help-circle
+                      </v-icon>
+                    </template>
+                    <span>{{ item.desc }}</span>
+                  </v-tooltip>                
+                </v-col>
+              </v-row>
+              
+            </v-card>
           </TransitionGroup>
         </draggable>
-      </div>
+      </v-col>
+    </v-row>
+     
 
-      <div class="draggable-container">
-        <p>Added Components:</p>
+      <div>
         <draggable v-model="addedPortfolioComponents" v-bind="dragOptions" :move="onMove" class="center">
           <TransitionGroup name="list" tag="ul" class="draggable-list">
-            <li v-for="item in addedPortfolioComponents" :key="item.id" :style="`background-color: ${item.color}`" class="draggable-item" @click="toggleEditView(item.name)">
-              {{ item.name }}
-            </li>
+            <v-card 
+            v-for="item in addedPortfolioComponents" 
+            :key="item.id" :color="`${item.color} lighten-1`" 
+            outlined
+            elevation="3"
+            maxWidth="200px">
+              <v-card-title>{{ `${item.name[0].toUpperCase()}${item.name.substring(1)}` }}</v-card-title>
+              <v-card-text>{{ item.desc }}</v-card-text>
+            </v-card>
           </TransitionGroup>
         </draggable>
       </div>
 
-      <button @click="$parent.userData.visibility = !$parent.userData.visibility">Toggle Account Visibility</button>
+      <!-- <button @click="$parent.userData.visibility = !$parent.userData.visibility">Toggle Account Visibility</button>
       <div :style="`background-color: ${this.userData.visibility ? 'lime' : 'red' }`">
         <p>{{ this.userData.visibility ? 'Public' : 'Private' }}</p>
-      </div>
+      </div> -->
 
     </div>
     
@@ -104,7 +138,10 @@ export default {
   },
   data: () => {
     return {
-      portfolioComponents: [{id: 0, name: 'projects', color: 'red'}, {id: 1, name: 'education', color: 'yellow'}, {id: 2, name: 'accomplishments', color: 'lightblue'}, {id: 3, name: 'experiences', color: 'green'}],
+      portfolioComponents: [{id: 0, name: 'projects', color: 'red', desc: 'Flawlessly display software projects you have completed!'}, 
+      {id: 1, name: 'education', color: 'yellow', desc: 'Include your academic achievements and degrees earned!'}, 
+      {id: 2, name: 'accomplishments', color: 'blue', desc: 'The perfect way to show your most valuable competitive accolades!'}, 
+      {id: 3, name: 'experiences', color: 'green', desc: 'Highlight professional internship or work experiences.'}],
       addedPortfolioComponents: [],
       editComponentView: false,
       componentName: undefined,
@@ -163,25 +200,9 @@ export default {
 </script>
 
 <style scoped>
-@import url('../../UniversalStyles.css');
 .list-move, /* apply transition to moving elements */
 .list-enter-active,
 .list-leave-active {
   transition: all 0.5s ease;
-}
-
-.draggable-list {
-  list-style: none;
-  cursor: move;
-}
-
-.draggable-container {
-  text-align: center;
-  border: 1px solid black;  
-  margin: 1%;
-}
-
-.draggable-item {
-  
 }
 </style>

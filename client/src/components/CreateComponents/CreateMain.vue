@@ -5,67 +5,118 @@
       <h1>Edit Your Portfolio</h1>
     </div>
      
-    <div v-else-if="!$parent.editMode && !editComponentView">
+    <div class="mt-5" v-else-if="!$parent.editMode && !editComponentView">
       <Steps />
     </div>
 
     <div v-if="!editComponentView">
-
-      
-    <v-row>
-      <v-col>
-        <draggable v-model="portfolioComponents" v-bind="dragOptions" :move="onMove">
-          <TransitionGroup name="list"> 
-            <v-card 
-            v-for="item in portfolioComponents" 
-            :key="item.id" :color="`${item.color} lighten-1`"  
-            max-width="275"
-            >
+        <v-container class="mt-6" fluid fill-height>
+          <v-row align="center" justify="center">
+            <TransitionGroup name="list"> 
+              <v-card 
+              v-for="(item, index) in portfolioComponents" 
+              :key="item.id" :color="`${item.color} lighten-1`"  
               
-              <v-row class="justify-space-between" 
-              no-gutters 
-              align="center"
-              justify="center">
-                <v-col >
-                  <v-card-title>{{ `${item.name[0].toUpperCase()}${item.name.substring(1)}` }}</v-card-title>
-                </v-col>
-                <v-col fill-height cols="2">
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-icon
-                        v-bind="attrs"
-                        v-on="on"
-                      >
-                        mdi-help-circle
-                      </v-icon>
-                    </template>
-                    <span>{{ item.desc }}</span>
-                  </v-tooltip>                
-                </v-col>
-              </v-row>
-              
-            </v-card>
-          </TransitionGroup>
-        </draggable>
-      </v-col>
-    </v-row>
-     
+              @click="addComponent(index)"
+              >               
+                <v-row class="justify-space-between" 
+                no-gutters 
+                align="center"
+                justify="center">
+                  <v-col >
+                    <v-card-title>{{ `${item.name[0].toUpperCase()}${item.name.substring(1)}` }}</v-card-title>
+                  </v-col>
+                  <v-col cols="2">
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-icon
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          mdi-help-circle
+                        </v-icon>
+                      </template>
+                      <span>{{ item.desc }}</span>
+                    </v-tooltip>                
+                  </v-col>
+                </v-row>
+                
+              </v-card>
+            </TransitionGroup>
+          </v-row>
 
-      <div>
-        <draggable v-model="addedPortfolioComponents" v-bind="dragOptions" :move="onMove" class="center">
-          <TransitionGroup name="list" tag="ul" class="draggable-list">
-            <v-card 
-            v-for="item in addedPortfolioComponents" 
-            :key="item.id" :color="`${item.color} lighten-1`" 
-            outlined
-            elevation="3"
-            maxWidth="200px">
-              <v-card-title>{{ `${item.name[0].toUpperCase()}${item.name.substring(1)}` }}</v-card-title>
-              <v-card-text>{{ item.desc }}</v-card-text>
-            </v-card>
-          </TransitionGroup>
-        </draggable>
-      </div>
+          <v-row align="center" justify="center" class="mt-10">
+            <draggable v-model="addedPortfolioComponents">
+              <TransitionGroup name="list"> 
+                <v-card 
+                v-for="(item, index) in addedPortfolioComponents" 
+                :key="item.id" :color="`${item.color} lighten-1`"                 
+                >
+                  
+                  <v-row 
+                  no-gutters
+                  align="center"
+                  justify="center">
+                    <v-col cols="1" class="ml-3" @click="removeComponent(index);">
+                      <v-row justify="center">
+                        <v-dialog v-model="deleteConfirmationDialog" max-width="400">                                              
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-icon
+                              
+                              v-bind="attrs"
+                              v-on="on"
+                            >
+                              mdi-close-circle
+                            </v-icon>
+                          </template>
+                          <v-card class="pb-2">
+                            <v-card-title class="text-h5">
+                              Delete {{ item.name }}?
+                            </v-card-title>
+                            <v-card-text>Removing the {{ item.name }} component from your portfolio will delete all the data contained inside and cannot be undone!</v-card-text>
+                            <v-card-actions>
+                              
+                              <v-btn
+                                color="error"                              
+                                @click="deleteConfirmationDialog = false; removeComponent(index)"
+                              >
+                                Confirm
+                              </v-btn>
+                              <v-btn                            
+                                text
+                                @click="deleteConfirmationDialog = false;"
+                              >
+                                Nevermind
+                              </v-btn>
+                            </v-card-actions>
+                          </v-card>
+                        </v-dialog>
+                      </v-row>         
+                    </v-col>
+                    <v-col >
+                      <v-card-title >{{ `${item.name[0].toUpperCase()}${item.name.substring(1)}` }}</v-card-title>
+                    </v-col>
+                    <v-col cols="2" @click="componentName = item.name; editComponentView = true">
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-icon
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            mdi-pencil
+                          </v-icon>
+                        </template>
+                        <span>Edit {{ item.name }}</span>
+                      </v-tooltip>                
+                    </v-col>
+                  </v-row>
+                  
+                </v-card>
+              </TransitionGroup>
+            </draggable>
+          </v-row> 
+        </v-container>
+        
 
       <!-- <button @click="$parent.userData.visibility = !$parent.userData.visibility">Toggle Account Visibility</button>
       <div :style="`background-color: ${this.userData.visibility ? 'lime' : 'red' }`">
@@ -85,8 +136,8 @@
 
     </div>
 
-    <b-button variant="success" @click="$parent.editMode ? updatePortfolioRemote() : createPortfolioRemote() ">
-    {{ $parent.editMode ? 'Save Changes' : 'Create Portfolio' }}</b-button>
+    <!-- <b-button variant="success" @click="$parent.editMode ? updatePortfolioRemote() : createPortfolioRemote() ">
+    {{ $parent.editMode ? 'Save Changes' : 'Create Portfolio' }}</b-button> -->
 
   </div>
 </template>
@@ -145,19 +196,13 @@ export default {
       addedPortfolioComponents: [],
       editComponentView: false,
       componentName: undefined,
+      deleteConfirmationDialog: false
     }
   },
   methods: {
     toggleEditView(componentName) {
       this.componentName = componentName;
       this.editComponentView = true;
-    },
-    onMove({ relatedContext, draggedContext }) {
-      const relatedElement = relatedContext.element;
-      const draggedElement = draggedContext.element;
-      return (
-        (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
-      );
     },
     updatePortfolioRemote() {
       if (this.$route.params?.user) {
@@ -170,15 +215,14 @@ export default {
     createPortfolioRemote() {
       alert('Portfolio Has Been Created!');
       this.$router.push('/');
-    }
-  },
-  computed: {
-    dragOptions() {
-      return {
-        animation: 0,
-        group: "description",
-        ghostClass: "ghost"
-      };
+    },
+    addComponent(index) {
+      this.addedPortfolioComponents.push(this.portfolioComponents[index]);
+      this.portfolioComponents.splice(index, 1);
+    },
+    removeComponent(index) {
+      this.portfolioComponents.push(this.addedPortfolioComponents[index]);
+      this.addedPortfolioComponents.splice(index, 1);
     }
   },
   watch: {
@@ -204,5 +248,9 @@ export default {
 .list-enter-active,
 .list-leave-active {
   transition: all 0.5s ease;
+}
+
+v-col {
+  border: 10px solid black
 }
 </style>

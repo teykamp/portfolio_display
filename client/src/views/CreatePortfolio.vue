@@ -13,12 +13,12 @@
         <Main @update-component-data="updateComponentData($event)" :userData="userData" />
       </div>
 
-      <b-button v-on:click="showIntro = !showIntro">Toggle Intro/Main</b-button>
+      <!-- <b-button v-on:click="showIntro = !showIntro">Toggle Intro/Main</b-button>
       <b-button variant="primary" @click="sendUserToPreview()">Preview Your Portfolio</b-button>
 
       <pre>
         {{ userData }}
-      </pre>
+      </pre> -->
     </div>
   </div>
 </template>
@@ -38,7 +38,7 @@ export default {
   data: () => {
     return {
       error: false,
-      showIntro: true,
+      showIntro: false,
       editMode: false,
       userData: 
       {

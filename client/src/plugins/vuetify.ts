@@ -9,10 +9,10 @@ Vue.use(Vuetify);
 export default new Vuetify({
     theme: {
         themes: {
-            light: {
-                primary: colors.red.darken1, // #E53935
-                secondary: colors.red.lighten4, // #FFCDD2
-                accent: colors.indigo.base, // #3F51B5
+            light: { /* https://dev.vuetifyjs.com/en/styles/colors/#material-colors */
+                primary: colors.indigo.darken1, // #3949AB
+                secondary: colors.indigo.lighten3, // #9FA8DA
+                accent: colors.amber.base, // #FFC107
             },
         },
     },

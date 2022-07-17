@@ -96,7 +96,10 @@ export default {
       }
 
       this.footerData = {
-        disclaimer: 'Legal Disclaimer, and Stuff...'
+        disclaimer: 'Legal Disclaimer, and Stuff...',
+        version: '0.1.0',
+        githubSource: 'https://github.com/teykamp/portfolio_display',
+        logo: 'https://avatars.githubusercontent.com/u/46391052?s=120&v=4',
       }
     }
   }

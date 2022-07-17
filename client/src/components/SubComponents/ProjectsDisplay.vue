@@ -5,11 +5,11 @@
         fluid 
         fill-height
       >
-        <v-row>
-          <v-col
+        <v-row justify="center">
+          <v-sheet
             v-for="project in relevantInfo" 
             :key="project.name"
-            class="d-flex justify-space-around mb-6"
+            class="ma-6"
           >
           <v-card
             hover
@@ -125,7 +125,7 @@
                 </v-btn>
               </v-card-actions>
             </v-card>
-          </v-col>
+          </v-sheet>
         </v-row>
       </v-container>
   </div>

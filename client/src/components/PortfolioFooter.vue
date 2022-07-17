@@ -1,7 +1,45 @@
 <template>
   <div>
-    <h1>Footer:</h1>
-    <p>{{ data }}</p>
+    <template>
+      <v-footer
+        dark
+        padless
+      >
+        <v-card
+          class="flex"
+          flat
+          tile
+          color="indigo"
+        >
+          <v-container class="pt-8">
+            <v-img
+              width="40"
+              height="40"
+              aspect-ratio="1"
+              contain
+              :src="data.logo"
+            ></v-img>
+          </v-container>
+          <v-card-text class="white--text text-center">
+            <strong> &copy; {{ new Date().getFullYear() }} </strong>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-text class="caption">Version</v-text>
+            <v-btn
+              color="white"
+              text
+              rounded
+              outlined
+              x-small
+              :href="data.githubSource"
+            >
+              {{ data.version }}
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-footer>
+    </template>
   </div>
 </template>
 
@@ -9,12 +47,9 @@
 export default {
   props: [
     'data'
-  ]
+  ],
+  data: () => ({
+    
+  }),
 }
 </script>
-
-<style scoped>
-  div {
-    background-color: rgb(22, 140, 170);
-  }
-</style>

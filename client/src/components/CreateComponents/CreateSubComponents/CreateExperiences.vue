@@ -3,10 +3,59 @@
 
     <button @click="addExperience()">Add Experience</button>
     <br>
-    <v-container>
-      <v-row v-for="(experience, index) in experiences" :key="experience.id">
-        
-        <div>
+    <v-container fill-height fluid >
+      <v-row>
+        <v-col 
+        cols="4"
+        v-for="(experience, index) in experiences" :key="experience.id">
+          <v-card>
+            
+            <div class="pa-4 pt-0">
+              <v-row align="center" justify="center">
+                <v-col cols="10">
+                  <v-text-field 
+                  v-model="experiences[index].title" 
+                  placeholder="Enter Title"
+                  style="font-weight: bold; font-size: 18pt;"
+                  outlined
+                  clearable
+                  color="blue"
+                  >{{ experiences[index].title }}</v-text-field>
+                </v-col>
+                <v-col cols="2">
+                  <v-hover v-slot="{ hover }">
+                    <v-icon large right class="mb-7" @click="removeExperience(index)" color="error">{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
+                  </v-hover>
+                </v-col>
+              </v-row>
+              <v-text-field 
+                label="Company Name"
+                v-model="experiences[index].company">
+              </v-text-field>
+              <v-text-field 
+                color="orange"
+                label="Company Logo URL"
+                v-model="experiences[index].companyImg">
+              </v-text-field>
+              <v-textarea
+                color="blue"
+                :label="`Add a Description (${experiences[index].description.length}/3000)`"
+                no-resize
+                maxlength="3000"
+                v-model="experiences[index].description"
+              ></v-textarea>
+              <v-row align="center" justify="center">
+                <v-col>
+                  <v-spacer></v-spacer>
+                  <v-date-picker type="month" v-model="experiences[index].date" header-color="primary"
+                  color="green lighten-1"></v-date-picker>
+                </v-col>
+              </v-row>
+            </div>
+            
+          </v-card>
+        </v-col>
+      
           <!-- <div class="center" style="flex-direction: row;">
             <input type="text" placeholder="Title"  />
             <input type="text" placeholder="Company"  />
@@ -15,25 +64,13 @@
             <input type="text" placeholder="Date" v-model="experiences[index].date" />
             <button @click="removeExperience(index)">x</button>
           </div> -->
-          <v-spacer></v-spacer>
-          <v-card>
-            <div>
-              <v-text-field
-                label="Title"
-                
-                v-model="experiences[index].title"
-                hide-details="auto">
-              </v-text-field>
-              <v-text-field 
-                v-model="experiences[index].company"
-                label="Company Name">
-              </v-text-field>
-            </div>
-          </v-card>
-        </div>
+            
       </v-row>
     </v-container>
-    <b-button @click="$parent.editComponentView = false; emitDataToGrandparent()">Back</b-button>
+    
+    <br><br><br><br>
+    <v-btn style="position: fixed; bottom: 5%; right: 50%; left: 50%;" class="px-12" color="error" @click="$parent.editComponentView = false; emitDataToGrandparent()">Back</v-btn>
+      
 
   </div>
 </template>
@@ -57,7 +94,7 @@ export default {
     },
     addExperience() {
       this.experiences.push({
-        title: '',
+        title: 'New Experience',
         company: '',
         companyImg: '',
         description: '',

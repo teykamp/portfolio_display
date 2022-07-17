@@ -9,7 +9,7 @@
           class="flex"
           flat
           tile
-          color="indigo"
+          color="primary"
         >
           <v-container class="pt-8">
             <v-img

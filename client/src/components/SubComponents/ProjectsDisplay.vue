@@ -17,7 +17,7 @@
             height="500"
           >
             <v-system-bar
-              color="indigo darken-2"
+              color="primary"
               dark
               height="10"
             >
@@ -48,7 +48,7 @@
                         <v-btn
                           v-if="project.linkToRepo"
                           icon
-                          color="indigo"
+                          color="primary"
                           small
                           fab
                           absolute
@@ -64,7 +64,7 @@
 
                       <v-card>
                         <v-system-bar
-                          color="indigo darken-2"
+                          color="primary"
                           dark
                           height="10"
                         >

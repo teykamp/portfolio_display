@@ -1,39 +1,85 @@
 <template>
   <div>
 
-    <button @click="addExperience()">Add Experience</button>
-    <br>
-    <v-container>
-      <v-row v-for="(experience, index) in experiences" :key="experience.id">
-        
-        <div>
-          <!-- <div class="center" style="flex-direction: row;">
-            <input type="text" placeholder="Title"  />
-            <input type="text" placeholder="Company"  />
-            <input type="text" placeholder="Company Logo URL" v-model="experiences[index].companyImg" />
-            <input type="text" placeholder="Description" v-model="experiences[index].description" />
-            <input type="text" placeholder="Date" v-model="experiences[index].date" />
-            <button @click="removeExperience(index)">x</button>
-          </div> -->
-          <v-spacer></v-spacer>
+    <v-toolbar style="position: fixed; z-index: 2; width: 100vw;">
+      <v-icon @click="$parent.editComponentView = false; emitDataToGrandparent()">mdi-chevron-left</v-icon>
+      <span style="font-weight: bold; font-size: 15pt;" class="ml-1">Experiences</span>
+      <v-spacer></v-spacer>
+      <v-btn color="success" @click="addExperience()" :disabled="experiences.length === 4">
+        <v-icon>mdi-plus</v-icon>
+        <span class="d-none d-sm-flex">Add Experience ({{ experiences.length }}/4)</span>
+      </v-btn>
+    </v-toolbar>
+
+    <div style="width: 100vw; height: 12vh;"></div>
+
+    <div v-show="experiences.length === 0" style="display: flex; align-items: center; justify-content: center;">
+      <v-icon large class="mr-2">mdi-file-document-plus-outline</v-icon>
+      <span style="font-size: 16pt">Added Experiences Go Here</span>
+    </div>
+    
+    <v-container fill-height fluid >
+      <v-row>
+        <!-- <TransitionGroup name="list"> -->
+        <v-col 
+        class="col-sm-12 col-md-6"
+        v-for="(experience, index) in experiences" :key="experience.id">
           <v-card>
-            <div>
-              <v-text-field
-                label="Title"
-                
-                v-model="experiences[index].title"
-                hide-details="auto">
+            
+            <div class="pa-4 pt-0">
+              <v-row align="center" justify="center">
+                <v-col cols="10">
+                  <v-text-field 
+                  v-model="experiences[index].title" 
+                  placeholder="Enter Title"
+                  style="font-weight: bold; font-size: 18pt;"
+                  outlined
+                  clearable
+                  color="blue"
+                  >{{ experiences[index].title }}</v-text-field>
+                </v-col>
+                <v-col cols="2">
+                  <v-hover v-slot="{ hover }">
+                    <v-icon large right class="mb-7" @click="removeExperience(index)" color="error">{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
+                  </v-hover>
+                </v-col>
+              </v-row>
+              <v-text-field 
+                label="Company Name"
+                v-model="experiences[index].company">
               </v-text-field>
               <v-text-field 
-                v-model="experiences[index].company"
-                label="Company Name">
+                color="orange"
+                label="Company Logo URL"
+                v-model="experiences[index].companyImg">
               </v-text-field>
+              <v-textarea
+                color="blue"
+                :label="`Add a Description (${experiences[index].description.length}/3000)`"
+                no-resize
+                maxlength="3000"
+                v-model="experiences[index].description"
+              ></v-textarea>
+              <div>
+                <div :style="`opacity: ${experiences[index].date ? '1' : '0'}`">
+                  <v-icon color="error" small class="mb-1 mr-1" @click="experiences[index].date = ''">mdi-close</v-icon><span>{{ experiences[index].date }}</span>
+                </div>
+                <v-row>
+                  <v-col>
+                    <v-date-picker type="month" v-model="experiences[index].date" header-color="primary"
+                    color="secondary"></v-date-picker>
+                  </v-col>
+                </v-row>
+              </div>
             </div>
+            
           </v-card>
-        </div>
+          
+        </v-col>
+        <!-- </TransitionGroup> -->
+            
       </v-row>
     </v-container>
-    <b-button @click="$parent.editComponentView = false; emitDataToGrandparent()">Back</b-button>
 
   </div>
 </template>
@@ -57,7 +103,7 @@ export default {
     },
     addExperience() {
       this.experiences.push({
-        title: '',
+        title: 'New Experience',
         company: '',
         companyImg: '',
         description: '',
@@ -75,5 +121,9 @@ export default {
 </script>
 
 <style scoped>
-
+.list-move, /* apply transition to moving elements */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
 </style>

@@ -1,11 +1,7 @@
 <template>
   <div>
 
-    <div v-if="$parent.editMode">
-      <h1>Edit Your Portfolio</h1>
-    </div>
-     
-    <div class="mt-5" v-else-if="!$parent.editMode && !editComponentView">
+    <div v-if="!editComponentView" class="mt-5">
       <Steps />
     </div>
 

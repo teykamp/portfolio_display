@@ -53,40 +53,11 @@
                   no-gutters
                   align="center"
                   justify="center">
-                    <v-col cols="1" class="ml-3" @click="removeComponent(index);">
-                      <v-row justify="center">
-                        <v-dialog v-model="deleteConfirmationDialog" max-width="400">                                              
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-icon
-                              
-                              v-bind="attrs"
-                              v-on="on"
-                            >
-                              mdi-close-circle
-                            </v-icon>
-                          </template>
-                          <v-card class="pb-2">
-                            <v-card-title class="text-h5">
-                              Delete {{ item.name }}?
-                            </v-card-title>
-                            <v-card-text>Removing the {{ item.name }} component from your portfolio will delete all the data contained inside and cannot be undone!</v-card-text>
-                            <v-card-actions>
-                              
-                              <v-btn
-                                color="error"                              
-                                @click="deleteConfirmationDialog = false; removeComponent(index)"
-                              >
-                                Confirm
-                              </v-btn>
-                              <v-btn                            
-                                text
-                                @click="deleteConfirmationDialog = false;"
-                              >
-                                Nevermind
-                              </v-btn>
-                            </v-card-actions>
-                          </v-card>
-                        </v-dialog>
+                    <v-col :retain-focus="false" cols="1" class="ml-3" @click="deleteConfirmationDialog = true; targetedComponentIndex = index">
+                      <v-row justify="center">                      
+                        <v-icon>                                                                         
+                          mdi-close-circle
+                        </v-icon>
                       </v-row>         
                     </v-col>
                     <v-col >
@@ -132,6 +103,14 @@
 
     </div>
 
+    <DeleteDialog 
+    :description="`Removing the ${addedPortfolioComponents[targetedComponentIndex] ? `${addedPortfolioComponents[targetedComponentIndex].name}` : `` } 
+    component from your portfolio will delete all the data contained inside and cannot be undone!`" 
+    :title="`Delete 
+    ${addedPortfolioComponents[targetedComponentIndex] ? `${addedPortfolioComponents[targetedComponentIndex].name}` : `` }?`" 
+    :visible="deleteConfirmationDialog" 
+    @close="deleteConfirmationDialog = false; removeComponent(targetedComponentIndex)" />
+
     <!-- <b-button variant="success" @click="$parent.editMode ? updatePortfolioRemote() : createPortfolioRemote() ">
     {{ $parent.editMode ? 'Save Changes' : 'Create Portfolio' }}</b-button> -->
 
@@ -145,6 +124,7 @@ import Accomplishments from '../CreateComponents/CreateSubComponents/CreateAccom
 import Experiences from '../CreateComponents/CreateSubComponents/CreateExperiences.vue'
 import Education from '../CreateComponents/CreateSubComponents/CreateEducation.vue'
 import Steps from './CreateSubComponents/StepByStep.vue'
+import DeleteDialog from '../ReusableComponents/DialogBox.vue'
 
 export default {
   components: {
@@ -153,7 +133,8 @@ export default {
     Experiences,
     Education,
     draggable,
-    Steps
+    Steps,
+    DeleteDialog
   },
   props: [
     'userData'
@@ -192,7 +173,10 @@ export default {
       addedPortfolioComponents: [],
       editComponentView: false,
       componentName: undefined,
+
+      targetedComponentIndex: 0,
       deleteConfirmationDialog: false
+
     }
   },
   methods: {

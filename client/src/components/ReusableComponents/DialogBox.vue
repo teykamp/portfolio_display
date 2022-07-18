@@ -10,16 +10,16 @@
       <v-card-actions>
         <v-btn
           color="error"                              
-          @click.stop="show = false"
+          @click.stop="confirmed()"
         >
           Confirm
         </v-btn>
-        <!-- <v-btn                            
+        <v-btn                            
           text
           @click.stop="show = false"
         >
           Nevermind
-        </v-btn> -->
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -28,6 +28,12 @@
 <script>
 export default {
   props: ['visible', 'title', 'description'],
+  methods: {
+    confirmed() {
+      this.$emit('confirmed');
+      this.show = false;
+    }
+  },
   computed: {
     show: {
       get () {

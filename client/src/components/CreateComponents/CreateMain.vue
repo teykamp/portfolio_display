@@ -11,9 +11,8 @@
             <TransitionGroup name="list"> 
               <v-card 
               v-for="(item, index) in portfolioComponents" 
-              :key="item.id" :color="`${item.color} lighten-1`"  
-              
-              @click="addComponent(index)"
+              :key="item.id" :color="`${item.color} lighten-1`"             
+              @click.stop="addComponent(index)"
               >               
                 <v-row class="justify-space-between" 
                 no-gutters 
@@ -109,7 +108,8 @@
     :title="`Delete 
     ${addedPortfolioComponents[targetedComponentIndex] ? `${addedPortfolioComponents[targetedComponentIndex].name}` : `` }?`" 
     :visible="deleteConfirmationDialog" 
-    @close="deleteConfirmationDialog = false; removeComponent(targetedComponentIndex)" />
+    @close="deleteConfirmationDialog = false"
+    @confirmed="deleteConfirmationDialog = false; removeComponent(targetedComponentIndex)" />
 
     <!-- <b-button variant="success" @click="$parent.editMode ? updatePortfolioRemote() : createPortfolioRemote() ">
     {{ $parent.editMode ? 'Save Changes' : 'Create Portfolio' }}</b-button> -->

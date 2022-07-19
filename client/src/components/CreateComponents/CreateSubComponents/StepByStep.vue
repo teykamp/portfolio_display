@@ -57,7 +57,7 @@
             color="primary"
             @click="e1 = 2"
           >
-            Continue
+            Next
           </v-btn>
 
         </v-stepper-content>
@@ -78,7 +78,7 @@
             color="primary"
             @click="e1 = 3"
           >
-            Continue
+            Next
           </v-btn>
 
         </v-stepper-content>

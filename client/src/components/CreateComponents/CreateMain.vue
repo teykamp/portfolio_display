@@ -139,37 +139,12 @@ export default {
   props: [
     'userData'
   ],
-  created() {
-
-    /* loops through all components and makes sure that the components that already 
-    have been edited by user are shown on the 'added' components tab */
-    const addedComponents = [];
-    for (let i = 0; i < this.portfolioComponents.length; i++) {
-      if (this.userData[this.portfolioComponents[i].name]) {
-        this.addedPortfolioComponents.push(this.portfolioComponents[i]);
-        addedComponents.push(this.portfolioComponents[i]);
-      }
-    }
-
-    addedComponents.forEach(component => {
-      if (this.portfolioComponents.includes(component)) {
-        this.portfolioComponents.splice(this.portfolioComponents.indexOf(component), 1);
-      }
-    })
-
-    /* adds the pageRank back to the added components based on the order previously determined by user */
-    for (let i = 0; i < this.addedPortfolioComponents.length; i++) {
-      this.addedPortfolioComponents[i].pageRank = this.userData[this.addedPortfolioComponents[i].name].pageRank;
-    }
-
-    this.addedPortfolioComponents.sort((a, b) => a.pageRank - b.pageRank);
+  mounted() {
+    setTimeout(() => this.initalizeComponentArraysOnLoad(), 5);
   },
   data: () => {
     return {
-      portfolioComponents: [{id: 0, name: 'projects', color: 'red', desc: 'Flawlessly display software projects you have completed!'}, 
-      {id: 1, name: 'education', color: 'yellow', desc: 'Include your academic achievements and degrees earned!'}, 
-      {id: 2, name: 'accomplishments', color: 'blue', desc: 'The perfect way to show your most valuable competitive accolades!'}, 
-      {id: 3, name: 'experiences', color: 'green', desc: 'Highlight professional internship or work experiences.'}],
+      portfolioComponents: [],
       addedPortfolioComponents: [],
       editComponentView: false,
       componentName: undefined,
@@ -180,6 +155,39 @@ export default {
     }
   },
   methods: {
+    initalizeComponentArraysOnLoad() {
+
+      /* injects components */
+      this.portfolioComponents = [{id: 0, name: 'projects', color: 'red', desc: 'Flawlessly display software projects you have completed!'}, 
+      {id: 1, name: 'education', color: 'yellow', desc: 'Include your academic achievements and degrees earned!'}, 
+      {id: 2, name: 'accomplishments', color: 'blue', desc: 'The perfect way to show your most valuable competitive accolades!'}, 
+      {id: 3, name: 'experiences', color: 'green', desc: 'Highlight professional internship or work experiences.'}]
+
+      /* loops through all components and makes sure that the components that already 
+      have been edited by user are shown on the 'added' components tab */
+      const addedComponents = [];
+      for (let i = 0; i < this.portfolioComponents.length; i++) {
+        
+        if (this.userData[this.portfolioComponents[i].name]) {
+          this.addedPortfolioComponents.push(this.portfolioComponents[i]);
+          addedComponents.push(this.portfolioComponents[i]);
+        }
+      }
+
+      /* remove component from portfolioComponents so that a duplicate doesn't exist */
+      addedComponents.forEach(component => {
+        if (this.portfolioComponents.includes(component)) {
+          this.portfolioComponents.splice(this.portfolioComponents.indexOf(component), 1);
+        }
+      })
+
+      /* adds the pageRank back to the added components based on the order previously determined by user */
+      for (let i = 0; i < this.addedPortfolioComponents.length; i++) {
+        this.addedPortfolioComponents[i].pageRank = this.userData[this.addedPortfolioComponents[i].name].pageRank;
+      }
+
+      this.addedPortfolioComponents.sort((a, b) => a.pageRank - b.pageRank);
+    },
     toggleEditView(componentName) {
       this.componentName = componentName;
       this.editComponentView = true;

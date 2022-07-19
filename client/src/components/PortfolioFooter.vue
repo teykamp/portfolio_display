@@ -25,7 +25,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-text class="caption">Version</v-text>
+            <div class="caption">Version</div>
             <v-btn
               color="white"
               text

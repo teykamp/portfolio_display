@@ -113,7 +113,9 @@
 
     <!-- <b-button variant="success" @click="$parent.editMode ? updatePortfolioRemote() : createPortfolioRemote() ">
     {{ $parent.editMode ? 'Save Changes' : 'Create Portfolio' }}</b-button> -->
-
+    <!-- <pre>
+      {{userData}}
+    </pre> -->
   </div>
 </template>
 

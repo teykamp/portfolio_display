@@ -11,14 +11,14 @@
       </v-btn>
     </v-toolbar>
 
-    <div style="width: 100vw; height: 12vh;"></div>
+    <div style="width: 100vw; height: 10vh;"></div>
 
     <div v-show="experiences.length === 0" style="display: flex; align-items: center; justify-content: center;">
       <v-icon large class="mr-2">mdi-file-document-plus-outline</v-icon>
       <span style="font-size: 16pt">Added Experiences Go Here</span>
     </div>
     
-    <v-container fill-height fluid >
+    <v-container fill-height fluid>
       <v-row>
         <!-- <TransitionGroup name="list"> -->
         <v-col 

@@ -4,6 +4,7 @@
       <v-footer
         dark
         padless
+        class="mt-16"
       >
         <v-card
           class="flex"

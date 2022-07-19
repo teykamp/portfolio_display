@@ -66,7 +66,6 @@
                         <v-system-bar
                           color="primary"
                           dark
-                          height="10"
                         >
                         </v-system-bar>
                         <v-card

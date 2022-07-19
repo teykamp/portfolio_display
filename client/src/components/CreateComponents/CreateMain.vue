@@ -142,7 +142,7 @@ export default {
     'userData'
   ],
   mounted() {
-    setTimeout(() => this.initalizeComponentArraysOnLoad(), 5);
+    setTimeout(() => this.initalizeComponentArraysOnLoad(), 25);
   },
   data: () => {
     return {
@@ -160,10 +160,12 @@ export default {
     initalizeComponentArraysOnLoad() {
 
       /* injects components */
-      this.portfolioComponents = [{id: 0, name: 'projects', color: 'red', desc: 'Flawlessly display software projects you have completed!'}, 
-      {id: 1, name: 'education', color: 'yellow', desc: 'Include your academic achievements and degrees earned!'}, 
-      {id: 2, name: 'accomplishments', color: 'blue', desc: 'The perfect way to show your most valuable competitive accolades!'}, 
-      {id: 3, name: 'experiences', color: 'green', desc: 'Highlight professional internship or work experiences.'}]
+      this.portfolioComponents = [
+        {id: 0, name: 'projects', color: 'red', desc: 'Flawlessly display software projects you have completed!'}, 
+        {id: 1, name: 'education', color: 'yellow', desc: 'Include your academic achievements and degrees earned!'}, 
+        {id: 2, name: 'accomplishments', color: 'blue', desc: 'The perfect way to show your most valuable competitive accolades!'}, 
+        {id: 3, name: 'experiences', color: 'green', desc: 'Highlight professional internship or work experiences.'}
+      ]
 
       /* loops through all components and makes sure that the components that already 
       have been edited by user are shown on the 'added' components tab */

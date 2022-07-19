@@ -139,7 +139,7 @@ function apiTestUser(username) {
           content: [{
             title: "Masters 2",
             organization: "Clash Royale",
-            description: "I got first place, just kidding, I was 2nd.",
+            description: "i love clash royale more than anything",
             date: null
           }, {
             title: "Champion 1 in Ranked 3s",

@@ -5,10 +5,26 @@ function apiTestUser(username) {
   switch (username) {
     case 'yona':
       return {
-        name: "Yona Voss-Andreae",
-        headshotURL: "https://i1.sndcdn.com/avatars-000508491087-32hktm-t500x500.jpg",
-        professionalTitle: "Student Developer at SNHU",
-    
+
+        header: {
+          name: "Yona Voss-Andreae",
+          headshotURL: "https://i1.sndcdn.com/avatars-000508491087-32hktm-t500x500.jpg",
+          professionalTitle: "Student Developer at SNHU",
+          links: [{
+            type: 'github',
+            URL: 'https://github.com/yonava'
+          }, {
+            type: 'linkedin',
+            URL: 'https://www.linkedin.com/in/yona-voss-andreae-8b92a6173/'
+          },
+          {
+            type: 'instagram',
+            URL: 'https://www.instagram.com/yonavossandreae/'
+          }],
+          email: 'yonavossandreae@gmail.com',
+          phone: '+19713527727'
+        },
+        
         education: {
           pageRank: -1,
           content: [{
@@ -92,10 +108,13 @@ function apiTestUser(username) {
     }
     case 'thomas':
       return {
-        name: "Thomas Eykamp",
-        headshotURL: "https://upload.wikimedia.org/wikipedia/commons/5/56/Donald_Trump_official_portrait.jpg",
-        professionalTitle: "Civil and Environmental Engineer",
-    
+
+        header: {
+          name: "Thomas Eykamp",
+          headshotURL: "https://upload.wikimedia.org/wikipedia/commons/5/56/Donald_Trump_official_portrait.jpg",
+          professionalTitle: "Civil and Environmental Engineer"
+        },
+
         // Ordered from most to least important
         projects: {
           pageRank: 3,
@@ -155,10 +174,13 @@ function apiTestUser(username) {
     }
     case 'josh':
       return {
-        name: "Joshua Burdick",
-        headshotURL: "https://previews.123rf.com/images/sebastiangauert/sebastiangauert1207/sebastiangauert120700008/14454092-bald-man-sign-perfect-and-smiling.jpg",
-        professionalTitle: "Computer Scientist",
-    
+
+        header: {
+          name: "Joshua Burdick",
+          headshotURL: "https://previews.123rf.com/images/sebastiangauert/sebastiangauert1207/sebastiangauert120700008/14454092-bald-man-sign-perfect-and-smiling.jpg",
+          professionalTitle: "Computer Scientist"
+        },
+
         // Ordered from most to least important
         projects: {
           pageRank: 2,

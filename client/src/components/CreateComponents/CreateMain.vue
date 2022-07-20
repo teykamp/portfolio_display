@@ -40,7 +40,15 @@
             </TransitionGroup>
           </v-row>
 
+          <v-card color="pink">
+            <v-card-title>
+              <span class="mr-4">Header Data</span>
+              <v-icon @click.stop="componentName = 'header'; editComponentView = true">mdi-pencil</v-icon>
+            </v-card-title>
+          </v-card>
+
           <v-row align="center" justify="center" class="mt-10">
+            
             <draggable v-model="addedPortfolioComponents">
               <TransitionGroup name="list"> 
                 <v-card 
@@ -59,7 +67,7 @@
                         </v-icon>
                       </v-row>         
                     </v-col>
-                    <v-col >
+                    <v-col>
                       <v-card-title >{{ `${item.name[0].toUpperCase()}${item.name.substring(1)}` }}</v-card-title>
                     </v-col>
                     <v-col cols="2" @click="componentName = item.name; editComponentView = true">
@@ -97,6 +105,7 @@
       <projects v-else-if="componentName === 'projects'" :userData="userData" />
       <accomplishments v-else-if="componentName === 'accomplishments'" :userData="userData" />
       <experiences v-else-if="componentName === 'experiences'" :userData="userData" />
+      <build-header v-else-if="componentName === 'header'" :headerData="userData.header" />
 
       <h1 v-else>Unrecognized Component Type '{{ componentName }}'</h1>
 
@@ -113,9 +122,6 @@
 
     <!-- <b-button variant="success" @click="$parent.editMode ? updatePortfolioRemote() : createPortfolioRemote() ">
     {{ $parent.editMode ? 'Save Changes' : 'Create Portfolio' }}</b-button> -->
-    <!-- <pre>
-      {{userData}}
-    </pre> -->
   </div>
 </template>
 
@@ -127,6 +133,7 @@ import Experiences from '../CreateComponents/CreateSubComponents/CreateExperienc
 import Education from '../CreateComponents/CreateSubComponents/CreateEducation.vue'
 import Steps from './CreateSubComponents/StepByStep.vue'
 import DeleteDialog from '../ReusableComponents/DialogBox.vue'
+import BuildHeader from '../CreateComponents/CreateSubComponents/CreateHeader.vue'
 
 export default {
   components: {
@@ -136,6 +143,7 @@ export default {
     Education,
     draggable,
     Steps,
+    BuildHeader,
     DeleteDialog
   },
   props: [

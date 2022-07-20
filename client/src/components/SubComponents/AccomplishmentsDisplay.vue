@@ -1,9 +1,9 @@
 <template>
   <div>
-      <v-row justify="center" class="mt-14">        
-        <h3>Accomplishments</h3>
-      </v-row>
-    <v-container class="pa-0 mb-16 mt-16">
+    <v-row justify="center" class="mt-14">        
+      <h3 class="mt-6">Accomplishments</h3>
+    </v-row>
+    <v-container class="pa-0 mb-16 mt-8">
       <v-col  xl="6" lg="8" md="12" sm="12" xs="12">
         <v-card 
           tile

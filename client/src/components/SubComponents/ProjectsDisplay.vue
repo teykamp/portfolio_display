@@ -5,7 +5,7 @@
         fill-height
         class="mt-10"
       >
-        <h4>Projects</h4>
+        <h4 class="mb-6">Projects</h4>
         <v-row justify="center">
           <v-sheet
             v-for="project in relevantInfo" 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container>
+    <v-container class="mt-16 pt-16">
       <v-row justify="center">
         <v-sheet 
           class="overflow-hidden"

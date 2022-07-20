@@ -1,10 +1,11 @@
 <template>
   <div>
-  <h1>Projects</h1>
       <v-container 
         fluid 
         fill-height
+        class="mt-10"
       >
+        <h4>Projects</h4>
         <v-row justify="center">
           <v-sheet
             v-for="project in relevantInfo" 

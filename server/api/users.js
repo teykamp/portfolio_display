@@ -102,6 +102,14 @@ function apiTestUser(username) {
             date: null
           }]
         },
+
+        timeline: {
+          pageRank: 4,
+          content: [
+            "experiences",
+            "education"
+          ]
+        },
         
         // true for public ... false for private
         visibility: true

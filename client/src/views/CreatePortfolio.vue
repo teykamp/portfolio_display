@@ -91,6 +91,7 @@ export default {
   methods: {
     updateComponentData(dataObject) {
       this.userData[dataObject.componentType].content = dataObject.content;
+      this.$forceUpdate()
     },
     sendUserToPreview() {
       localStorage.userData = JSON.stringify(this.userData);

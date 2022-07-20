@@ -106,6 +106,7 @@
       <accomplishments v-else-if="componentName === 'accomplishments'" :userData="userData" />
       <experiences v-else-if="componentName === 'experiences'" :userData="userData" />
       <build-header v-else-if="componentName === 'header'" :headerData="userData.header" />
+      <timeline v-else-if="componentName === 'timeline'" :userData="userData" />
 
       <h1 v-else>Unrecognized Component Type '{{ componentName }}'</h1>
 
@@ -134,6 +135,7 @@ import Education from '../CreateComponents/CreateSubComponents/CreateEducation.v
 import Steps from './CreateSubComponents/StepByStep.vue'
 import DeleteDialog from '../ReusableComponents/DialogBox.vue'
 import BuildHeader from '../CreateComponents/CreateSubComponents/CreateHeader.vue'
+import Timeline from '../CreateComponents/CreateSubComponents/CreateTimeline.vue'
 
 export default {
   components: {
@@ -144,7 +146,8 @@ export default {
     draggable,
     Steps,
     BuildHeader,
-    DeleteDialog
+    DeleteDialog,
+    Timeline
   },
   props: [
     'userData'
@@ -172,7 +175,8 @@ export default {
         {id: 0, name: 'projects', color: 'red', desc: 'Flawlessly display software projects you have completed!'}, 
         {id: 1, name: 'education', color: 'yellow', desc: 'Include your academic achievements and degrees earned!'}, 
         {id: 2, name: 'accomplishments', color: 'blue', desc: 'The perfect way to show your most valuable competitive accolades!'}, 
-        {id: 3, name: 'experiences', color: 'green', desc: 'Highlight professional internship or work experiences.'}
+        {id: 3, name: 'experiences', color: 'green', desc: 'Highlight professional internship or work experiences.'},
+        {id: 4, name: 'timeline', color: 'purple', desc: 'Display a timeline that chronicals your personal development.'}
       ]
 
       /* loops through all components and makes sure that the components that already 
@@ -235,7 +239,16 @@ export default {
 
       for (let i = 0; i < this.portfolioComponents.length; i++) {
         if (this.$parent.userData[this.portfolioComponents[i].name]) {
+
+          /* deletes all component data */
           delete this.$parent.userData[this.portfolioComponents[i].name];
+
+          /* patches edge case were a component is removed but persists in timeline */
+          if (this.$parent.userData?.timeline) {
+            if (this.$parent.userData.timeline.content.includes(this.portfolioComponents[i].name)) {
+              this.$parent.userData.timeline.content.splice(this.$parent.userData.timeline.content.indexOf(this.portfolioComponents[i].name), 1)
+            }
+          }
         }
       }
     }
@@ -248,9 +261,5 @@ export default {
 .list-enter-active,
 .list-leave-active {
   transition: all 0.5s ease;
-}
-
-v-col {
-  border: 10px solid black
 }
 </style>

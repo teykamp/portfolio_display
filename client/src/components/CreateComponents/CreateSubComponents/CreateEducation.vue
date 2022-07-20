@@ -49,6 +49,10 @@
                 label="Degree Type"
                 v-model="education[index].degreeType">
               </v-text-field>
+              <v-text-field 
+                label="Degree Field"
+                v-model="education[index].degreeField">
+              </v-text-field>
               <v-textarea
                 color="blue"
                 :label="`Add a Description (${education[index].description.length}/3000)`"
@@ -101,6 +105,7 @@ export default {
       this.education.push({
         institution: '',
         degreeType: '',
+        degreeField: '',
         description: '',
         date: ''
       })

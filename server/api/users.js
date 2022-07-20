@@ -15,6 +15,7 @@ function apiTestUser(username) {
             institution: 'Southern New Hampshire University',
             description: 'Currently doing my undergrad at SNHU!',
             degreeType: 'BS',
+            degreeField: 'Computer Science',
             date: null,
           }]
         },

@@ -10,14 +10,14 @@
     <div v-else>
 
       <div> 
-        <b-button v-if="!previewMode" variant="warning" style="color: white;" 
+        <b-button v-if="!previewMode" depressed variant="warning" style="color: white; z-index: 10;" class="position-absolute" 
         @click="$router.push(`/edit/${$route.params.user}`)">Edit</b-button>
         <b-button v-else variant="primary" style="color: white;"
         @click="returnFromPreview()">Züruck</b-button>
       </div>
 
       <div>
-        <Header :data="headerData" />
+        <Header :data="user.header" />
       </div>
 
       <div v-for="component in componentArray" :key="component.id">
@@ -88,12 +88,6 @@ export default {
       /* sorts data into seperate categories for passing down sub-component specific info */
 
       this.componentArray = parseProfileData(userData);
-
-      this.headerData = {
-        name: userData.name,
-        headshotURL: userData.headshotURL,
-        professionalTitle: userData.professionalTitle
-      }
 
       this.footerData = {
         disclaimer: 'Legal Disclaimer, and Stuff...',

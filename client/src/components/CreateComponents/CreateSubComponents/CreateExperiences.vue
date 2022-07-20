@@ -1,17 +1,13 @@
 <template>
   <div>
 
-    <v-toolbar style="position: fixed; z-index: 2; width: 100vw;">
-      <v-icon @click="$parent.editComponentView = false; emitDataToGrandparent()">mdi-chevron-left</v-icon>
-      <span style="font-weight: bold; font-size: 15pt;" class="ml-1">Experiences</span>
-      <v-spacer></v-spacer>
-      <v-btn color="success" @click="addExperience()" :disabled="experiences.length === 4">
-        <v-icon>mdi-plus</v-icon>
-        <span class="d-none d-sm-flex">Add Experience ({{ experiences.length }}/4)</span>
-      </v-btn>
-    </v-toolbar>
-
-    <div style="width: 100vw; height: 10vh;"></div>
+    <Toolbar 
+    :title="'Experiences'" 
+    :exitAction="() => $parent.editComponentView = false"
+    :onAdd="() => addExperience()"
+    :listLength="experiences.length"
+    :disabledAt="4"
+    />
 
     <div v-show="experiences.length === 0" style="display: flex; align-items: center; justify-content: center;">
       <v-icon large class="mr-2">mdi-file-document-plus-outline</v-icon>
@@ -85,12 +81,18 @@
 </template>
 
 <script>
+import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
+
 export default {
+  components: { Toolbar },
   props: [
     'userData'
   ],
   created() {
     if (this.userData?.experiences) this.experiences = this.userData.experiences.content;
+  },
+  destroyed() {
+    this.emitDataToGrandparent();
   },
   data: () => {
     return {

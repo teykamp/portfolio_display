@@ -154,7 +154,10 @@
       <build-header v-else-if="componentName === 'header'" :headerData="userData.header" />
       <timeline v-else-if="componentName === 'timeline'" :userData="userData" />
 
-      <h1 v-else>Unrecognized Component Type '{{ componentName }}'</h1>
+      <div class="center mt-6" v-else>
+        <span>Unrecognized Component Type '{{ componentName }}'</span>
+        <v-btn class="mt-2" color="error" @click="editComponentView = false">Back</v-btn>
+      </div>
 
     </div>
 

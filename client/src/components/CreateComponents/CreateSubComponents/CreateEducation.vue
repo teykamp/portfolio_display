@@ -1,18 +1,13 @@
-
 <template>
   <div>
 
-    <v-toolbar style="position: fixed; z-index: 2; width: 100vw;">
-      <v-icon @click="$parent.editComponentView = false; emitDataToGrandparent()">mdi-chevron-left</v-icon>
-      <span style="font-weight: bold; font-size: 15pt;" class="ml-1">Education</span>
-      <v-spacer></v-spacer>
-      <v-btn color="success" @click="addInstitution()" :disabled="education.length === 4">
-        <v-icon>mdi-plus</v-icon>
-        <span class="d-none d-sm-flex">Add Education ({{ education.length }}/4)</span>
-      </v-btn>
-    </v-toolbar>
-
-    <div style="width: 100vw; height: 10vh;"></div>
+    <Toolbar
+    :title="'Education'" 
+    :exitAction="() => $parent.editComponentView = false"
+    :onAdd="() => addInstitution()"
+    :listLength="education.length"
+    :disabledAt="4"
+    />
 
     <div v-show="education.length === 0" style="display: flex; align-items: center; justify-content: center;">
       <v-icon large class="mr-2">mdi-book-education-outline</v-icon>
@@ -85,10 +80,18 @@
 </template>
 
 <script>
+import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
+
 export default {
+  components: {
+    Toolbar
+  },
   props: [
     'userData'
   ],
+  destroyed() {
+    this.emitDataToGrandparent();
+  },
   created() {
     if (this.userData?.education) this.education = this.userData.education.content;
   },

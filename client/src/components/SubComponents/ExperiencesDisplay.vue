@@ -48,7 +48,8 @@
                   dark 
                   height="80"
                 >
-                  <v-card-title>Experience</v-card-title>
+                <!-- TODO: center text horizontally -->
+                  <v-card-title class="text-h5">Experience</v-card-title>
                 </v-system-bar>
                 <v-container fill-height>
                   <v-col justify="left" class="align-top">
@@ -97,7 +98,9 @@ export default {
 </script>
 
 <style scoped>
-.divider {
-  z-index: 10;
-}
+  @import url('../../UniversalStyles.css');
+
+  .divider {
+    z-index: 10;
+  }
 </style>

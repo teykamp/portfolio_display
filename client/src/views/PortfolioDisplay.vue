@@ -17,7 +17,7 @@
       </div>
 
       <div>
-        <Header :data="user.header" />
+        <Header :data="headerData" />
       </div>
 
       <div v-for="component in componentArray" :key="component.id">
@@ -88,6 +88,7 @@ export default {
       /* sorts data into seperate categories for passing down sub-component specific info */
 
       this.componentArray = parseProfileData(userData);
+      this.headerData = userData.header;
 
       this.footerData = {
         disclaimer: 'Legal Disclaimer, and Stuff...',

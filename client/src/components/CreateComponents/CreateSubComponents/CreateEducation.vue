@@ -49,6 +49,10 @@
                 label="Degree Type"
                 v-model="education[index].degreeType">
               </v-text-field>
+              <v-text-field 
+                label="Degree Field"
+                v-model="education[index].degreeField">
+              </v-text-field>
               <v-textarea
                 color="blue"
                 :label="`Add a Description (${education[index].description.length}/3000)`"
@@ -56,16 +60,16 @@
                 maxlength="3000"
                 v-model="education[index].description"
               ></v-textarea>
-              <div>
-                <div :style="`opacity: ${education[index].date ? '1' : '0'}`">
-                  <v-icon color="error" small class="mb-1 mr-1" @click="education[index].date = ''">mdi-close</v-icon><span>{{ education[index].date }}</span>
-                </div>
-                <v-row>
-                  <v-col>
-                    <v-date-picker type="month" v-model="education[index].date" header-color="primary"
-                    color="secondary"></v-date-picker>
-                  </v-col>
-                </v-row>
+              <div class="center">
+                <v-btn 
+                class="mb-2" 
+                small @click="education[index].date = ''" 
+                :style="`${education[index].date ? 'opacity: 1' : 'opacity: 0; cursor: default'}`"
+                >
+                  Clear
+                </v-btn>
+                <v-date-picker type="month" v-model="education[index].date" header-color="primary"
+                color="secondary"></v-date-picker>
               </div>
             </div>
             
@@ -101,6 +105,7 @@ export default {
       this.education.push({
         institution: '',
         degreeType: '',
+        degreeField: '',
         description: '',
         date: ''
       })

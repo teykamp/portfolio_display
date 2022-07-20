@@ -60,16 +60,16 @@
                 maxlength="3000"
                 v-model="experiences[index].description"
               ></v-textarea>
-              <div>
-                <div :style="`opacity: ${experiences[index].date ? '1' : '0'}`">
-                  <v-icon color="error" small class="mb-1 mr-1" @click="experiences[index].date = ''">mdi-close</v-icon><span>{{ experiences[index].date }}</span>
-                </div>
-                <v-row>
-                  <v-col>
-                    <v-date-picker type="month" v-model="experiences[index].date" header-color="primary"
-                    color="secondary"></v-date-picker>
-                  </v-col>
-                </v-row>
+              <div class="center">
+                <v-btn 
+                class="mb-2" 
+                small @click="experiences[index].date = ''" 
+                :style="`${experiences[index].date ? 'opacity: 1' : 'opacity: 0; cursor: default'}`"
+                >
+                  Clear
+                </v-btn>
+                <v-date-picker type="month" v-model="experiences[index].date" header-color="primary"
+                color="secondary"></v-date-picker>
               </div>
             </div>
             

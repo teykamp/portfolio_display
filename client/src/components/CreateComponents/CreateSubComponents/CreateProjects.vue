@@ -64,17 +64,10 @@
                   v-model="projects[index].description"
                 ></v-textarea>
 
-                <div class="center">
-                  <v-btn 
-                  class="mb-2" 
-                  small @click="projects[index].date = ''" 
-                  :style="`${projects[index].date ? 'opacity: 1' : 'opacity: 0; cursor: default'}`"
-                  >
-                    Clear
-                  </v-btn>
-                  <v-date-picker type="month" v-model="projects[index].date" header-color="primary"
-                  color="secondary"></v-date-picker>
-                </div>
+                <Calender
+                :providedDate="projects[index].date"
+                @date-updated="projects[index].date = $event"
+                />
      
               </div>
               
@@ -143,13 +136,15 @@
 
 <script>
 import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
+import Calender from '../../ReusableComponents/CreateCalender.vue'
 
 export default {
   props: [
     'userData'
   ],
   components: {
-    Toolbar
+    Toolbar,
+    Calender
   },
   created() {
     if (this.userData?.projects?.content) this.projects = this.userData.projects.content;

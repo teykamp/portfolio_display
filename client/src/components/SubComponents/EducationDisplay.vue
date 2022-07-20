@@ -27,7 +27,7 @@
           >
             <v-timeline-item
               v-for="education in relevantInfo"
-              :key="education"
+              :key="education.id"
               fill-dot
             >
               <span slot="opposite">

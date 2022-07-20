@@ -2,7 +2,13 @@ export default function parseProfileData(portfolioJSONBundle) {
   
   let displayedComponents = [];
 
-  
+  function getTimelineContent() {
+    let contentArray = [];
+    portfolioJSONBundle.timeline.content.forEach(item => {
+      contentArray = contentArray.concat(portfolioJSONBundle[item].content)
+    });
+    return contentArray
+  }
 
   /* Add and configure components for display */
 
@@ -35,13 +41,7 @@ export default function parseProfileData(portfolioJSONBundle) {
   if (portfolioJSONBundle?.timeline) displayedComponents.push({
     category: 'Timeline',
     pageRank: portfolioJSONBundle.timeline.pageRank,
-    content: () => {
-      let contentArray = [];
-      portfolioJSONBundle.timeline.content.forEach(item => {
-        contentArray = contentArray.concat(portfolioJSONBundle[item].content)
-      });
-      return contentArray
-    }
+    content: getTimelineContent()
   })
 
   const componentsContainingContent = displayedComponents.filter(obj => obj.content.length != 0);

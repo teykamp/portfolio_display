@@ -16,10 +16,9 @@
         />
       </div>
 
-      <!-- <b-button v-on:click="showIntro = !showIntro">Toggle Intro/Main</b-button>
-      <b-button variant="primary" @click="sendUserToPreview()">Preview Your Portfolio</b-button> -->
+      <!-- <b-button v-on:click="showIntro = !showIntro">Toggle Intro/Main</b-button> -->
 
-      <pre>{{ userData }}</pre>
+      <!-- <pre>{{ userData }}</pre> -->
       
     </div>
   </div>

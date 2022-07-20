@@ -31,7 +31,7 @@
               </v-col>
               <v-col class="shrink">  
                 <v-btn
-                color="info"
+                color="white"
                 outlined
                 href="/"
                 >

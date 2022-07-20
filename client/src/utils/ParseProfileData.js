@@ -44,8 +44,6 @@ export default function parseProfileData(portfolioJSONBundle) {
     content: getTimelineContent()
   })
 
-  console.log(displayedComponents)
-
   const componentsContainingContent = displayedComponents.filter(obj => obj.content.length != 0);
 
   return componentsContainingContent.sort((a, b) => a.pageRank - b.pageRank);

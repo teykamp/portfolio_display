@@ -6,48 +6,73 @@
     </div>
 
     <div v-if="!editComponentView">
-        <v-container class="mt-6" fluid fill-height>
-          <v-row align="center" justify="center">
-            <TransitionGroup name="list"> 
-              <v-card 
-              v-for="(item, index) in portfolioComponents" 
-              :key="item.id" :color="`${item.color} lighten-1`"             
-              @click.stop="addComponent(index)"
-              >               
-                <v-row class="justify-space-between" 
-                no-gutters 
+   
+      <v-container fluid fill-height>
+        
+        <v-row align="center" justify="center">
+
+          <TransitionGroup name="list"> 
+            
+            <v-card 
+            v-for="(item, index) in portfolioComponents" 
+            :key="item.id" :color="`${item.color} lighten-1`"             
+            @click.stop="addComponent(index)"
+            >               
+              <v-row class="justify-space-between" 
+              no-gutters 
+              align="center"
+              justify="center">
+                <v-col >
+                  <v-card-title>{{ `${item.name[0].toUpperCase()}${item.name.substring(1)}` }}</v-card-title>
+                </v-col>
+                <v-col cols="2">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        mdi-help-circle
+                      </v-icon>
+                    </template>
+                    <span>{{ item.desc }}</span>
+                  </v-tooltip>                
+                </v-col>
+              </v-row>
+              
+            </v-card>
+          </TransitionGroup>
+        </v-row>
+
+
+      
+        <v-row align="center" justify="center">
+
+          <v-col cols="4">
+
+            <v-card color="pink">
+              <v-row 
+                no-gutters
                 align="center"
                 justify="center">
-                  <v-col >
-                    <v-card-title>{{ `${item.name[0].toUpperCase()}${item.name.substring(1)}` }}</v-card-title>
+                  <v-col>
+                    <v-card-title>Header</v-card-title>
                   </v-col>
-                  <v-col cols="2">
+                  <v-col cols="2" @click="componentName = 'header'; editComponentView = true">
                     <v-tooltip bottom>
                       <template v-slot:activator="{ on, attrs }">
                         <v-icon
                           v-bind="attrs"
                           v-on="on"
                         >
-                          mdi-help-circle
+                          mdi-pencil
                         </v-icon>
                       </template>
-                      <span>{{ item.desc }}</span>
+                      <span>Edit header</span>
                     </v-tooltip>                
                   </v-col>
                 </v-row>
-                
-              </v-card>
-            </TransitionGroup>
-          </v-row>
-
-          <v-card color="pink">
-            <v-card-title>
-              <span class="mr-4">Header Data</span>
-              <v-icon @click.stop="componentName = 'header'; editComponentView = true">mdi-pencil</v-icon>
-            </v-card-title>
-          </v-card>
-
-          <v-row align="center" justify="center" class="mt-10">
+            </v-card>
             
             <draggable v-model="addedPortfolioComponents">
               <TransitionGroup name="list"> 
@@ -88,14 +113,35 @@
                 </v-card>
               </TransitionGroup>
             </draggable>
-          </v-row> 
-        </v-container>
-        
-
-      <!-- <button @click="$parent.userData.visibility = !$parent.userData.visibility">Toggle Account Visibility</button>
-      <div :style="`background-color: ${this.userData.visibility ? 'lime' : 'red' }`">
-        <p>{{ this.userData.visibility ? 'Public' : 'Private' }}</p>
-      </div> -->
+            <v-card color="gray">
+              <v-row 
+                no-gutters
+                align="center"
+                justify="center">
+                  <v-col>
+                    <v-card-title>Footer</v-card-title>
+                  </v-col>
+                  <v-col cols="2" @click="componentName = 'footer'; editComponentView = true">
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-icon
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          mdi-pencil
+                        </v-icon>
+                      </template>
+                      <span>Edit footer</span>
+                    </v-tooltip>                
+                  </v-col>
+                </v-row>
+            </v-card>
+          </v-col>
+        </v-row> 
+      </v-container>
+      <div class="center">
+        <v-btn color="primary" @click="$parent.sendUserToPreview()">Preview Your Portfolio</v-btn>
+      </div>
 
     </div>
     

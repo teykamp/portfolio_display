@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width: 100vw; height: 50vh;">
     {{ relevantInfo }}
   </div>
 </template>

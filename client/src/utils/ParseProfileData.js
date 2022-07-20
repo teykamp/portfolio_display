@@ -2,6 +2,10 @@ export default function parseProfileData(portfolioJSONBundle) {
   
   let displayedComponents = [];
 
+  
+
+  /* Add and configure components for display */
+
   if (portfolioJSONBundle?.projects) displayedComponents.push({
     category: 'Projects',
     pageRank: portfolioJSONBundle.projects.pageRank,
@@ -25,7 +29,21 @@ export default function parseProfileData(portfolioJSONBundle) {
     pageRank: portfolioJSONBundle.education.pageRank,
     content: portfolioJSONBundle.education.content
   });
- 
+
+  /* ---------------------------- */
+
+  if (portfolioJSONBundle?.timeline) displayedComponents.push({
+    category: 'Timeline',
+    pageRank: portfolioJSONBundle.timeline.pageRank,
+    content: () => {
+      let contentArray = [];
+      portfolioJSONBundle.timeline.content.forEach(item => {
+        contentArray = contentArray.concat(portfolioJSONBundle[item].content)
+      });
+      return contentArray
+    }
+  })
+
   const componentsContainingContent = displayedComponents.filter(obj => obj.content.length != 0);
 
   return componentsContainingContent.sort((a, b) => a.pageRank - b.pageRank);

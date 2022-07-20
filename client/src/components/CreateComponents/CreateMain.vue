@@ -239,7 +239,16 @@ export default {
 
       for (let i = 0; i < this.portfolioComponents.length; i++) {
         if (this.$parent.userData[this.portfolioComponents[i].name]) {
+
+          /* deletes all component data */
           delete this.$parent.userData[this.portfolioComponents[i].name];
+
+          /* patches edge case were a component is removed but persists in timeline */
+          if (this.$parent.userData?.timeline) {
+            if (this.$parent.userData.timeline.content.includes(this.portfolioComponents[i].name)) {
+              this.$parent.userData.timeline.content.splice(this.$parent.userData.timeline.content.indexOf(this.portfolioComponents[i].name), 1)
+            }
+          }
         }
       }
     }
@@ -252,9 +261,5 @@ export default {
 .list-enter-active,
 .list-leave-active {
   transition: all 0.5s ease;
-}
-
-v-col {
-  border: 10px solid black
 }
 </style>

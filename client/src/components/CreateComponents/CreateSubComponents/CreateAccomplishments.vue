@@ -55,16 +55,16 @@
                 maxlength="3000"
                 v-model="accomplishments[index].description"
               ></v-textarea>
-              <div>
-                <div :style="`opacity: ${accomplishments[index].date ? '1' : '0'}`">
-                  <v-icon color="error" small class="mb-1 mr-1" @click="accomplishments[index].date = ''">mdi-close</v-icon><span>{{ accomplishments[index].date }}</span>
-                </div>
-                <v-row>
-                  <v-col>
-                    <v-date-picker type="month" v-model="accomplishments[index].date" header-color="primary"
-                    color="secondary"></v-date-picker>
-                  </v-col>
-                </v-row>
+              <div class="center">
+                <v-btn 
+                class="mb-2" 
+                small @click="accomplishments[index].date = ''" 
+                :style="`${accomplishments[index].date ? 'opacity: 1' : 'opacity: 0; cursor: default'}`"
+                >
+                  Clear
+                </v-btn>
+                <v-date-picker type="month" v-model="accomplishments[index].date" header-color="primary"
+                color="secondary"></v-date-picker>
               </div>
             </div>
             

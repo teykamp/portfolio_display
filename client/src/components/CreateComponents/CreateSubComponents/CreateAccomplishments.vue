@@ -1,17 +1,13 @@
 <template>
   <div>
 
-    <v-toolbar style="position: fixed; z-index: 2; width: 100vw;">
-      <v-icon @click="$parent.editComponentView = false; emitDataToGrandparent()">mdi-chevron-left</v-icon>
-      <span style="font-weight: bold; font-size: 15pt;" class="ml-1">Accomplishments</span>
-      <v-spacer></v-spacer>
-      <v-btn color="success" @click="addAccomplishment()" :disabled="accomplishments.length === 8">
-        <v-icon>mdi-plus</v-icon>
-        <span class="d-none d-sm-flex">Add Accomplishments ({{ accomplishments.length }}/8)</span>
-      </v-btn>
-    </v-toolbar>
-
-    <div style="width: 100vw; height: 10vh;"></div>
+    <Toolbar 
+    :title="'Accomplishments'" 
+    :exitAction="() => $parent.editComponentView = false"
+    :onAdd="() => addAccomplishment()"
+    :listLength="accomplishments.length"
+    :disabledAt="8"
+    />
 
     <div v-show="accomplishments.length === 0" style="display: flex; align-items: center; justify-content: center;">
       <v-icon large class="mr-2">mdi-trophy</v-icon>
@@ -55,17 +51,12 @@
                 maxlength="3000"
                 v-model="accomplishments[index].description"
               ></v-textarea>
-              <div class="center">
-                <v-btn 
-                class="mb-2" 
-                small @click="accomplishments[index].date = ''" 
-                :style="`${accomplishments[index].date ? 'opacity: 1' : 'opacity: 0; cursor: default'}`"
-                >
-                  Clear
-                </v-btn>
-                <v-date-picker type="month" v-model="accomplishments[index].date" header-color="primary"
-                color="secondary"></v-date-picker>
-              </div>
+
+              <Calender
+                :providedDate="accomplishments[index].date"
+                @date-updated="accomplishments[index].date = $event"
+              />
+
             </div>
             
           </v-card>
@@ -80,12 +71,22 @@
 </template>
 
 <script>
+import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
+import Calender from '../../ReusableComponents/CreateCalender.vue'
+
 export default {
   props: [
     'userData'
   ],
+  components: {
+    Toolbar,
+    Calender
+  },
   created() {
     if (this.userData?.accomplishments) this.accomplishments = this.userData.accomplishments.content;
+  },
+  destroyed() {
+    this.emitDataToGrandparent();
   },
   data: () => {
     return {

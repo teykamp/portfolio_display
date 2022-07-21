@@ -1,11 +1,24 @@
 <template>
   <div>
 
-    <div v-if="!editComponentView" class="mt-5">
-      <Steps />
-    </div>
+    
+      
+    
 
     <div v-if="!editComponentView">
+
+      <v-toolbar style="position: fixed; z-index: 2; width: 100vw;">
+        <v-icon @click.stop="$router.push('/')">mdi-chevron-left</v-icon>
+        <span style="font-weight: bold; font-size: 15pt;" class="ml-1">My Portfolio</span>
+        <v-spacer></v-spacer>
+        <v-btn class="mr-2" color="primary" @click="$parent.sendUserToPreview()">
+          <v-icon class="mr-2">mdi-file-eye-outline</v-icon>
+          Preview
+        </v-btn>
+        <Steps />
+      </v-toolbar>
+
+      <div style="width: 100vw; height: 10vh;"></div>
    
       <v-container fluid fill-height>
         
@@ -48,8 +61,9 @@
       
         <v-row align="center" justify="center">
 
-          <v-col cols="4">
+          <v-col cols="8">
 
+            <!-- HEADER -->
             <v-card color="pink">
               <v-row 
                 no-gutters
@@ -58,7 +72,7 @@
                   <v-col>
                     <v-card-title>Header</v-card-title>
                   </v-col>
-                  <v-col cols="2" @click="componentName = 'header'; editComponentView = true">
+                  <v-col cols="1" @click="componentName = 'header'; editComponentView = true">
                     <v-tooltip bottom>
                       <template v-slot:activator="{ on, attrs }">
                         <v-icon
@@ -74,8 +88,10 @@
                 </v-row>
             </v-card>
             
+            <!-- BODY CARDS -->
             <draggable v-model="addedPortfolioComponents">
               <TransitionGroup name="list"> 
+
                 <v-card 
                 v-for="(item, index) in addedPortfolioComponents" 
                 :key="item.id" :color="`${item.color} lighten-1`"                 
@@ -93,9 +109,14 @@
                       </v-row>         
                     </v-col>
                     <v-col>
-                      <v-card-title >{{ `${item.name[0].toUpperCase()}${item.name.substring(1)}` }}</v-card-title>
+                      <v-card-title>{{ `${item.name[0].toUpperCase()}${item.name.substring(1)}` }}</v-card-title>
                     </v-col>
-                    <v-col cols="2" @click="componentName = item.name; editComponentView = true">
+                    <v-col cols="1">
+                      <v-icon>
+                        mdi-drag-horizontal-variant
+                      </v-icon>
+                    </v-col>
+                    <v-col cols="1" @click="componentName = item.name; editComponentView = true">
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
                           <v-icon
@@ -113,6 +134,8 @@
                 </v-card>
               </TransitionGroup>
             </draggable>
+
+            <!-- FOOTER CARD -->
             <v-card color="gray">
               <v-row 
                 no-gutters
@@ -121,7 +144,7 @@
                   <v-col>
                     <v-card-title>Footer</v-card-title>
                   </v-col>
-                  <v-col cols="2" @click="componentName = 'footer'; editComponentView = true">
+                  <v-col cols="1" @click="componentName = 'footer'; editComponentView = true">
                     <v-tooltip bottom>
                       <template v-slot:activator="{ on, attrs }">
                         <v-icon
@@ -138,10 +161,7 @@
             </v-card>
           </v-col>
         </v-row> 
-      </v-container>
-      <div class="center">
-        <v-btn color="primary" @click="$parent.sendUserToPreview()">Preview Your Portfolio</v-btn>
-      </div>
+      </v-container>      
 
     </div>
     
@@ -154,7 +174,10 @@
       <build-header v-else-if="componentName === 'header'" :headerData="userData.header" />
       <timeline v-else-if="componentName === 'timeline'" :userData="userData" />
 
-      <h1 v-else>Unrecognized Component Type '{{ componentName }}'</h1>
+      <div class="center mt-6" v-else>
+        <span>Unrecognized Component Type '{{ componentName }}'</span>
+        <v-btn class="mt-2" color="error" @click="editComponentView = false">Back</v-btn>
+      </div>
 
     </div>
 

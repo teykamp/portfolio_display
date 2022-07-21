@@ -17,7 +17,6 @@
       </div>
 
       <!-- <b-button v-on:click="showIntro = !showIntro">Toggle Intro/Main</b-button> -->
-
       <!-- <pre>{{ userData }}</pre> -->
       
     </div>

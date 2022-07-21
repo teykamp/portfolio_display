@@ -1,11 +1,11 @@
 <template>
   <div>
-    <v-toolbar style="position: fixed; z-index: 2; width: 100vw;">
-      <v-icon @click="$parent.editComponentView = false;">mdi-chevron-left</v-icon>
-      <span style="font-weight: bold; font-size: 15pt;" class="ml-1">Header Data</span>
-    </v-toolbar>
-
-    <div style="width: 100vw; height: 10vh;"></div>
+    
+    <Toolbar
+    :title="'Header'"
+    :exitAction="() => $parent.editComponentView = false"
+    :disableAddBtn="true"
+    />
 
     <v-text-field
     label="Name"
@@ -45,7 +45,10 @@
 </template>
 
 <script>
+import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
+
 export default {
+  components: { Toolbar },
   props: ['headerData'],
   data() {
     return {

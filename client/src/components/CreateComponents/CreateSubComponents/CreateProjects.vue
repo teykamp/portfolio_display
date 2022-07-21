@@ -1,28 +1,15 @@
 <template>
   <div>
 
-    <v-toolbar style="position: fixed; z-index: 2; width: 100vw;">
-      <v-icon @click="techView ? techView = false : $parent.editComponentView = false">
-        mdi-chevron-left
-      </v-icon>
-      <span style="font-weight: bold; font-size: 15pt;" class="ml-1">
-        {{ techView ? 'Technology' : 'Projects' }}
-      </span>
-      <v-spacer></v-spacer>
-      <v-btn 
-      :color="techView ? 'red' : 'success'" 
-      dark
-      @click="techView ? projectSelected.technologies.push({ name: '', logo: '' }) : addProject()" 
-      :disabled="techView ? false : projects.length === 12">
-        <v-icon>mdi-plus</v-icon>
-        <span v-if="!techView" class="d-none d-sm-flex">Add Project ({{ projects.length }}/12)</span>
-        <span v-else class="d-none d-sm-flex">Add Tech ({{ projectSelected.technologies.length }})</span>
-      </v-btn>
-    </v-toolbar>
-
-    <div style="width: 100vw; height: 10vh;"></div>
-
     <div v-if="!techView">
+
+      <Toolbar 
+      :title="'Projects'"
+      :exitAction="() => $parent.editComponentView = false"
+      :onAdd="() => addProject()"
+      :listLength="projects.length"
+      :disabledAt="12"
+      />
 
       <div v-show="projects.length === 0" style="display: flex; align-items: center; justify-content: center;">
         <v-icon large class="mr-2">mdi-file-code-outline</v-icon>
@@ -77,17 +64,10 @@
                   v-model="projects[index].description"
                 ></v-textarea>
 
-                <div class="center">
-                  <v-btn 
-                  class="mb-2" 
-                  small @click="projects[index].date = ''" 
-                  :style="`${projects[index].date ? 'opacity: 1' : 'opacity: 0; cursor: default'}`"
-                  >
-                    Clear
-                  </v-btn>
-                  <v-date-picker type="month" v-model="projects[index].date" header-color="primary"
-                  color="secondary"></v-date-picker>
-                </div>
+                <Calender
+                :providedDate="projects[index].date"
+                @date-updated="projects[index].date = $event"
+                />
      
               </div>
               
@@ -101,11 +81,20 @@
     </div>
 
     <div v-else>
+      <Toolbar 
+      :title="'Technology'"
+      :exitAction="() => techView = false"
+      :onAdd="() => projectSelected.technologies.push({ name: '', logo: '' })"
+      :addBtnColor="'red'"
+      :listLength="projectSelected.technologies.length"
+      :disabledAt="99"
+      />
+
       <v-container fluid fill-height>
         <v-row align="center" justify="center">
           
           <div v-show="projectSelected.technologies.length === 0">
-            <span style="font-size: 16pt">Added Technologies Used{{ !projectSelected.name ? '' : ` For ${projectSelected.name}` }} Will Go Here!</span>
+            <span style="font-size: 16pt">Added Technologies {{ !projectSelected.name ? '' : ` For ${projectSelected.name}` }} Will Go Here!</span>
           </div>
 
           <v-col 
@@ -146,10 +135,17 @@
 </template>
 
 <script>
+import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
+import Calender from '../../ReusableComponents/CreateCalender.vue'
+
 export default {
   props: [
     'userData'
   ],
+  components: {
+    Toolbar,
+    Calender
+  },
   created() {
     if (this.userData?.projects?.content) this.projects = this.userData.projects.content;
   },

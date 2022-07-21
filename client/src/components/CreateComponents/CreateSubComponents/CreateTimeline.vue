@@ -1,10 +1,11 @@
 <template>
   <div>
 
-    <v-toolbar style="position: fixed; z-index: 2; width: 100vw;">
-      <v-icon @click.stop="$parent.editComponentView = false; emitDataToGrandparent()">mdi-chevron-left</v-icon>
-      <span style="font-weight: bold; font-size: 15pt;" class="ml-1">Timeline</span>
-    </v-toolbar>
+    <Toolbar 
+    :title="'Timeline'"
+    :exitAction="() => $parent.editComponentView = false"
+    :disableAddBtn="true"
+    />
 
     <div style="width: 100vw; height: 10vh;"></div>
 
@@ -32,8 +33,10 @@
 </template>
 
 <script>
+import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
 
 export default {
+  components: { Toolbar },
   props: ['userData'],
   mounted() {
     if (this.userData.timeline.content.length > 0) {
@@ -43,6 +46,9 @@ export default {
         }
       })
     }
+  },
+  destroyed() {
+    this.emitDataToGrandparent();
   },
   data() {
     return {

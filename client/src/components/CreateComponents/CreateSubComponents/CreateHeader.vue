@@ -49,14 +49,14 @@ import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
 
 export default {
   components: { Toolbar },
-  props: ['headerData'],
+  props: ['userData'],
   data() {
     return {
       data: {}
     }
   },
   mounted() { 
-    this.data = this.headerData;
+    this.data = this.userData.header;
   }
 }
 </script>

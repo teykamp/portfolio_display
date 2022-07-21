@@ -52,7 +52,8 @@ export default {
     },
     disabledAt: {
       type: Number,
-      required: false
+      required: false,
+      validator: (passedValue) => passedValue > 0
     },
   }
 }

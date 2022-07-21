@@ -1,24 +1,6 @@
 <template>
   <div>
-
-    
-      
-    
-
     <div v-if="!editComponentView">
-
-      <v-toolbar style="position: fixed; z-index: 2; width: 100vw;">
-        <v-icon @click.stop="$router.push('/')">mdi-chevron-left</v-icon>
-        <span style="font-weight: bold; font-size: 15pt;" class="ml-1">My Portfolio</span>
-        <v-spacer></v-spacer>
-        <v-btn class="mr-2" color="primary" @click="$parent.sendUserToPreview()">
-          <v-icon class="mr-2">mdi-file-eye-outline</v-icon>
-          Preview
-        </v-btn>
-        <Steps />
-      </v-toolbar>
-
-      <div style="width: 100vw; height: 10vh;"></div>
    
       <v-container fluid fill-height>
         
@@ -64,134 +46,53 @@
           <v-col cols="8">
 
             <!-- HEADER -->
-            <v-card color="pink">
-              <v-row 
-                no-gutters
-                align="center"
-                justify="center">
-                  <v-col>
-                    <v-card-title>Header</v-card-title>
-                  </v-col>
-                  <v-col cols="1" @click="componentName = 'header'; editComponentView = true">
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-icon
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          mdi-pencil
-                        </v-icon>
-                      </template>
-                      <span>Edit header</span>
-                    </v-tooltip>                
-                  </v-col>
-                </v-row>
-            </v-card>
+            <ComponentCard 
+            :draggable="false" 
+            :removable="false"
+            :item="{name: 'header', color: 'pink'}" 
+            @edit="componentName = 'Header'; editComponentView = true;"
+            />
             
             <!-- BODY CARDS -->
             <draggable v-model="addedPortfolioComponents">
               <TransitionGroup name="list"> 
-
-                <v-card 
+                <div 
                 v-for="(item, index) in addedPortfolioComponents" 
-                :key="item.id" :color="`${item.color} lighten-1`"                 
+                :key="item.id"
                 >
-                  
-                  <v-row 
-                  no-gutters
-                  align="center"
-                  justify="center">
-                    <v-col :retain-focus="false" cols="1" class="ml-3" @click="deleteConfirmationDialog = true; targetedComponentIndex = index">
-                      <v-row justify="center">                      
-                        <v-icon>                                                                         
-                          mdi-close-circle
-                        </v-icon>
-                      </v-row>         
-                    </v-col>
-                    <v-col>
-                      <v-card-title>{{ `${item.name[0].toUpperCase()}${item.name.substring(1)}` }}</v-card-title>
-                    </v-col>
-                    <v-col cols="1">
-                      <v-icon>
-                        mdi-drag-horizontal-variant
-                      </v-icon>
-                    </v-col>
-                    <v-col cols="1" @click="componentName = item.name; editComponentView = true">
-                      <v-tooltip bottom>
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-icon
-                            v-bind="attrs"
-                            v-on="on"
-                          >
-                            mdi-pencil
-                          </v-icon>
-                        </template>
-                        <span>Edit {{ item.name }}</span>
-                      </v-tooltip>                
-                    </v-col>
-                  </v-row>
-                  
-                </v-card>
+                  <ComponentCard 
+                  :item="item" 
+                  @edit="componentName = item.name; editComponentView = true;" 
+                  @remove="targetedComponentIndex = index; deleteConfirmationDialog = true;" 
+                  />
+                </div>
               </TransitionGroup>
             </draggable>
 
             <!-- FOOTER CARD -->
-            <v-card color="gray">
-              <v-row 
-                no-gutters
-                align="center"
-                justify="center">
-                  <v-col>
-                    <v-card-title>Footer</v-card-title>
-                  </v-col>
-                  <v-col cols="1" @click="componentName = 'footer'; editComponentView = true">
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-icon
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          mdi-pencil
-                        </v-icon>
-                      </template>
-                      <span>Edit footer</span>
-                    </v-tooltip>                
-                  </v-col>
-                </v-row>
-            </v-card>
+            <ComponentCard 
+            :draggable="false" 
+            :removable="false" 
+            :item="{name: 'footer', color: 'teal'}" 
+            @edit="componentName = 'footer'; editComponentView = true;"
+            />
+
           </v-col>
         </v-row> 
       </v-container>      
 
     </div>
     
-    <div v-else>
-
-      <education v-if="componentName === 'education'" :userData="userData" />
-      <projects v-else-if="componentName === 'projects'" :userData="userData" />
-      <accomplishments v-else-if="componentName === 'accomplishments'" :userData="userData" />
-      <experiences v-else-if="componentName === 'experiences'" :userData="userData" />
-      <build-header v-else-if="componentName === 'header'" :headerData="userData.header" />
-      <timeline v-else-if="componentName === 'timeline'" :userData="userData" />
-
-      <div class="center mt-6" v-else>
-        <span>Unrecognized Component Type '{{ componentName }}'</span>
-        <v-btn class="mt-2" color="error" @click="editComponentView = false">Back</v-btn>
-      </div>
-
-    </div>
+    <component v-else :is="componentName" :userData="userData" />
 
     <DeleteDialog 
     :description="`Removing the ${addedPortfolioComponents[targetedComponentIndex] ? `${addedPortfolioComponents[targetedComponentIndex].name}` : `` } 
     component from your portfolio will delete all the data contained inside and cannot be undone!`" 
-    :title="`Delete 
-    ${addedPortfolioComponents[targetedComponentIndex] ? `${addedPortfolioComponents[targetedComponentIndex].name}` : `` }?`" 
+    :title="`Delete ${addedPortfolioComponents[targetedComponentIndex] ? `${addedPortfolioComponents[targetedComponentIndex].name}` : `` }?`" 
     :visible="deleteConfirmationDialog" 
-    @close="deleteConfirmationDialog = false"
-    @confirmed="deleteConfirmationDialog = false; removeComponent(targetedComponentIndex)" />
+    @close="deleteConfirmationDialog = false;"
+    @confirmed="deleteConfirmationDialog = false; removeComponent(targetedComponentIndex);" />
 
-    <!-- <b-button variant="success" @click="$parent.editMode ? updatePortfolioRemote() : createPortfolioRemote() ">
-    {{ $parent.editMode ? 'Save Changes' : 'Create Portfolio' }}</b-button> -->
   </div>
 </template>
 
@@ -201,10 +102,10 @@ import Projects from '../CreateComponents/CreateSubComponents/CreateProjects.vue
 import Accomplishments from '../CreateComponents/CreateSubComponents/CreateAccomplishments.vue'
 import Experiences from '../CreateComponents/CreateSubComponents/CreateExperiences.vue'
 import Education from '../CreateComponents/CreateSubComponents/CreateEducation.vue'
-import Steps from './CreateSubComponents/StepByStep.vue'
 import DeleteDialog from '../ReusableComponents/DialogBox.vue'
-import BuildHeader from '../CreateComponents/CreateSubComponents/CreateHeader.vue'
+import Header from '../CreateComponents/CreateSubComponents/CreateHeader.vue'
 import Timeline from '../CreateComponents/CreateSubComponents/CreateTimeline.vue'
+import ComponentCard from '../CreateComponents/CreateSubComponents/ComponentCard.vue'
 
 export default {
   components: {
@@ -213,10 +114,10 @@ export default {
     Experiences,
     Education,
     draggable,
-    Steps,
-    BuildHeader,
+    Header,
     DeleteDialog,
-    Timeline
+    Timeline,
+    ComponentCard
   },
   props: [
     'userData'
@@ -246,7 +147,7 @@ export default {
         {id: 2, name: 'accomplishments', color: 'blue', desc: 'The perfect way to show your most valuable competitive accolades!'}, 
         {id: 3, name: 'experiences', color: 'green', desc: 'Highlight professional internship or work experiences.'},
         {id: 4, name: 'timeline', color: 'purple', desc: 'Display a timeline that chronicals your personal development.'}
-      ]
+      ];
 
       /* loops through all components and makes sure that the components that already 
       have been edited by user are shown on the 'added' components tab */
@@ -276,18 +177,6 @@ export default {
     toggleEditView(componentName) {
       this.componentName = componentName;
       this.editComponentView = true;
-    },
-    updatePortfolioRemote() {
-      if (this.$route.params?.user) {
-        alert(`${this.$route.params.user}s portfolio has been updated in the database`)
-      } else {
-        alert("I'm not sure what users' info needs to be updated...")
-      }
-      this.$router.push('/');
-    },
-    createPortfolioRemote() {
-      alert('Portfolio Has Been Created!');
-      this.$router.push('/');
     },
     addComponent(index) {
       this.addedPortfolioComponents.push(this.portfolioComponents[index]);

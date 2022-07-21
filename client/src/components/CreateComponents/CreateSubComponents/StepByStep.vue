@@ -6,12 +6,13 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-          color="primary"
+          color="cyan darken-1"
           dark
           v-bind="attrs"
           v-on="on"
         >
-          Need Help?
+          <v-icon>mdi-help-circle-outline</v-icon>
+          <span class="d-none d-sm-flex ml-2">Help</span>
         </v-btn>
       </template>
 

@@ -56,17 +56,12 @@
                 maxlength="3000"
                 v-model="experiences[index].description"
               ></v-textarea>
-              <div class="center">
-                <v-btn 
-                class="mb-2" 
-                small @click="experiences[index].date = ''" 
-                :style="`${experiences[index].date ? 'opacity: 1' : 'opacity: 0; cursor: default'}`"
-                >
-                  Clear
-                </v-btn>
-                <v-date-picker type="month" v-model="experiences[index].date" header-color="primary"
-                color="secondary"></v-date-picker>
-              </div>
+
+              <Calender
+                :providedDate="experiences[index].date"
+                @date-updated="experiences[index].date = $event"
+              />
+
             </div>
             
           </v-card>
@@ -82,9 +77,10 @@
 
 <script>
 import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
+import Calender from '../../ReusableComponents/CreateCalender.vue'
 
 export default {
-  components: { Toolbar },
+  components: { Toolbar, Calender },
   props: [
     'userData'
   ],

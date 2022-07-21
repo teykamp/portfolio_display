@@ -55,17 +55,10 @@
                 maxlength="3000"
                 v-model="education[index].description"
               ></v-textarea>
-              <div class="center">
-                <v-btn 
-                class="mb-2" 
-                small @click="education[index].date = ''" 
-                :style="`${education[index].date ? 'opacity: 1' : 'opacity: 0; cursor: default'}`"
-                >
-                  Clear
-                </v-btn>
-                <v-date-picker type="month" v-model="education[index].date" header-color="primary"
-                color="secondary"></v-date-picker>
-              </div>
+              <Calender
+                :providedDate="education[index].date"
+                @date-updated="education[index].date = $event"
+              />
             </div>
             
           </v-card>
@@ -81,10 +74,12 @@
 
 <script>
 import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
+import Calender from '../../ReusableComponents/CreateCalender.vue'
 
 export default {
   components: {
-    Toolbar
+    Toolbar,
+    Calender
   },
   props: [
     'userData'

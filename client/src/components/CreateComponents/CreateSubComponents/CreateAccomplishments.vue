@@ -51,17 +51,12 @@
                 maxlength="3000"
                 v-model="accomplishments[index].description"
               ></v-textarea>
-              <div class="center">
-                <v-btn 
-                class="mb-2" 
-                small @click="accomplishments[index].date = ''" 
-                :style="`${accomplishments[index].date ? 'opacity: 1' : 'opacity: 0; cursor: default'}`"
-                >
-                  Clear
-                </v-btn>
-                <v-date-picker type="month" v-model="accomplishments[index].date" header-color="primary"
-                color="secondary"></v-date-picker>
-              </div>
+
+              <Calender
+                :providedDate="accomplishments[index].date"
+                @date-updated="accomplishments[index].date = $event"
+              />
+
             </div>
             
           </v-card>
@@ -77,13 +72,15 @@
 
 <script>
 import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
+import Calender from '../../ReusableComponents/CreateCalender.vue'
 
 export default {
   props: [
     'userData'
   ],
   components: {
-    Toolbar
+    Toolbar,
+    Calender
   },
   created() {
     if (this.userData?.accomplishments) this.accomplishments = this.userData.accomplishments.content;

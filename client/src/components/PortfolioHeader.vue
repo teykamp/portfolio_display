@@ -21,7 +21,7 @@
             <v-row>  
               <v-col>
                 <div class="pt-16 pl-16">
-                  <v-card-subtitle class="text-h5"> Hi! I'm </v-card-subtitle>
+                  <v-card-subtitle class="text-h5 pb-0"> Hi! I'm </v-card-subtitle>
                   <v-card-subtitle class="text-h3"> {{ data.name }}, </v-card-subtitle>
                   <v-card-subtitle class="text-h6"> {{ data.professionalTitle }} </v-card-subtitle>
                 </div>
@@ -34,7 +34,8 @@
                     <v-list-item>
                       <v-list-item-content v-if="data.email">
                         <v-list-item-title>
-                          <v-btn 
+                          <v-btn
+                            target="_blank" 
                             small 
                             plain
                             :href="'mailto:' + data.email"
@@ -59,22 +60,25 @@
                   <v-spacer></v-spacer>
                 </v-container>
                 <v-container>
-                  <v-btn
-                    v-for="link in data.links"
-                    :key=link.type
-                    class="ma-2"
-                    color="accent"
-                    dark
-                    :href="link.URL"
-                  >
-                    <v-icon v-if="link.type === 'personal'">mdi-web</v-icon>
-                    <v-icon 
-                      v-else 
+                  <v-row justify="center">
+                    <v-btn
+                      v-for="link in data.links"
+                      :key=link.type
+                      class="ma-2"
+                      color="accent"
                       dark
+                      :href="link.URL"
+                      target="_blank"
                     >
-                      mdi-{{ link.type }}
-                    </v-icon>
-                  </v-btn>
+                      <v-icon v-if="link.type === 'personal'">mdi-web</v-icon>
+                      <v-icon 
+                        v-else 
+                        dark
+                      >
+                        mdi-{{ link.type }}
+                      </v-icon>
+                    </v-btn>
+                  </v-row>
                 </v-container>
               </v-col>
               <v-col>

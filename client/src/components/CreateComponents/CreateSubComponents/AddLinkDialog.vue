@@ -61,6 +61,22 @@ export default {
         'Facebook',
         'YouTube',
         'LinkedIn',
+        'Google',
+        'Snapchat',
+        'Slack',
+        'Skype',
+        'Soundcloud',
+        'Pandora',
+        'Steam',
+        'Origin',
+        'TeamViewer',
+        'Discord',
+        'Pinterest',
+        'WhatsApp',
+        'Vimeo',
+        'Yahoo',
+        'Microsoft-Teams',
+        'WeChat',
         'Personal Site'
       ]
     }

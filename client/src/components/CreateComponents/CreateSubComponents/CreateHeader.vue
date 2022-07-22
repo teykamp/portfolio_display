@@ -54,7 +54,9 @@
             <span>Delete link</span>
           </v-tooltip> 
 
-          {{ link.URL.substring(8,30) }}
+          <span @click.stop="selectedLinkItem = link; showLinkDialog = true;">
+            {{ link.URL.substring(8,30) }}
+          </span>
 
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
@@ -74,9 +76,11 @@
     </div>
 
     <AddLinkDialog 
-    :visible="showLinkDialog" 
-    @close="showLinkDialog = false"
-    @confirmed="data.links.push($event)"
+    :visible="showLinkDialog"
+    :item="selectedLinkItem"
+    @close="showLinkDialog = false; selectedLinkItem = undefined;"
+    @save="data.links.push($event)"
+    @save-edit="data.links[data.links.indexOf(selectedLinkItem)] = $event"
     />
 
     
@@ -96,7 +100,8 @@ export default {
   data() {
     return {
       data: {},
-      showLinkDialog: false
+      showLinkDialog: false,
+      selectedLinkItem: undefined
     }
   },
   created() { 

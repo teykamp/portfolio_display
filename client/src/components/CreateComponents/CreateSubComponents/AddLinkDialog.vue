@@ -28,7 +28,7 @@
       <v-card-actions>
         <v-btn 
         color="primary"
-        @click.stop="confirmed()"
+        @click.stop="save()"
         :disabled="validateInput"
         >
           Save
@@ -48,7 +48,8 @@
 <script>
 export default {
   props: {
-    visible: Boolean
+    visible: Boolean,
+    item: { required: false }
   },
   data() {
     return {
@@ -65,13 +66,15 @@ export default {
     }
   },
   methods: {
-    confirmed() {
+    save() {
 
-      this.$emit('confirmed', { 
+      this.$emit(this.item ? 'save-edit' : 'save', { 
         URL: this.url, 
-        type: this.linkTypeSelected.toLowerCase()
+        type: this.linkTypeSelected.toLowerCase().replace(/\s/g, '')
       });
 
+      this.url = '';
+      this.linkTypeSelected = '';
       this.show = false;
     }
   },
@@ -91,8 +94,26 @@ export default {
     }
   },
   watch: {
+    item() {
+      // checks to see if item prop is being passed in, if so, adjusts its properties accordingly
+      if (this.item) {
+        this.url = this.item.URL;
+        this.linkTypes.forEach(item => {
+          if (item.toLowerCase().replace(/\s/g, '') == this.item.type) {
+            return this.linkTypeSelected = item;
+          }
+        });
+      } else {
+        this.url = '';
+        this.linkTypeSelected = '';
+      }
+    },
     url() {
-
+      this.linkTypes.forEach(item => {
+        if (this.url.toLowerCase().replace(/\./g, '').includes(item.toLowerCase())) {
+          this.linkTypeSelected = item
+        }
+      })
     }
   }
 }

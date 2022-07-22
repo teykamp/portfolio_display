@@ -12,22 +12,28 @@
 
       <div v-else>
 
-        <v-toolbar style="position: fixed; z-index: 2; width: 100vw;">
-          <v-icon @click.stop="$router.push('/')">mdi-chevron-left</v-icon>
-          <span style="font-weight: bold; font-size: 15pt;" class="ml-1">My Portfolio</span>
-          <v-spacer></v-spacer>
-          <v-btn class="mr-2" color="primary" @click="sendUserToPreview()">
-            <v-icon class="mr-2">mdi-file-eye-outline</v-icon>
-            Preview
-          </v-btn>
-          <Steps />
-          <v-btn class="ml-2" color="amber" @click.stop="editMode ? updatePortfolioRemote() : createPortfolioRemote()">
-            {{ editMode ? 'Save' : 'Create' }}
-          </v-btn>
-        </v-toolbar>
+        <div v-show="!componentBeingEditedInsideMain">
 
-        <div style="width: 100vw; height: 10vh;"></div>
-        <Main 
+          <v-toolbar style="position: fixed; z-index: 2; width: 100vw;">
+            <v-icon @click.stop="$router.push('/')">mdi-chevron-left</v-icon>
+            <span style="font-weight: bold; font-size: 15pt;" class="ml-1">My Portfolio</span>
+            <v-spacer></v-spacer>
+            <v-btn class="mr-2" color="primary" @click="sendUserToPreview()">
+              <v-icon class="mr-2">mdi-file-eye-outline</v-icon>
+              Preview
+            </v-btn>
+            <Steps />
+            <v-btn class="ml-2" color="amber" @click.stop="editMode ? updatePortfolioRemote() : createPortfolioRemote()">
+              {{ editMode ? 'Save' : 'Create' }}
+            </v-btn>
+          </v-toolbar>
+
+          <div style="width: 100vw; height: 10vh;"></div>
+          
+        </div>
+
+        <Main
+        ref="main"
         @update-component-data="updateComponentData($event)"
         :userData="userData"
         />
@@ -57,6 +63,7 @@ export default {
   },
   data: () => {
     return {
+      componentBeingEditedInsideMain: false,
       error: false,
       showIntro: false,
       editMode: false,
@@ -105,6 +112,16 @@ export default {
       this.userData = portfolioData;
       this.showIntro = false;
     }
+  },
+  mounted() {
+    this.$watch(
+      () => {
+        return this.$refs.main.editComponentView
+      },
+      (value) => {
+        this.componentBeingEditedInsideMain = value
+      }
+    )
   },
   methods: {
     updateComponentData(dataObject) {

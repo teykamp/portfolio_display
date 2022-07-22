@@ -1,46 +1,24 @@
 <template>
   <div>
     <div v-if="!editComponentView">
-   
-      <v-container fluid fill-height>
-        
+      <v-container fluid fill-height>  
         <v-row align="center" justify="center">
-
-          <TransitionGroup name="list"> 
-            
-            <v-card 
+          <v-col cols="8">
+            <div 
             v-for="(item, index) in portfolioComponents" 
-            :key="item.id" :color="`${item.color} lighten-1`"             
-            @click.stop="addComponent(index)"
-            >               
-              <v-row class="justify-space-between" 
-              no-gutters 
-              align="center"
-              justify="center">
-                <v-col >
-                  <v-card-title>{{ `${item.name[0].toUpperCase()}${item.name.substring(1)}` }}</v-card-title>
-                </v-col>
-                <v-col cols="2">
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-icon
-                        v-bind="attrs"
-                        v-on="on"
-                      >
-                        mdi-help-circle
-                      </v-icon>
-                    </template>
-                    <span>{{ item.desc }}</span>
-                  </v-tooltip>                
-                </v-col>
-              </v-row>
-              
-            </v-card>
-          </TransitionGroup>
+            :key="item.id"
+            >
+              <ComponentCard 
+              :item="item"
+              :removable="false"
+              :draggable="false"
+              :editable="false"
+              :onClick="() => addComponent(index)" 
+              />
+            </div>
+          </v-col>
         </v-row>
 
-
-      
         <v-row align="center" justify="center">
 
           <v-col cols="8">
@@ -134,7 +112,6 @@ export default {
 
       targetedComponentIndex: 0,
       deleteConfirmationDialog: false
-
     }
   },
   methods: {
@@ -215,9 +192,7 @@ export default {
 </script>
 
 <style scoped>
-.list-move, /* apply transition to moving elements */
-.list-enter-active,
-.list-leave-active {
+.list-move /* apply transition to moving elements */ {
   transition: all 0.5s ease;
 }
 </style>

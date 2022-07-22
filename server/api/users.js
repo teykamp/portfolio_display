@@ -32,7 +32,7 @@ function apiTestUser(username) {
             description: 'Currently doing my undergrad at SNHU!',
             degreeType: 'BS',
             degreeField: 'Computer Science',
-            date: null,
+            date: "2024-09",
           }]
         },
 
@@ -53,7 +53,7 @@ function apiTestUser(username) {
             Math race auto generates math questions at various difficulty levels. Practice 
             your skills in single player. Create an account to save your 
             lastest game results and stats`,
-            date: null
+            date: "2022-12"
           }, {
             name: "Truth Tables",
             technologies: [{
@@ -63,7 +63,7 @@ function apiTestUser(username) {
             linkToDeploy: null,
             linkToRepo: "https://github.com/Yonava/truthtable",
             description: "Automates truth table equations / mathematics for computing snhu",
-            date: null
+            date: "2021-06"
           }]
         },
     
@@ -76,14 +76,14 @@ function apiTestUser(username) {
             companyImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Raising_Cane%27s_Chicken_Fingers_logo.svg/1200px-Raising_Cane%27s_Chicken_Fingers_logo.svg.png",
             description: `My primary job responsibility included onboarding and training new hires,
             working in the front of the house on customer service and back of house in the kitchen`,
-            date: null
+            date: '2022-05'
           }, {
             title: "Starbucks Barista",
             company: "Starbucks",
             companyImg: "https://upload.wikimedia.org/wikipedia/de/thumb/8/8d/Starbucks_Logo_ab_2011.svg/1200px-Starbucks_Logo_ab_2011.svg.png",
             description: `I was responsibly for making peoples morning, 
             which included purposefully spelling peoples names wrong on cups`,
-            date: null
+            date: "2050-01"
           }]
         },
     
@@ -94,7 +94,7 @@ function apiTestUser(username) {
             title: "SETA Cup Winner",
             organization: "SNHU Computer Science Department",
             description: "I got first place, just kidding, I was 2nd.",
-            date: null
+            date: "2022-08"
           }, {
             title: "Graduated High School",
             organization: "Cleveland High School",
@@ -107,7 +107,9 @@ function apiTestUser(username) {
           pageRank: 4,
           content: [
             "experiences",
-            "education"
+            "education",
+            "accomplishments",
+            "projects"
           ]
         },
         

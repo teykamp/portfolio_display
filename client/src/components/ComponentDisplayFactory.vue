@@ -1,30 +1,7 @@
 <template>
   <div>
 
-    <div v-if="componentType === 'Accomplishments'">
-      <Accomplishments :relevantInfo="relevantInfo" />
-    </div>
-
-    <div v-else-if="componentType === 'Projects'">
-      <Projects :relevantInfo="relevantInfo" />
-    </div>
-
-    <div v-else-if="componentType === 'Education'">
-      <Education :relevantInfo="relevantInfo" />
-    </div>
-
-    <div v-else-if="componentType === 'Experiences'">
-      <Experiences :relevantInfo="relevantInfo" />
-    </div>
-
-    <div v-else-if="componentType === 'Timeline'">
-      <Timeline :relevantInfo="relevantInfo" />
-    </div>
-
-    <!-- Fallback -->
-    <div v-else>
-      <p>Error, Unrecognized Component Type '{{ componentType }}' in Factory!</p  >
-    </div>
+    <component :is="componentType" :relevantInfo="relevantInfo"></component>
 
   </div>
 </template>

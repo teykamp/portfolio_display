@@ -78,6 +78,7 @@
 <script>
 import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
 import Calender from '../../ReusableComponents/CreateCalender.vue'
+import Experience from '../../../utils/PortfolioSchemas/Experiences'
 
 export default {
   components: { Toolbar, Calender },
@@ -100,13 +101,7 @@ export default {
       this.experiences.splice(index, 1);
     },
     addExperience() {
-      this.experiences.push({
-        title: 'New Experience',
-        company: '',
-        companyImg: '',
-        description: '',
-        date: ''
-      })
+      this.experiences.push(new Experience())
     },
     emitDataToGrandparent() {
       this.$parent.$emit('update-component-data', {

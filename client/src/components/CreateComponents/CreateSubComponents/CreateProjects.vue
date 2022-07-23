@@ -137,6 +137,7 @@
 <script>
 import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
 import Calender from '../../ReusableComponents/CreateCalender.vue'
+import Project from '../../../utils/PortfolioSchemas/Projects'
 
 export default {
   props: [
@@ -160,9 +161,6 @@ export default {
     }
   },
   methods: {
-    test(item) {
-      console.log(item)
-    },
     editTechUsed(project) {
       this.projectSelected = project;
       this.techView = true;
@@ -171,14 +169,7 @@ export default {
       this.projects.splice(index, 1);
     },
     addProject() {
-      this.projects.push({
-        name: '',
-        technologies: [],
-        linkToDeploy: '',
-        linkToRepo: '', 
-        description: '',
-        date: ''
-      })
+      this.projects.push(new Project())
     },
     emitDataToGrandparent() {
       this.$parent.$emit('update-component-data', {

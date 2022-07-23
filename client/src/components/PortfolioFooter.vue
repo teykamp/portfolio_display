@@ -49,8 +49,5 @@ export default {
   props: [
     'data'
   ],
-  data: () => ({
-    
-  }),
 }
 </script>

@@ -35,7 +35,6 @@
             </v-col>
             <v-col>
               <!-- Main Content -->
-                <!-- Experiment with alerts with side color -->
               <v-card
                 min-width="400"
                 max-width="1200"
@@ -48,8 +47,9 @@
                   dark 
                   height="80"
                 >
-                <!-- TODO: center text horizontally -->
+                  <v-spacer></v-spacer>
                   <v-card-title class="text-h5">Experience</v-card-title>
+                  <v-spacer></v-spacer>
                 </v-system-bar>
                 <v-container fill-height>
                   <v-col justify="left" class="align-top">

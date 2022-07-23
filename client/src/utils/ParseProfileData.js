@@ -2,10 +2,18 @@ export default function parseProfileData(portfolioJSONBundle) {
   
   let displayedComponents = [];
 
+  function addComponentTypeProperty(arr, type) {
+    for (let i = 0; i < arr.length; i++) {
+      arr[i].type = type
+    }
+    
+    return arr
+  }
+
   function getTimelineContent() {
     let contentArray = [];
     portfolioJSONBundle.timeline.content.forEach(item => {
-      contentArray = contentArray.concat(portfolioJSONBundle[item].content)
+      contentArray = contentArray.concat(addComponentTypeProperty(portfolioJSONBundle[item].content, item))
     });
     return contentArray
   }

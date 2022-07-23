@@ -34,6 +34,7 @@
               outlined
               x-small
               :href="data.githubSource"
+              target="_blank" 
             >
               {{ data.version }}
             </v-btn>

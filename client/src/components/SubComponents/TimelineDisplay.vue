@@ -104,7 +104,7 @@
               >
                 <v-container fill-height>
                   <v-card-title class="text-center pb-7">
-                    {{ timePoint.title }} in computer science
+                    {{ timePoint.title }}
                   </v-card-title>
                   <v-card-subtitle class="text-center">
                     <v-icon>mdi-office-building-marker</v-icon>

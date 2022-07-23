@@ -37,7 +37,7 @@
               :icon="typeIcons[index]"
             >
               <span slot="opposite">
-                <strong> {{timePoint.date}} </strong>
+                <strong> {{ displayDate(timePoint.date) }} </strong>
               </span>
               <!-- Education -->
               <v-card class="elevation-2" 
@@ -121,6 +121,7 @@
 </template>
 
 <script>
+import displayDate from "../../utils/DateToText.ts"
 export default {
   props: [
     'relevantInfo',
@@ -128,7 +129,8 @@ export default {
   data() {
     return {
       displayData: [],
-      typeIcons: []
+      typeIcons: [],
+      displayDate
     }
   },
   methods: {

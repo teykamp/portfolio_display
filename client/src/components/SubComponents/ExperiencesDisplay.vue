@@ -62,7 +62,7 @@
                       <v-card-title> {{ experience.title }} </v-card-title>
                       <v-card-subtitle>
                         <v-icon v-if="experience.date">mdi-calendar</v-icon>
-                        <strong v-if="experience.date"> {{ experience.date }} </strong>
+                        <strong v-if="experience.date"> {{ dateDisplay(experience.date) }} </strong>
                         <v-icon>mdi-map-marker</v-icon>
                         {{ experience.company }} 
                       </v-card-subtitle>
@@ -90,10 +90,16 @@
 </template>
 
 <script>
+import dateDisplay from "../../utils/DateToText.ts"
 export default {
   props: [
     'relevantInfo'
   ],
+  data() {
+    return {
+      dateDisplay,
+    }
+  }
 }
 </script>
 

@@ -21,7 +21,7 @@
                 </p>
                 <p v-if="education.date" class="ml-5">
                   <v-icon>mdi-calendar</v-icon>
-                  {{ education.date }}
+                  {{ dateDisplay(education.date) }}
                 </p>
               </v-row>
               <v-expansion-panel-content>
@@ -37,9 +37,16 @@
 </template>
 
 <script>
+import dateDisplay from "../../utils/DateToText.ts"
+
 export default {
   props: [
     'relevantInfo'
-  ]
+  ],
+  data() {
+    return {
+      dateDisplay,
+    }
+  }
 }
 </script>

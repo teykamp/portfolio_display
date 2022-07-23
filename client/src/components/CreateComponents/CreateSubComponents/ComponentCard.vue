@@ -32,6 +32,23 @@
       <v-col>
         <v-card-title>{{ `${item.name[0].toUpperCase()}${item.name.substring(1)}` }}</v-card-title>
       </v-col>
+
+      <!-- Missing Info -->
+      <v-col v-show="missingInfo && editable" cols="1">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-icon
+              v-bind="attrs"
+              v-on="on"
+            >
+              mdi-alert
+            </v-icon>
+          </template>
+          <span>This component is missing critical information</span>
+        </v-tooltip>     
+      </v-col>
+
+      <!-- Draggable -->
       <v-col v-show="draggable" cols="1">
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
@@ -45,6 +62,8 @@
           <span>This component is draggable</span>
         </v-tooltip>     
       </v-col>
+
+      <!-- Editable / Help -->
       <v-col cols="1" @click.stop="$emit('edit')">
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
@@ -55,7 +74,7 @@
               {{ editable ? 'mdi-pencil' : 'mdi-help-circle' }}
             </v-icon>
           </template>
-          <span>{{ editable ? `Edit ${item.name}` : `${item.desc}` }}</span>
+          <span>{{ editable ? `This component is editable` : `${item.desc}` }}</span>
         </v-tooltip>                
       </v-col>
     </v-row>
@@ -78,6 +97,11 @@ export default {
       default: true
     },
     editable: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    missingInfo: {
       type: Boolean,
       required: false,
       default: true

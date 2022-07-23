@@ -8,6 +8,6 @@ export default class Experience {
   }
 
   static validate(experience) {
-    return experience.title === 'yona'
+    return Boolean(!experience)
   }
 }

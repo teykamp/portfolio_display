@@ -1,8 +1,9 @@
 <template>
   <div>
-    <v-row justify="center" class="mt-14">        
+
+    <div class="center">
       <h3 class="mt-6">Accomplishments</h3>
-    </v-row>
+    </div>  
     <v-container class="pa-0 mb-16 mt-8">
       <v-col  xl="6" lg="8" md="12" sm="12" xs="12">
         <v-card 
@@ -77,7 +78,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-  @import url('../../UniversalStyles.css');
-</style>

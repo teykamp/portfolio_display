@@ -53,6 +53,7 @@ import Main from '../components/CreateComponents/CreateMain.vue'
 import Error from '../components/ErrorDisplay.vue'
 import Steps from '../components/CreateComponents/CreateSubComponents/StepByStep.vue'
 import DatabaseServices from '../DatabaseServices.js'
+import validatePortfolio from '../utils/ValidatePortfolio'
 
 export default {
   components: {
@@ -117,6 +118,8 @@ export default {
     this.$watch(() => this.$refs.main.editComponentView, (value) => {
       this.showToolbar = !value;
     })
+
+    setTimeout(() => alert(validatePortfolio(this.userData)), 4000)
   },
   methods: {
     updateComponentData(dataObject) {

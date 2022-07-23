@@ -63,7 +63,7 @@
                   <v-row justify="center">
                     <v-btn
                       v-for="link in data.links"
-                      :key=link.type
+                      :key=link.id
                       class="ma-2"
                       color="accent"
                       dark

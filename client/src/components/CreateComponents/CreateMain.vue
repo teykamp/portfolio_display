@@ -27,8 +27,9 @@
             <ComponentCard 
             :draggable="false" 
             :removable="false"
-            :item="{name: 'header', color: 'pink'}" 
-            @edit="componentName = 'Header'; editComponentView = true;"
+            :onClick="() => toggleEditView('Header')"
+            :item="{ name: 'header', color: 'pink' }" 
+            @edit="toggleEditView('Header')"
             />
             
             <!-- BODY CARDS -->
@@ -40,7 +41,8 @@
                 >
                   <ComponentCard 
                   :item="item" 
-                  @edit="componentName = item.name; editComponentView = true;" 
+                  :onClick="() => { toggleEditView(item.name) }"
+                  @edit="toggleEditView(item.name)" 
                   @remove="targetedComponentIndex = index; deleteConfirmationDialog = true;" 
                   />
                 </div>
@@ -50,9 +52,10 @@
             <!-- FOOTER CARD -->
             <ComponentCard 
             :draggable="false" 
-            :removable="false" 
+            :removable="false"
             :item="{name: 'footer', color: 'teal'}" 
-            @edit="componentName = 'footer'; editComponentView = true;"
+            :onClick="() => toggleEditView('footer')"
+            @edit="toggleEditView('footer')"
             />
 
           </v-col>
@@ -153,7 +156,7 @@ export default {
     },
     toggleEditView(componentName) {
       this.componentName = componentName;
-      this.editComponentView = true;
+      this.editComponentView = !this.editComponentView;
     },
     addComponent(index) {
       this.addedPortfolioComponents.push(this.portfolioComponents[index]);

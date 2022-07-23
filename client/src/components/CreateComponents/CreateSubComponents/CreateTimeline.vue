@@ -6,9 +6,7 @@
     :exitAction="() => $parent.editComponentView = false"
     :disableAddBtn="true"
     />
-
-    <div style="width: 100vw; height: 10vh;"></div>
-
+    
     <div class="center">
       <h1>Select which components to add to timeline</h1>
       <v-container>

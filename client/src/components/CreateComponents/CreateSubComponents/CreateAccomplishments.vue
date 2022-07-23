@@ -73,6 +73,7 @@
 <script>
 import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
 import Calender from '../../ReusableComponents/CreateCalender.vue'
+import Accomplishment from '../../../utils/PortfolioSchemas/Accomplishments'
 
 export default {
   props: [
@@ -98,12 +99,7 @@ export default {
       this.accomplishments.splice(index, 1);
     },
     addAccomplishment() {
-      this.accomplishments.push({
-        title: '',
-        organization: '',
-        description: '',
-        date: ''
-      })
+      this.accomplishments.push(new Accomplishment())
     },
     emitDataToGrandparent() {
       this.$parent.$emit('update-component-data', {

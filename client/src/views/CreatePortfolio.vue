@@ -12,7 +12,7 @@
 
       <div v-else>
 
-        <div v-show="!componentBeingEditedInsideMain">
+        <div v-show="showToolbar">
 
           <v-toolbar style="position: fixed; z-index: 2; width: 100vw;">
             <v-icon @click.stop="$router.push('/')">mdi-chevron-left</v-icon>
@@ -63,7 +63,7 @@ export default {
   },
   data: () => {
     return {
-      componentBeingEditedInsideMain: false,
+      showToolbar: true,
       error: false,
       showIntro: false,
       editMode: false,
@@ -114,14 +114,9 @@ export default {
     }
   },
   mounted() {
-    this.$watch(
-      () => {
-        return this.$refs.main.editComponentView
-      },
-      (value) => {
-        this.componentBeingEditedInsideMain = value
-      }
-    )
+    this.$watch(() => this.$refs.main.editComponentView, (value) => {
+      this.showToolbar = !value;
+    })
   },
   methods: {
     updateComponentData(dataObject) {

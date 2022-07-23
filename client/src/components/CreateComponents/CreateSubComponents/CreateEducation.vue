@@ -75,6 +75,7 @@
 <script>
 import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
 import Calender from '../../ReusableComponents/CreateCalender.vue'
+import Education from '../../../utils/PortfolioSchemas/Education'
 
 export default {
   components: {
@@ -100,13 +101,7 @@ export default {
       this.education.splice(index, 1);
     },
     addInstitution() {
-      this.education.push({
-        institution: '',
-        degreeType: '',
-        degreeField: '',
-        description: '',
-        date: ''
-      })
+      this.education.push(new Education())
     },
     emitDataToGrandparent() {
       this.$parent.$emit('update-component-data', {

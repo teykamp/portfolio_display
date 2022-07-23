@@ -67,6 +67,7 @@ export default {
         'Skype',
         'Soundcloud',
         'Pandora',
+        'Spotify',
         'Steam',
         'Origin',
         'TeamViewer',
@@ -76,8 +77,8 @@ export default {
         'Vimeo',
         'Yahoo',
         'Microsoft-Teams',
-        'WeChat',
-        'Personal Site'
+        'WeChat'
+        // 'Personal Site'
       ]
     }
   },

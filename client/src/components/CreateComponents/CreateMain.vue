@@ -185,9 +185,6 @@ export default {
           /* deletes all component data */
           delete this.$parent.userData[this.portfolioComponents[i].name];
 
-          /* updates state of validation errors */
-          this.$parent.validatePortfolioComponents();
-
           /* patches edge case were a component is removed but persists in timeline */
           if (this.$parent.userData?.timeline) {
             if (this.$parent.userData.timeline.content.includes(this.portfolioComponents[i].name)) {
@@ -196,6 +193,9 @@ export default {
           }
         }
       }
+      
+      /* updates state of validation errors */
+      this.$parent.validatePortfolioComponents();
     }
   }
 }

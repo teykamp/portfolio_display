@@ -9,6 +9,6 @@ export default class Education {
 
   // each obj has to pass this criteria to be considered valid
   static validate(education) {
-    return education.title === 'yona'
+    return education.institution === 'yona'
   }
 }

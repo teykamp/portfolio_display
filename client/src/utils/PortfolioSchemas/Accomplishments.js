@@ -8,6 +8,9 @@ export default class Accomplishment {
 
   // each obj has to pass this criteria to be considered valid
   static validate(accomplishment) {
-    return accomplishment.title === 'yona'
+    
+    if (!accomplishment.title) return false
+
+    return true
   }
 }

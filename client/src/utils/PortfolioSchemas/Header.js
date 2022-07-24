@@ -1,6 +1,21 @@
 export default class Header {
 
+  // header obj structure
+
+  // header: {
+  //   name: '',
+  //   headshotURL: '',
+  //   professionalTitle: '',  
+  //   links: [],    
+  //   email: '',
+  //   phone: ''
+  // }
+
   static validate(header) {
-    return header?.name != 'thomas'
+    
+    if (!header.name) return false
+    if (!header.professionalTitle) return false
+
+    return true
   }
 }

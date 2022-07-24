@@ -1,4 +1,5 @@
 export default class Experience {
+
   constructor() {
     this.title = '',
     this.company = '',
@@ -9,6 +10,10 @@ export default class Experience {
 
   // each obj has to pass this criteria to be considered valid
   static validate(experience) {
-    return Boolean(!experience)
+    
+    if (!experience.title) return false
+    if (!experience.company) return false
+
+    return true
   }
 }

@@ -1,80 +1,52 @@
 <template>
   <div>
-    <v-sheet 
-      width="100%" 
-      color="secondary" 
-      class="mt-16 pt-8"
-    >
-      <v-container 
-        fluid 
-        fill-height
-      >
-        <v-row justify="center">
-          <v-sheet 
-            dark 
-            color="secondary"
-            class="mb-10"
-          >
-            <h3>Education</h3>
-          </v-sheet>
-        </v-row>
-        <v-row 
-          justify="center" 
-          class="mb-6"
-        >
-          <v-timeline
-            :dense="$vuetify.breakpoint.smAndDown"
-          >
-            <v-timeline-item
+    <v-container fill-height class="pa-16">
+      <v-row justify="center" class="ma-10">
+        <h4>Education</h4>
+      </v-row>
+      <v-row justify="center">
+        <v-col xs="12" sm="10" md="8" lg="6" xl="6">
+          <v-expansion-panels inset>
+            <v-expansion-panel
               v-for="education in relevantInfo"
               :key="education.id"
-              fill-dot
             >
-              <span slot="opposite">
-                <!-- VERIFY ICONS CORRECT ISSUE #13 -->
-                <v-icon 
-                  v-if="education.degreeType === 'HS'"
-                  color="white" 
-                  x-large
-                >mdi-chair-school</v-icon>
-                <v-icon 
-                  v-else-if="education.degreeType === 'PhD'"
-                  color="white" 
-                  x-large
-                >mdi-script-text</v-icon>
-                <v-icon 
-                  v-else
-                  color="white" 
-                  x-large
-                >mdi-school</v-icon>
-              </span>
-              <v-card class="elevation-2">
-                <v-card-title>
-                  <!-- FIX WHEN ISSUE #39 -->
-                  {{ education.degreeType }} in computer science
-                </v-card-title>
-                <v-card-subtitle>
-                  <v-icon v-if="education.date">mdi-calendar</v-icon>
-                  <strong v-if="education.date"> {{ education.date }} </strong>
-                  <v-icon>mdi-map-marker</v-icon>
-                  {{ education.institution }} 
-                </v-card-subtitle>
-                <v-card-text>
-                  {{ education.description }}
-                </v-card-text>
-              </v-card>
-            </v-timeline-item>
-          </v-timeline>
-        </v-row>
-      </v-container>
-    </v-sheet>
+              <v-expansion-panel-header class="text-h6"> 
+                {{ education.degreeType }} {{ education.degreeField }} 
+              </v-expansion-panel-header>
+              <v-row class="pl-3 pb-3">
+                <p class="ml-5">
+                  <v-icon>mdi-map-marker</v-icon> 
+                  {{ education.institution }}
+                </p>
+                <p v-if="education.date" class="ml-5">
+                  <v-icon>mdi-calendar</v-icon>
+                  {{ dateDisplay(education.date) }}
+                </p>
+              </v-row>
+              <v-expansion-panel-content>
+                <v-divider></v-divider>
+                {{ education.description }}
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
 <script>
+import dateDisplay from "../../utils/DateToText.ts"
+
 export default {
   props: [
     'relevantInfo'
-  ]
+  ],
+  data() {
+    return {
+      dateDisplay,
+    }
+  }
 }
 </script>

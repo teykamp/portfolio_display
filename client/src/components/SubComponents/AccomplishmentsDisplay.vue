@@ -39,7 +39,7 @@
                     <v-card-subtitle>
                       <div v-if="accomplishment.date">
                         <v-icon>mdi-calendar</v-icon>
-                        {{ accomplishment.date }}
+                        {{ dateDisplay(accomplishment.date) }}
                       </div>
                       <v-icon>mdi-office-building-marker</v-icon>
                       {{ accomplishment.organization }}
@@ -67,6 +67,7 @@
 </template>
 
 <script>
+import dateDisplay from "../../utils/DateToText.ts"
 export default {
   props: [
     'relevantInfo'
@@ -74,6 +75,7 @@ export default {
   data: () => {
     return {
       cycle: true,
+      dateDisplay,
     }
   },
 }

@@ -34,7 +34,7 @@
       </v-col>
 
       <!-- Missing Info -->
-      <v-col v-show="missingInfo && editable" cols="1">
+      <v-col v-show="invalid && editable" cols="1">
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-icon
@@ -64,7 +64,7 @@
       </v-col>
 
       <!-- Editable / Help -->
-      <v-col cols="1" @click.stop="$emit('edit')">
+      <v-col cols="1">
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-icon
@@ -101,15 +101,15 @@ export default {
       required: false,
       default: true
     },
-    missingInfo: {
+    invalid: {
       type: Boolean,
       required: false,
-      default: true
+      default: false
     },
     onClick: {
       type: Function,
       required: false,
-      default: () => { console.log('CardComponent: Card Parent Not Clickable') }
+      default: () => { console.log('CardComponent: Card Not Clickable') }
     }
   }
 }

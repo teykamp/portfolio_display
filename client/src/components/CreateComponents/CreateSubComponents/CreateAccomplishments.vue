@@ -24,7 +24,7 @@
             
             <div class="pa-4 pt-0">
               <v-row align="center" justify="center">
-                <v-col cols="10">
+                <v-col cols="8">
                   <v-text-field 
                   v-model="accomplishments[index].title" 
                   placeholder="Enter Title"
@@ -34,9 +34,14 @@
                   color="blue"
                   >{{ accomplishments[index].title }}</v-text-field>
                 </v-col>
-                <v-col cols="2">
+                <v-col cols="2" absolute right>
                   <v-hover v-slot="{ hover }">
                     <v-icon large right class="mb-7" @click="removeAccomplishment(index)" color="error">{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
+                  </v-hover>
+                </v-col>
+                <v-col v-show="!validateAccomplishment(accomplishment)" cols="2">
+                  <v-hover v-slot="{ hover }">
+                    <v-icon large right class="mb-7" color="error">{{ hover ? 'mdi-alert-outline' : 'mdi-alert' }}</v-icon>
                   </v-hover>
                 </v-col>
               </v-row>
@@ -100,6 +105,9 @@ export default {
     },
     addAccomplishment() {
       this.accomplishments.push(new Accomplishment())
+    },
+    validateAccomplishment(accomplishment) {
+      return Accomplishment.validate(accomplishment)
     },
     emitDataToGrandparent() {
       this.$parent.$emit('update-component-data', {

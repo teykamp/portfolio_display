@@ -18,12 +18,12 @@
             <v-icon @click.stop="$router.push('/')">mdi-chevron-left</v-icon>
             <span style="font-weight: bold; font-size: 15pt;" class="ml-1">My Portfolio</span>
             <v-spacer></v-spacer>
-            <v-btn class="mr-2" color="primary" @click="sendUserToPreview()">
+            <v-btn :disabled="invalidComponents.length > 0" class="mr-2" color="primary" @click="sendUserToPreview()">
               <v-icon class="mr-2">mdi-file-eye-outline</v-icon>
               Preview
             </v-btn>
             <Steps />
-            <v-btn class="ml-2" color="amber" @click.stop="editMode ? updatePortfolioRemote() : createPortfolioRemote()">
+            <v-btn dark class="ml-2" color="orange darken-1" @click.stop="editMode ? updatePortfolioRemote() : createPortfolioRemote()">
               {{ editMode ? 'Save' : 'Create' }}
             </v-btn>
           </v-toolbar>
@@ -36,6 +36,7 @@
         ref="main"
         @update-component-data="updateComponentData($event)"
         :userData="userData"
+        :invalidComponents="invalidComponents"
         />
 
       </div>
@@ -51,7 +52,7 @@
 import Intro from '../components/CreateComponents/CreateIntro.vue'
 import Main from '../components/CreateComponents/CreateMain.vue'
 import Error from '../components/ErrorDisplay.vue'
-import Steps from '../components/CreateComponents/CreateSubComponents/StepByStep.vue'
+import Steps from '../components/CreateComponents/CreateSubComponents/NonPortfolioComponents/StepByStep.vue'
 import DatabaseServices from '../DatabaseServices.js'
 import validatePortfolio from '../utils/ValidatePortfolio'
 
@@ -68,6 +69,7 @@ export default {
       error: false,
       showIntro: false,
       editMode: false,
+      invalidComponents: [],
       userData: 
       {
         header: {
@@ -113,18 +115,23 @@ export default {
       this.userData = portfolioData;
       this.showIntro = false;
     }
+
   },
   mounted() {
     this.$watch(() => this.$refs.main.editComponentView, (value) => {
       this.showToolbar = !value;
     })
-
-    setTimeout(() => alert(validatePortfolio(this.userData)), 4000)
   },
   methods: {
     updateComponentData(dataObject) {
       this.userData[dataObject.componentType].content = dataObject.content;
+      this.validatePortfolioComponents();
       this.$forceUpdate();
+    },
+    validatePortfolioComponents() {
+      // validatePortolio takes a complete portfolio object 
+      // and returns an array containing string names of all invalid components
+      this.invalidComponents = validatePortfolio(this.userData);
     },
     sendUserToPreview() {
       localStorage.userData = JSON.stringify(this.userData);

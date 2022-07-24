@@ -50,7 +50,7 @@
             elevation="0"
           >
           <v-card-text>
-            Drag the portfolio items you want to include in your portfolio into 'my porfolio'.
+            Start by clicking on the portfolio items you want to include in your portfolio.
           </v-card-text>
           </v-card>
 
@@ -71,7 +71,9 @@
             elevation="0"
           >
           <v-card-text>
-            Click on the different components you added to your portfolio to fill in and edit the content displayed in those components.
+            Once added, components can be edited. Each component requires different 
+            information to be complete, components that have not met these criteria yet will appear
+            with an alert <v-icon small>mdi-alert</v-icon> icon indicating the missing information.
           </v-card-text>
           </v-card>
 
@@ -92,7 +94,10 @@
             elevation="0"
           >
             <v-card-text>
-              Rearrange your porfolios visual hierachy by simply dragging each component into the order you best see fit.
+              Rearrange your porfolios visual hierachy by dragging 
+              each component into the order you best see fit.
+              Components with the draggable <v-icon small>mdi-drag-horizontal-variant</v-icon> 
+              icon can be reordered.
             </v-card-text>
           </v-card>
 

@@ -6,6 +6,7 @@ export default class Accomplishment {
     this.date = ''
   }
 
+  // each obj has to pass this criteria to be considered valid
   static validate(accomplishment) {
     return accomplishment.title === 'yona'
   }

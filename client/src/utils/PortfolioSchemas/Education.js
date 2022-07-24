@@ -7,6 +7,7 @@ export default class Education {
     this.date = ''
   }
 
+  // each obj has to pass this criteria to be considered valid
   static validate(education) {
     return education.title === 'yona'
   }

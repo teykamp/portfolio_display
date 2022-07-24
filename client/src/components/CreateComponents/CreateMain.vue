@@ -27,9 +27,9 @@
             <ComponentCard 
             :draggable="false" 
             :removable="false"
+            :invalid="invalidComponents.includes('header')"
             :onClick="() => toggleEditView('Header')"
-            :item="{ name: 'header', color: 'pink' }" 
-            @edit="toggleEditView('Header')"
+            :item="{ name: 'header', color: 'pink' }"
             />
             
             <!-- BODY CARDS -->
@@ -42,7 +42,8 @@
                   <ComponentCard 
                   :item="item" 
                   :onClick="() => { toggleEditView(item.name) }"
-                  @edit="toggleEditView(item.name)" 
+                  :invalid="invalidComponents.includes(item.name)"
+                  
                   @remove="targetedComponentIndex = index; deleteConfirmationDialog = true;" 
                   />
                 </div>
@@ -53,9 +54,8 @@
             <ComponentCard 
             :draggable="false" 
             :removable="false"
-            :item="{name: 'footer', color: 'teal'}" 
-            :onClick="() => toggleEditView('footer')"
-            @edit="toggleEditView('footer')"
+            :item="{ name: 'footer', color: 'teal', desc: 'Footer currently just chills here with no purpose' }" 
+            :editable="false"
             />
 
           </v-col>
@@ -86,7 +86,7 @@ import Education from '../CreateComponents/CreateSubComponents/CreateEducation.v
 import DeleteDialog from '../ReusableComponents/DialogBox.vue'
 import Header from '../CreateComponents/CreateSubComponents/CreateHeader.vue'
 import Timeline from '../CreateComponents/CreateSubComponents/CreateTimeline.vue'
-import ComponentCard from '../CreateComponents/CreateSubComponents/ComponentCard.vue'
+import ComponentCard from './CreateSubComponents/NonPortfolioComponents/ComponentCard.vue'
 
 export default {
   components: {
@@ -101,10 +101,14 @@ export default {
     ComponentCard
   },
   props: [
-    'userData'
+    'userData',
+    'invalidComponents'
   ],
   mounted() {
-    setTimeout(() => this.initalizeComponentArraysOnLoad(), 25);
+    setTimeout(() => {
+      this.initalizeComponentArraysOnLoad()
+      this.$parent.validatePortfolioComponents();
+    }, 25);
   },
   data: () => {
     return {
@@ -180,6 +184,9 @@ export default {
 
           /* deletes all component data */
           delete this.$parent.userData[this.portfolioComponents[i].name];
+
+          /* updates state of validation errors */
+          this.$parent.validatePortfolioComponents();
 
           /* patches edge case were a component is removed but persists in timeline */
           if (this.$parent.userData?.timeline) {

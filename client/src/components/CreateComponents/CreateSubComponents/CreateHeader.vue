@@ -92,7 +92,7 @@
 
 <script>
 import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
-import AddLinkDialog from './AddLinkDialog.vue'
+import AddLinkDialog from './NonPortfolioComponents/AddLinkDialog.vue'
 
 export default {
   components: { Toolbar, AddLinkDialog },
@@ -107,9 +107,15 @@ export default {
   created() { 
     this.data = this.userData.header;
   },
+  destroyed() {
+    this.emitDataToGrandparent()
+  },
   methods: {
-    linkDialog() {
-
+    emitDataToGrandparent() {
+      this.$parent.$emit('update-component-data', {
+        componentType: 'header',
+        content: this.data
+      });
     }
   }
 }

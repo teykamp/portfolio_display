@@ -7,6 +7,7 @@ export default class Experience {
     this.date = ''
   }
 
+  // each obj has to pass this criteria to be considered valid
   static validate(experience) {
     return Boolean(!experience)
   }

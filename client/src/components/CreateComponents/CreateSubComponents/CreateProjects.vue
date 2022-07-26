@@ -4,11 +4,11 @@
     <div v-if="!techView">
 
       <Toolbar 
-      :title="'Projects'"
-      :exitAction="() => $parent.editComponentView = false"
-      :onAdd="() => addProject()"
-      :listLength="projects.length"
-      :disabledAt="12"
+        :title="'Projects'"
+        :exitAction="() => $parent.editComponentView = false"
+        :onAdd="() => addProject()"
+        :listLength="projects.length"
+        :disabledAt="12"
       />
 
       <div v-show="projects.length === 0" style="display: flex; align-items: center; justify-content: center;">
@@ -26,27 +26,43 @@
             <v-card>
               
               <div class="pa-4 pt-0">
-                <v-row align="center" justify="center">
-                  <v-col cols="10">
-                    <v-text-field 
-                    v-model="projects[index].name" 
-                    placeholder="Enter Name of Proj."
-                    style="font-weight: bold; font-size: 18pt;"
-                    outlined
-                    clearable
-                    color="blue"
-                    >{{ projects[index].name }}</v-text-field>
-                  </v-col>
-                  <v-col cols="2">
+                
+                  <v-row>                    
+                    <div class="ml-3 mt-7" v-if="missingInfo(project)">
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-icon
+                            v-bind="attrs"
+                            v-on="on"                  
+                          >
+                            mdi-alert
+                          </v-icon>
+                        </template>
+                        <span>Missing required information</span>
+                      </v-tooltip>     
+                    </div>
+
+                    <v-col cols="10" sm="9">
+                      <v-text-field 
+                      v-model="projects[index].name" 
+                      placeholder="Enter Name of Proj."
+                      style="font-weight: bold; font-size: 18pt;"
+                      outlined
+                      clearable
+                      color="blue"                
+                      >{{ projects[index].name }}</v-text-field>
+                    </v-col>
+                    <v-spacer></v-spacer>
                     <v-hover v-slot="{ hover }">
-                      <v-icon large right class="mb-7" @click="removeProject(index)" color="error">{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
+                      <v-icon large class="mb-7 mr-1" @click="removeProject(index)" color="error">{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
                     </v-hover>
-                  </v-col>
-                </v-row>
+                  </v-row>
+
                 <v-btn block color="blue" dark @click="techView = true; projectSelected = project">
                   <span>Add Technologies Used ({{ project.technologies.length }})</span>
                   <!-- <v-icon>mdi-file-code-outline</v-icon> -->
                 </v-btn>
+                <p v-show="project.technologies.length === 0" class="mt-1" style="color: red">*At Least 1 Technology Required</p>
                 <v-text-field 
                   label="Deployment URL"
                   v-model="projects[index].linkToDeploy">
@@ -106,6 +122,7 @@
                 <v-text-field
                 label="Name"
                 v-model="projectSelected.technologies[index].name"
+                :rules="[required]"         
                 ></v-text-field>
                 <v-text-field
                 label="Logo URL"
@@ -157,7 +174,8 @@ export default {
     return {
       projects: [],
       techView: false,
-      projectSelected: {}
+      projectSelected: {},
+      required: value => !!value || 'Required.'
     }
   },
   methods: {
@@ -169,7 +187,10 @@ export default {
       this.projects.splice(index, 1);
     },
     addProject() {
-      this.projects.push(new Project())
+      this.projects.push(new Project());
+    },
+    missingInfo(obj) {
+      return !Project.validate(obj);
     },
     emitDataToGrandparent() {
       this.$parent.$emit('update-component-data', {

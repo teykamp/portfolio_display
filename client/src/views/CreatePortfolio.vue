@@ -132,7 +132,6 @@ export default {
       this.userData[dataObject.componentType].content = dataObject.content;
       this.validatePortfolioComponents();
       this.$forceUpdate();
-      console.log(this.invalidComponents)
     },
     validatePortfolioComponents() {
       // validatePortolio takes a complete portfolio object 

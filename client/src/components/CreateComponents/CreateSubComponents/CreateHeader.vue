@@ -11,10 +11,12 @@
       <v-text-field
       label="Name"
       v-model="data.name"
+      :rules="[rules.required]"
       ></v-text-field>
       <v-text-field
       label="Professional Title"
       v-model="data.professionalTitle"
+      :rules="[rules.required]"
       ></v-text-field>
       <v-text-field
       label="Headshot URL"
@@ -23,10 +25,12 @@
       <v-text-field
       label="Email"
       v-model="data.email"
+      :rules="[rules.email]"
       ></v-text-field>
       <v-text-field
       label="Phone Number"
       v-model="data.phone"
+      :rules="[rules.phone]"
       ></v-text-field>
       <v-divider></v-divider>
 
@@ -83,10 +87,6 @@
     @save-edit="data.links[data.links.indexOf(selectedLinkItem)] = $event"
     />
 
-    
-      
-    
-
   </div>
 </template>
 
@@ -101,7 +101,18 @@ export default {
     return {
       data: {},
       showLinkDialog: false,
-      selectedLinkItem: undefined
+      selectedLinkItem: undefined,
+      rules: {
+        required: value => !!value || 'Required.',
+        email: value => {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          return pattern.test(value) || 'Invalid e-mail.'
+        },
+        phone: value => {
+          const pattern = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
+          return pattern.test(value) || 'dats a fake number, dont even be fruntin like dat'
+        }
+      }
     }
   },
   created() { 

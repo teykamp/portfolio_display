@@ -19,6 +19,7 @@
                   tile 
                   width="20"
                   class="mt-1 mb-8"
+                  :hidden="$vuetify.breakpoint.smAndDown"
                 >
                   <v-system-bar
                     color="secondary"

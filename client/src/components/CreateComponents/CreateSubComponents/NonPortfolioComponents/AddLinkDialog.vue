@@ -13,13 +13,13 @@
               <v-text-field 
               label="URL"
               v-model="url"
-              required
+              :rules="[required]"
               ></v-text-field>
               <v-autocomplete
               label="Link Type"
               :items="linkTypes"
               v-model="linkTypeSelected"
-              required
+              :rules="[required]"
               ></v-autocomplete>
             </v-col>
           </v-row>
@@ -55,6 +55,7 @@ export default {
     return {
       url: '',
       linkTypeSelected: '',
+      required: value => !!value || 'Required',
       linkTypes: [
         'Github',
         'Instagram',

@@ -32,7 +32,7 @@
       v-model="data.phone"
       :rules="[rules.phone]"
       ></v-text-field>
-      
+
       <v-divider></v-divider>
 
       <div>
@@ -111,7 +111,7 @@ export default {
         },
         phone: value => {
           const pattern = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
-          return pattern.test(value) || 'dats a fake number, dont even be fruntin like dat'
+          return pattern.test(value) || 'Invalid phone number'
         }
       }
     }

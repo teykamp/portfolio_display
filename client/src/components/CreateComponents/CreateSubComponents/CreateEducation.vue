@@ -23,8 +23,23 @@
           <v-card>
             
             <div class="pa-4 pt-0">
-              <v-row align="center" justify="center">
-                <v-col cols="10">
+
+              <v-row>
+                <div class="ml-3 mt-7" v-if="missingInfo(institution)">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon
+                        v-bind="attrs"
+                        v-on="on"                  
+                      >
+                        mdi-alert
+                      </v-icon>
+                    </template>
+                    <span>Missing required information</span>
+                  </v-tooltip>     
+                </div>
+
+                <v-col cols="9">
                   <v-text-field 
                   v-model="education[index].institution" 
                   placeholder="Enter Institution"
@@ -34,20 +49,26 @@
                   color="blue"
                   >{{ education[index].institution }}</v-text-field>
                 </v-col>
-                <v-col cols="2">
-                  <v-hover v-slot="{ hover }">
-                    <v-icon large right class="mb-7" @click="removeInstitution(index)" color="error">{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
-                  </v-hover>
-                </v-col>
+
+                <v-spacer></v-spacer>
+
+                <v-hover v-slot="{ hover }">
+                  <v-icon large right class="mb-7 mr-1" @click="removeExperience(index)" color="error">{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
+                </v-hover>            
               </v-row>
-              <v-text-field 
+
+              <v-autocomplete 
                 label="Degree Type"
+                :items="degreeTypes"
                 v-model="education[index].degreeType">
-              </v-text-field>
+              </v-autocomplete>
+
               <v-text-field 
+                v-if="education[index].degreeType != 'High School' && education[index].degreeType"
                 label="Degree Field"
                 v-model="education[index].degreeField">
               </v-text-field>
+
               <v-textarea
                 color="blue"
                 :label="`Add a Description (${education[index].description.length}/3000)`"
@@ -93,15 +114,27 @@ export default {
   },
   data: () => {
     return {
-      education: []
+      education: [],
+      degreeTypes: [
+        'High School',
+        'MA',
+        'BA',
+        'BS',
+        'JD',
+        'MD',
+        'PhD'
+      ]
     }
   },
   methods: {
     removeInstitution(index) {
       this.education.splice(index, 1);
     },
+    missingInfo(obj) {
+      return !Education.validate(obj);
+    },
     addInstitution() {
-      this.education.push(new Education())
+      this.education.push(new Education());
     },
     emitDataToGrandparent() {
       this.$parent.$emit('update-component-data', {

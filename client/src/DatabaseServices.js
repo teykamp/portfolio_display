@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+// switch between online and offline mode by adding and removing 'offline/'
 const url = '/api/users/';
 
 export default class DatabaseServices {
@@ -23,5 +24,9 @@ export default class DatabaseServices {
       console.log(error)
     }
   }  
+
+  static postPortfolio(portfolioItem) {
+    return axios.post(url, portfolioItem)
+  }
 }
 

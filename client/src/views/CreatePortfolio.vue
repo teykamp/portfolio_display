@@ -151,7 +151,14 @@ export default {
       this.$router.push('/');
     },
     createPortfolioRemote() {
-      alert('Portfolio Has Been Created!');
+      
+      this.$forceUpdate();
+
+      DatabaseServices.postPortfolio({
+        username: 'yona',
+        portfolioItem: this.userData
+      });
+      
       this.$router.push('/');
     }
   }

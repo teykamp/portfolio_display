@@ -12,8 +12,12 @@
       <div> 
         <b-button v-if="!previewMode" depressed variant="warning" style="color: white; z-index: 10;" class="position-absolute" 
         @click="$router.push(`/edit/${$route.params.user}`)">Edit</b-button>
-        <b-button v-else variant="primary" style="color: white;"
-        @click="returnFromPreview()">Züruck</b-button>
+        <b-button 
+          v-else variant="primary" 
+          style="color: white; z-index: 10;"
+          class="position-absolute" 
+          @click="returnFromPreview()"
+        >Back</b-button>
       </div>
 
       <div>

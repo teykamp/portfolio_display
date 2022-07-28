@@ -62,7 +62,10 @@
                   <v-card-title class="pb-2">
                     {{ timePoint.title }}
                   </v-card-title>
-                  <v-row justify="center">
+                  <v-row 
+                    justify="center"
+                    v-if="timePoint.companyImg"
+                  >
                     <v-img
                       :src="timePoint.companyImg"
                       aspect-ratio="1"
@@ -73,6 +76,7 @@
                     ></v-img>
                   </v-row>
                   <v-card-subtitle>
+                    <v-icon>mdi-map-marker</v-icon>
                     {{ timePoint.company }}
                   </v-card-subtitle>
                 </v-container>

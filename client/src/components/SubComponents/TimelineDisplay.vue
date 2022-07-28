@@ -1,6 +1,7 @@
 <template>
   <div>
-    <v-sheet 
+    <v-sheet
+      v-if="displayData.length > 0" 
       width="100%" 
       color="secondary" 
       class="mt-16 pt-8"
@@ -30,7 +31,6 @@
           <v-timeline
             :dense="$vuetify.breakpoint.smAndDown"
           >
-          <!-- TODO: ADD ICON -->
             <v-timeline-item
               v-for="(timePoint, index) in displayData"
               :key="timePoint.id"
@@ -121,6 +121,16 @@
         </v-col>
       </v-container>
     </v-sheet>
+
+    <!-- if no data with dates -->
+    <v-container v-else>
+      <v-alert
+        border="left"
+        outlined
+        text
+        type="warning"
+      >No items in Timeline have dates. Data cannot be displayed. Please add dates to at least one timeline component</v-alert>
+    </v-container>
   </div>
 </template>
 
@@ -145,7 +155,7 @@ export default {
         case 'education':
           return 'mdi-school'
         case 'accomplishments':
-          return 'mdi-script-text'
+          return 'mdi-trophy'
         case 'experiences':
           return 'mdi-briefcase'
         default:

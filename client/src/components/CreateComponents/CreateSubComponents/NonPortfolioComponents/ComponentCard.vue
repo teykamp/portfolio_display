@@ -1,7 +1,7 @@
 <template>
   <v-card 
   :color="`${item.color} lighten-1`"  
-  @click="onClick"               
+  @click.stop="onClick"               
   >
     
     <v-row
@@ -29,12 +29,14 @@
           </v-tooltip>     
         </v-row>         
       </v-col>
+
+      <!-- Title Text -->
       <v-col>
         <v-card-title>{{ `${item.name[0].toUpperCase()}${item.name.substring(1)}` }}</v-card-title>
       </v-col>
 
       <!-- Missing Info -->
-      <v-col v-show="invalid && editable" cols="1">
+      <v-col v-show="invalid && editable" cols="1" :class="$vuetify.breakpoint.smAndUp ? '' : 'mr-2'">
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-icon
@@ -49,7 +51,7 @@
       </v-col>
 
       <!-- Draggable -->
-      <v-col v-show="draggable" cols="1">
+      <v-col v-show="draggable" cols="1" :class="$vuetify.breakpoint.smAndUp ? '' : 'mr-2'">
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-icon
@@ -64,7 +66,7 @@
       </v-col>
 
       <!-- Editable / Help -->
-      <v-col cols="1">
+      <v-col cols="1" v-if="$vuetify.breakpoint.smAndUp">
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-icon
@@ -77,6 +79,7 @@
           <span>{{ editable ? `This component is editable` : `${item.desc}` }}</span>
         </v-tooltip>                
       </v-col>
+      <div v-else-if="!editable" class="mx-3 mb-2">{{ item.desc  }}</div>
     </v-row>
     
   </v-card>

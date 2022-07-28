@@ -23,8 +23,8 @@
           <v-card>
             
             <div class="pa-4 pt-0">
-              <v-row>
 
+              <v-row>
                 <div class="ml-3 mt-7" v-if="missingInfo(experience)">
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
@@ -39,7 +39,7 @@
                   </v-tooltip>     
                 </div>
 
-                <v-col cols="10" sm="9">
+                <v-col cols="9">
                   <v-text-field 
                   v-model="experiences[index].title" 
                   placeholder="Enter Title"
@@ -49,12 +49,14 @@
                   color="blue"
                   >{{ experiences[index].title }}</v-text-field>
                 </v-col>
+
                 <v-spacer></v-spacer>
+
                 <v-hover v-slot="{ hover }">
-                  <v-icon large right class="mb-7" @click="removeExperience(index)" color="error">{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
-                </v-hover>
-                
+                  <v-icon large right class="mb-7 mr-1" @click="removeExperience(index)" color="error">{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
+                </v-hover>            
               </v-row>
+
               <v-text-field 
                 label="Company Name"
                 :rules="[required]"

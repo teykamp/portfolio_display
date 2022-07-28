@@ -15,11 +15,11 @@
         <div v-show="showToolbar">
 
           <Toolbar 
-          :title="'My Portfolio'"
+          :title="$vuetify.breakpoint.smAndUp ? 'My Portfolio' : ''"
           :exitAction="() => $router.push('/')"
           >
             <template #actions>
-              <v-btn :disabled="invalidComponents.length > 0" class="mr-2" color="primary" @click="sendUserToPreview()">
+              <v-btn :disabled="invalidComponents.length > 0" class="mr-2" color="primary" @click.stop="sendUserToPreview()">
                 <v-icon class="mr-2">mdi-file-eye-outline</v-icon>
                 Preview
               </v-btn>
@@ -29,9 +29,6 @@
               </v-btn>
             </template>
           </Toolbar>
-          
-
-          <div style="width: 100vw; height: 10vh;"></div>
           
         </div>
 

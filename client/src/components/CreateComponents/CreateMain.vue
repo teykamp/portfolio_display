@@ -3,7 +3,7 @@
     <div v-if="!editComponentView">
       <v-container fluid fill-height>  
         <v-row align="center" justify="center">
-          <v-col cols="8">
+          <v-col cols="12" sm="10" md="8">
             <div 
             v-for="(item, index) in portfolioComponents" 
             :key="item.id"
@@ -21,7 +21,7 @@
 
         <v-row align="center" justify="center">
 
-          <v-col cols="8">
+          <v-col cols="12" sm="10" md="8">
 
             <!-- HEADER -->
             <ComponentCard 
@@ -43,7 +43,6 @@
                   :item="item" 
                   :onClick="() => { toggleEditView(item.name) }"
                   :invalid="invalidComponents.includes(item.name)"
-                  
                   @remove="targetedComponentIndex = index; deleteConfirmationDialog = true;" 
                   />
                 </div>
@@ -54,7 +53,7 @@
             <ComponentCard 
             :draggable="false" 
             :removable="false"
-            :item="{ name: 'footer', color: 'teal', desc: 'Footer currently just chills here with no purpose' }" 
+            :item="{ name: 'footer', color: 'teal', desc: 'Footer currently uneditable' }" 
             :editable="false"
             />
 

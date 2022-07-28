@@ -20,7 +20,9 @@
 
     </v-toolbar>
 
-    <div style="width: 100vw; height: 10vh;"></div>
+    <!-- v-toolbar is 56px high on xs-sm and 64px high on md-xl, 
+    this div adds 15px net margin between toolbar and elements position below -->
+    <div :style="`width: 100vw; height: ${$vuetify.breakpoint.mdAndUp ? '79' : '71' }px;`"></div>
     
   </div>
 </template>

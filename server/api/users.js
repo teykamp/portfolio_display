@@ -60,7 +60,7 @@ function apiTestUser(username) {
               name: "Python",
               logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/2048px-Python-logo-notext.svg.png"
             }],
-            linkToDeploy: null,
+            linkToDeploy: '',
             linkToRepo: "https://github.com/Yonava/truthtable",
             description: "Automates truth table equations / mathematics for computing snhu",
             date: "2021-06"

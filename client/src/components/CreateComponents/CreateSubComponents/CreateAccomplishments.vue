@@ -23,8 +23,23 @@
           <v-card>
             
             <div class="pa-4 pt-0">
-              <v-row align="center" justify="center">
-                <v-col cols="10">
+
+              <v-row>
+                <div class="ml-3 mt-7" v-if="missingInfo(accomplishment)">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon
+                        v-bind="attrs"
+                        v-on="on"                  
+                      >
+                        mdi-alert
+                      </v-icon>
+                    </template>
+                    <span>Missing required information</span>
+                  </v-tooltip>     
+                </div>
+
+                <v-col cols="9">
                   <v-text-field 
                   v-model="accomplishments[index].title" 
                   placeholder="Enter Title"
@@ -34,12 +49,14 @@
                   color="blue"
                   >{{ accomplishments[index].title }}</v-text-field>
                 </v-col>
-                <v-col cols="2">
-                  <v-hover v-slot="{ hover }">
-                    <v-icon large right class="mb-7" @click="removeAccomplishment(index)" color="error">{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
-                  </v-hover>
-                </v-col>
+
+                <v-spacer></v-spacer>
+
+                <v-hover v-slot="{ hover }">
+                  <v-icon large right class="mb-7 mr-1" @click="removeAccomplishment(index)" color="error">{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
+                </v-hover>            
               </v-row>
+
               <v-text-field
                 label="Organization Name"
                 v-model="accomplishments[index].organization">
@@ -100,6 +117,9 @@ export default {
     },
     addAccomplishment() {
       this.accomplishments.push(new Accomplishment())
+    },
+    missingInfo(accomplishment) {
+      return !Accomplishment.validate(accomplishment)
     },
     emitDataToGrandparent() {
       this.$parent.$emit('update-component-data', {

@@ -9,6 +9,10 @@ export default class Project {
   }
 
   static validate(project) {
-    return project.name === 'yona'
+    
+    if (!project.name) return false
+    if (project.technologies.length === 0) return false
+    
+    return true
   }
 }

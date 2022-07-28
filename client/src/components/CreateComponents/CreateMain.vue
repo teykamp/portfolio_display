@@ -3,7 +3,7 @@
     <div v-if="!editComponentView">
       <v-container fluid fill-height>  
         <v-row align="center" justify="center">
-          <v-col cols="8">
+          <v-col cols="12" sm="10" md="8">
             <div 
             v-for="(item, index) in portfolioComponents" 
             :key="item.id"
@@ -21,15 +21,15 @@
 
         <v-row align="center" justify="center">
 
-          <v-col cols="8">
+          <v-col cols="12" sm="10" md="8">
 
             <!-- HEADER -->
             <ComponentCard 
             :draggable="false" 
             :removable="false"
+            :invalid="invalidComponents.includes('header')"
             :onClick="() => toggleEditView('Header')"
-            :item="{ name: 'header', color: 'pink' }" 
-            @edit="toggleEditView('Header')"
+            :item="{ name: 'header', color: 'pink' }"
             />
             
             <!-- BODY CARDS -->
@@ -42,7 +42,7 @@
                   <ComponentCard 
                   :item="item" 
                   :onClick="() => { toggleEditView(item.name) }"
-                  @edit="toggleEditView(item.name)" 
+                  :invalid="invalidComponents.includes(item.name)"
                   @remove="targetedComponentIndex = index; deleteConfirmationDialog = true;" 
                   />
                 </div>
@@ -53,9 +53,8 @@
             <ComponentCard 
             :draggable="false" 
             :removable="false"
-            :item="{name: 'footer', color: 'teal'}" 
-            :onClick="() => toggleEditView('footer')"
-            @edit="toggleEditView('footer')"
+            :item="{ name: 'footer', color: 'teal', desc: 'Footer currently uneditable' }" 
+            :editable="false"
             />
 
           </v-col>
@@ -86,7 +85,7 @@ import Education from '../CreateComponents/CreateSubComponents/CreateEducation.v
 import DeleteDialog from '../ReusableComponents/DialogBox.vue'
 import Header from '../CreateComponents/CreateSubComponents/CreateHeader.vue'
 import Timeline from '../CreateComponents/CreateSubComponents/CreateTimeline.vue'
-import ComponentCard from '../CreateComponents/CreateSubComponents/ComponentCard.vue'
+import ComponentCard from './CreateSubComponents/NonPortfolioComponents/ComponentCard.vue'
 
 export default {
   components: {
@@ -101,10 +100,14 @@ export default {
     ComponentCard
   },
   props: [
-    'userData'
+    'userData',
+    'invalidComponents'
   ],
   mounted() {
-    setTimeout(() => this.initalizeComponentArraysOnLoad(), 25);
+    setTimeout(() => {
+      this.initalizeComponentArraysOnLoad()
+      this.$parent.validatePortfolioComponents();
+    }, 25);
   },
   data: () => {
     return {
@@ -189,6 +192,9 @@ export default {
           }
         }
       }
+      
+      /* updates state of validation errors */
+      this.$parent.validatePortfolioComponents();
     }
   }
 }

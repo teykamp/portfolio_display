@@ -7,7 +7,15 @@ export default class Education {
     this.date = ''
   }
 
+  // each obj has to pass this criteria to be considered valid
   static validate(education) {
-    return education.title === 'yona'
+    
+    if (!education.institution) return false
+    if (!education.degreeType) return false
+    if (education.degreeType != 'High School') {
+      if (!education.degreeField) return false
+    }
+
+    return true
   }
 }

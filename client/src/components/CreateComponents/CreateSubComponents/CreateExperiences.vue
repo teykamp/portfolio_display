@@ -23,8 +23,23 @@
           <v-card>
             
             <div class="pa-4 pt-0">
-              <v-row align="center" justify="center">
-                <v-col cols="10">
+
+              <v-row>
+                <div class="ml-3 mt-7" v-if="missingInfo(experience)">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon
+                        v-bind="attrs"
+                        v-on="on"                  
+                      >
+                        mdi-alert
+                      </v-icon>
+                    </template>
+                    <span>Missing required information</span>
+                  </v-tooltip>     
+                </div>
+
+                <v-col cols="9">
                   <v-text-field 
                   v-model="experiences[index].title" 
                   placeholder="Enter Title"
@@ -34,14 +49,17 @@
                   color="blue"
                   >{{ experiences[index].title }}</v-text-field>
                 </v-col>
-                <v-col cols="2">
-                  <v-hover v-slot="{ hover }">
-                    <v-icon large right class="mb-7" @click="removeExperience(index)" color="error">{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
-                  </v-hover>
-                </v-col>
+
+                <v-spacer></v-spacer>
+
+                <v-hover v-slot="{ hover }">
+                  <v-icon large right class="mb-7 mr-1" @click="removeExperience(index)" color="error">{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
+                </v-hover>            
               </v-row>
+
               <v-text-field 
                 label="Company Name"
+                :rules="[required]"
                 v-model="experiences[index].company">
               </v-text-field>
               <v-text-field 
@@ -93,7 +111,8 @@ export default {
   },
   data: () => {
     return {
-      experiences: []
+      experiences: [],
+      required: value => !!value || 'Required'
     }
   },
   methods: {
@@ -102,6 +121,9 @@ export default {
     },
     addExperience() {
       this.experiences.push(new Experience())
+    },
+    missingInfo(obj) {
+      return !Experience.validate(obj);
     },
     emitDataToGrandparent() {
       this.$parent.$emit('update-component-data', {

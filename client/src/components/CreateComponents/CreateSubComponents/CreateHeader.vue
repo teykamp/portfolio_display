@@ -11,10 +11,14 @@
       <v-text-field
       label="Name"
       v-model="data.name"
+      :rules="[rules.required]"
+      :append-icon="data.name ? '' : 'mdi-alert'"
       ></v-text-field>
       <v-text-field
       label="Professional Title"
       v-model="data.professionalTitle"
+      :rules="[rules.required]"
+      :append-icon="data.professionalTitle ? '' : 'mdi-alert'"
       ></v-text-field>
       <v-text-field
       label="Headshot URL"
@@ -23,11 +27,16 @@
       <v-text-field
       label="Email"
       v-model="data.email"
+      :rules="[rules.email]"
+      :append-icon="validateEmail() ? '' : 'mdi-alert'"
       ></v-text-field>
       <v-text-field
       label="Phone Number"
       v-model="data.phone"
+      :rules="[rules.phone]"
+      :append-icon="validatePhone() ? '' : 'mdi-alert'"
       ></v-text-field>
+
       <v-divider></v-divider>
 
       <div>
@@ -76,23 +85,19 @@
     </div>
 
     <AddLinkDialog 
-    :visible="showLinkDialog"
-    :item="selectedLinkItem"
-    @close="showLinkDialog = false; selectedLinkItem = undefined;"
-    @save="data.links.push($event)"
-    @save-edit="data.links[data.links.indexOf(selectedLinkItem)] = $event"
+      :visible="showLinkDialog"
+      :item="selectedLinkItem"
+      @close="showLinkDialog = false; selectedLinkItem = undefined;"
+      @save="data.links.push($event)"
+      @save-edit="data.links[data.links.indexOf(selectedLinkItem)] = $event"
     />
-
-    
-      
-    
 
   </div>
 </template>
 
 <script>
 import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
-import AddLinkDialog from './AddLinkDialog.vue'
+import AddLinkDialog from './NonPortfolioComponents/AddLinkDialog.vue'
 
 export default {
   components: { Toolbar, AddLinkDialog },
@@ -101,15 +106,30 @@ export default {
     return {
       data: {},
       showLinkDialog: false,
-      selectedLinkItem: undefined
+      selectedLinkItem: undefined,
+      rules: {
+        required: value => !!value || 'Required.',
+        email: () => this.validateEmail() || 'Invalid e-mail',
+        phone: () => this.validatePhone() || 'Invalid phone number'
+      }
     }
   },
   created() { 
     this.data = this.userData.header;
   },
+  destroyed() {
+    this.$parent.$emit('validate');
+  },
   methods: {
-    linkDialog() {
-
+    validatePhone() {
+      if (!this.data.phone) return true
+      const pattern = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
+      return pattern.test(this.data.phone)
+    },
+    validateEmail() {
+      if (!this.data.email) return true
+      const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return pattern.test(this.data.email)
     }
   }
 }

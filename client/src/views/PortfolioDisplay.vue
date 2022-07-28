@@ -10,14 +10,21 @@
     <div v-else>
 
       <div> 
-        <b-button v-if="!previewMode" depressed variant="warning" style="color: white; z-index: 10;" class="position-absolute" 
-        @click="$router.push(`/edit/${$route.params.user}`)">Edit</b-button>
-        <b-button 
-          v-else variant="primary" 
-          style="color: white; z-index: 10;"
+        <v-btn 
+          v-if="!previewMode" 
+          depressed 
+          color="accent"
+          style="z-index: 10;" 
+          class="position-absolute" 
+          @click="$router.push(`/edit/${$route.params.user}`)"
+        >Edit</v-btn>
+        <v-btn 
+          v-else
+          style="z-index: 10;"
+          color="accent"
           class="position-absolute" 
           @click="returnFromPreview()"
-        >Back</b-button>
+        >Back</v-btn>
       </div>
 
       <div>

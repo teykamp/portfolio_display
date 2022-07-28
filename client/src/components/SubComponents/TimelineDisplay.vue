@@ -62,7 +62,10 @@
                   <v-card-title class="pb-2">
                     {{ timePoint.title }}
                   </v-card-title>
-                  <v-row justify="center">
+                  <v-row 
+                    justify="center"
+                    v-if="timePoint.companyImg"
+                  >
                     <v-img
                       :src="timePoint.companyImg"
                       aspect-ratio="1"

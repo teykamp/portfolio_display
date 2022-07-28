@@ -32,7 +32,10 @@
 
       <!-- Title Text -->
       <v-col>
-        <v-card-title>{{ `${item.name[0].toUpperCase()}${item.name.substring(1)}` }}</v-card-title>
+        <v-card-title
+        :style="editable || $vuetify.breakpoint.smAndUp ? '' : 'font-size: 12pt' "
+        >{{ `${item.name[0].toUpperCase()}${item.name.substring(1)}` }}
+        </v-card-title>
       </v-col>
 
       <!-- Missing Info -->
@@ -66,7 +69,7 @@
       </v-col>
 
       <!-- Editable / Help -->
-      <v-col cols="1" v-if="$vuetify.breakpoint.smAndUp">
+      <v-col cols="1" v-if="$vuetify.breakpoint.mdAndUp">
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-icon
@@ -79,7 +82,12 @@
           <span>{{ editable ? `This component is editable` : `${item.desc}` }}</span>
         </v-tooltip>                
       </v-col>
-      <div v-else-if="!editable" class="mx-3 mb-2">{{ item.desc  }}</div>
+      <v-col 
+      v-else-if="!editable" 
+      :style="$vuetify.breakpoint.smAndUp ? '' : 'font-size: 9pt'"
+      :class="$vuetify.breakpoint.smAndUp ? 'mr-6 mt-4': 'mr-3 mt-5'">
+        <p>{{ item.desc  }}</p>
+      </v-col>
     </v-row>
     
   </v-card>

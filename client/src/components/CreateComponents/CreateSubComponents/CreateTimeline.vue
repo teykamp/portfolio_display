@@ -7,23 +7,31 @@
     :disableAddBtn="true"
     />
     
-    <div class="center">
-      <h1>Select which components to add to timeline</h1>
-      <v-container>
-        <v-row align="center" justify="center">
-          <v-col
-          v-for="component in timelineCompatible"
-          :key="component.name"
-          >
-            <v-checkbox
-            :label="component.name"
-            v-if="userData[component.name.toLowerCase()]"
-            v-model="component.selected"
-            ></v-checkbox>
-          </v-col>
-        </v-row>
-      </v-container>
-      <h3>Add a theme</h3>
+    <div class="center" style="text-align: center">
+      
+      <div class="mx-3">
+        <div class="text-h4">Select which components to add to timeline</div>
+        <p>Only items with dates specified will appear. All added items will display in chronological order.</p>
+      </div>
+      
+      <div
+      v-for="component in timelineCompatible"
+      :key="component.name"
+      >
+    
+        <v-btn
+        class="mb-2"
+        min-width="200px"
+        rounded
+        dark
+        v-if="userData[component.name.toLowerCase()]"
+        :color="component.selected ? 'green' : 'red'"
+        @click.stop="component.selected = !component.selected"
+        >{{ component.name }}
+        </v-btn>
+
+      </div>
+      <!-- <h3>Add a theme</h3> -->
     </div>
 
   </div>

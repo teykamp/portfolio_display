@@ -32,6 +32,7 @@
       v-model="data.phone"
       :rules="[rules.phone]"
       ></v-text-field>
+      
       <v-divider></v-divider>
 
       <div>

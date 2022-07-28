@@ -25,6 +25,12 @@
             <strong> &copy; {{ new Date().getFullYear() }} </strong>
           </v-card-text>
           <v-card-actions>
+            <v-btn 
+              x-small 
+              color="primary" 
+              href="https://github.com/teykamp/portfolio_display/discussions/" 
+              target="_blank"
+            >Feedback</v-btn>
             <v-spacer></v-spacer>
             <div class="caption">Version</div>
             <v-btn

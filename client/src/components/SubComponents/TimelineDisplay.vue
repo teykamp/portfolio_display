@@ -73,6 +73,7 @@
                     ></v-img>
                   </v-row>
                   <v-card-subtitle>
+                    <v-icon>mdi-map-marker</v-icon>
                     {{ timePoint.company }}
                   </v-card-subtitle>
                 </v-container>

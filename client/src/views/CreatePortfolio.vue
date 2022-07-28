@@ -19,7 +19,9 @@
           :exitAction="() => $router.push('/')"
           >
             <template #actions>
-              <v-btn :disabled="invalidComponents.length > 0" class="mr-2" color="primary" @click.stop="sendUserToPreview()">
+              <v-btn :disabled="invalidComponents.length > 0" 
+                class="mr-2" color="primary" 
+                @click.stop="sendUserToPreview()">
                 <v-icon class="mr-2">mdi-file-eye-outline</v-icon>
                 Preview
               </v-btn>
@@ -33,10 +35,11 @@
         </div>
 
         <Main
-        ref="main"
-        @update-component-data="updateComponentData($event)"
-        :userData="userData"
-        :invalidComponents="invalidComponents"
+          ref="main"
+          @update-component-data="updateComponentData($event)"
+          @validate="validatePortfolioComponents()"
+          :userData="userData"
+          :invalidComponents="invalidComponents"
         />
 
       </div>
@@ -125,8 +128,8 @@ export default {
     })
   },
   methods: {
-    updateComponentData(dataObject) {
-      this.userData[dataObject.componentType].content = dataObject.content;
+    updateComponentData({ componentType, content }) {
+      this.userData[componentType].content = content;
       this.validatePortfolioComponents();
       this.$forceUpdate();
     },

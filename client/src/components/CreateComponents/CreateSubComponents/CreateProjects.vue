@@ -45,7 +45,7 @@
                     <v-col cols="10" sm="9">
                       <v-text-field 
                       v-model="projects[index].name" 
-                      placeholder="Enter Name of Proj."
+                      placeholder="Enter Project Name"
                       style="font-weight: bold; font-size: 18pt;"
                       outlined
                       clearable
@@ -58,11 +58,12 @@
                     </v-hover>
                   </v-row>
 
-                <v-btn block color="blue" dark @click="techView = true; projectSelected = project">
+                <v-btn class="mb-2" block color="primary" dark @click="techView = true; projectSelected = project">
                   <span>Add Technologies Used ({{ project.technologies.length }})</span>
                   <!-- <v-icon>mdi-file-code-outline</v-icon> -->
                 </v-btn>
-                <p v-show="project.technologies.length === 0" class="mt-1" style="color: red">*At Least 1 Technology Required</p>
+                <p v-show="project.technologies.length === 0" style="color: red">*At Least 1 Technology Required</p>
+
                 <v-text-field 
                   label="Deployment URL"
                   v-model="projects[index].linkToDeploy">

@@ -12,11 +12,13 @@
       label="Name"
       v-model="data.name"
       :rules="[rules.required]"
+      :append-icon="data.name ? '' : 'mdi-alert'"
       ></v-text-field>
       <v-text-field
       label="Professional Title"
       v-model="data.professionalTitle"
       :rules="[rules.required]"
+      :append-icon="data.professionalTitle ? '' : 'mdi-alert'"
       ></v-text-field>
       <v-text-field
       label="Headshot URL"
@@ -26,11 +28,13 @@
       label="Email"
       v-model="data.email"
       :rules="[rules.email]"
+      :append-icon="validateEmail() ? '' : 'mdi-alert'"
       ></v-text-field>
       <v-text-field
       label="Phone Number"
       v-model="data.phone"
       :rules="[rules.phone]"
+      :append-icon="validatePhone() ? '' : 'mdi-alert'"
       ></v-text-field>
 
       <v-divider></v-divider>
@@ -81,11 +85,11 @@
     </div>
 
     <AddLinkDialog 
-    :visible="showLinkDialog"
-    :item="selectedLinkItem"
-    @close="showLinkDialog = false; selectedLinkItem = undefined;"
-    @save="data.links.push($event)"
-    @save-edit="data.links[data.links.indexOf(selectedLinkItem)] = $event"
+      :visible="showLinkDialog"
+      :item="selectedLinkItem"
+      @close="showLinkDialog = false; selectedLinkItem = undefined;"
+      @save="data.links.push($event)"
+      @save-edit="data.links[data.links.indexOf(selectedLinkItem)] = $event"
     />
 
   </div>
@@ -105,14 +109,8 @@ export default {
       selectedLinkItem: undefined,
       rules: {
         required: value => !!value || 'Required.',
-        email: value => {
-          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-          return pattern.test(value) || 'Invalid e-mail.'
-        },
-        phone: value => {
-          const pattern = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
-          return pattern.test(value) || 'Invalid phone number'
-        }
+        email: () => this.validateEmail() || 'Invalid e-mail',
+        phone: () => this.validatePhone() || 'Invalid phone number'
       }
     }
   },
@@ -120,14 +118,18 @@ export default {
     this.data = this.userData.header;
   },
   destroyed() {
-    this.emitDataToGrandparent()
+    this.$parent.$emit('validate');
   },
   methods: {
-    emitDataToGrandparent() {
-      this.$parent.$emit('update-component-data', {
-        componentType: 'header',
-        content: this.data
-      });
+    validatePhone() {
+      if (!this.data.phone) return true
+      const pattern = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
+      return pattern.test(this.data.phone)
+    },
+    validateEmail() {
+      if (!this.data.email) return true
+      const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return pattern.test(this.data.email)
     }
   }
 }

@@ -53,7 +53,7 @@
                 <v-spacer></v-spacer>
 
                 <v-hover v-slot="{ hover }">
-                  <v-icon large right class="mb-7 mr-1" @click="removeExperience(index)" color="error">{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
+                  <v-icon large right class="mb-7 mr-1" @click="removeInstitution(index)" color="error">{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
                 </v-hover>            
               </v-row>
 

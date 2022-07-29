@@ -107,6 +107,10 @@ export default {
         this.userData = JSON.parse(localStorage.userData);
         this.showIntro = false;
         if (this.$route.params?.user) this.editMode = true;
+        setTimeout(() => {
+          this.$refs.main.initalizeComponentArraysOnLoad();
+          this.validatePortfolioComponents();
+        }, 100);
         localStorage.removeItem('userData');
       } catch (err) {
         /* if the JSON parse fails, the user is redirected back to the home screen as a fallback
@@ -173,7 +177,7 @@ export default {
       this.$forceUpdate();
 
       DatabaseServices.postPortfolio({
-        username: 'yona',
+        username: this.username,
         portfolioItem: this.userData
       });
       

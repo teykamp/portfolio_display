@@ -41,10 +41,27 @@ router.post('/', async (req, res) => {
 
 });
 
+router.put('/:username', async (req, res) => {
+
+  try {
+    const updatedPortfolioItem = await PortfolioItem.updateOne(
+      { username: req.params.username }, 
+      { $set: { portfolioItem: req.body.portfolioItem } }
+    );
+    res.json(updatedPortfolioItem);
+  } catch (error) {
+    res.json({ message: error })
+  }
+  
+});
+
 router.get('/offline/:username', async (req, res) => {
 
   try {
-    res.json(offlineAPI(req.params.username));
+    res.json({
+      username: req.params.username,
+      portfolioItem: offlineAPI(req.params.username)
+    });
   } catch (error) {
     res.json({ message: error });
   };

@@ -31,7 +31,14 @@
               </v-btn>
             </template>
           </Toolbar>
-          
+
+          <div class="mx-12">
+            <v-text-field 
+              label="Username of Portfolio (for lookup)"
+              v-model="username"
+            />
+          </div>
+
         </div>
 
         <Main
@@ -70,6 +77,9 @@ export default {
   },
   data: () => {
     return {
+
+      username: '',
+
       showToolbar: true,
       error: false,
       showIntro: false,
@@ -108,16 +118,24 @@ export default {
       }
       return;
     }
+
     /* distingushed between edit and create routes incl. pulling relevant editable user data */
     if (this.$route.params?.user) {
       /* check if user is autheticated here when auth is implemented */
       this.editMode = true;
       const portfolioData = await DatabaseServices.getUserByUsername(this.$route.params.user);
-      if (portfolioData?.error) this.error = portfolioData.error;
+      // if (portfolioData?.error) this.error = portfolioData.error;
       if (!portfolioData) this.error = 'user not found';
 
       /* sets valid existing portfolio data to user data, editable by the connected sub components */
-      this.userData = portfolioData;
+      this.userData = portfolioData.portfolioItem;
+      this.username = portfolioData.username;
+
+      setTimeout(() => {
+        this.$refs.main.initalizeComponentArraysOnLoad();
+        this.validatePortfolioComponents();
+      }, 100);
+      
       this.showIntro = false;
     }
 
@@ -144,7 +162,7 @@ export default {
     },
     updatePortfolioRemote() {
       if (this.$route.params?.user) {
-        alert(`${this.$route.params.user}s portfolio has been updated in the database`)
+        DatabaseServices.updatePorfolio(this.$route.params.user, this.userData)
       } else {
         alert("I'm not sure what users' info needs to be updated...")
       }

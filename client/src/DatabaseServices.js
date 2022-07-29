@@ -25,8 +25,12 @@ export default class DatabaseServices {
     }
   }  
 
-  static postPortfolio(portfolioItem) {
-    return axios.post(url, portfolioItem)
+  static postPortfolio(portfolio) {
+    return axios.post(url, portfolio)
+  }
+
+  static updatePorfolio(username, portfolioItem) {
+    return axios.put(`${url}${username}`, { portfolioItem })
   }
 }
 

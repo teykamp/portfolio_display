@@ -68,16 +68,16 @@ export default {
       return this.formatDataForDisplay(this.$route.params.data);
     }
 
-    this.user = await DatabaseServices.getUserByUsername(this.$route.params.user);
+    const response = await DatabaseServices.getUserByUsername(this.$route.params.user);
 
     // There has been an issue connecting with our servers, this may be an internet connectivity issue.
-    if (!this.user) return this.error = 'no server conection';
-    // "user not found"
-    if (this.user?.error) return this.error = this.user.error;
-    // This portfolio has been marked as private, contact ${this.user.name} to gain access!
-    if (!this.user.visibility) return this.error = 'account set private';
+    // this may also be triggered if the user does not exist in this version
+    if (!response) return this.error = 'user not found';
 
-    this.formatDataForDisplay(this.user);
+    // This portfolio has been marked as private, contact ${this.user.name} to gain access!
+    if (!response.portfolioItem.visibility) return this.error = 'account set private';
+
+    this.formatDataForDisplay(response.portfolioItem);
     
   },
   data: () => {
@@ -85,7 +85,7 @@ export default {
       componentArray: [],
       headerData: {},
       footerData: {},      
-      user: undefined,
+
       error: undefined,
       previewMode: false
     }

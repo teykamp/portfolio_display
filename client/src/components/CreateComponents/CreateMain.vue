@@ -104,10 +104,7 @@ export default {
     'invalidComponents'
   ],
   mounted() {
-    setTimeout(() => {
-      this.initalizeComponentArraysOnLoad()
-      this.$parent.validatePortfolioComponents();
-    }, 25);
+    if (!this.$route.params?.user) this.initalizeComponentArraysOnLoad();
   },
   data: () => {
     return {

@@ -1,21 +1,9 @@
 <template>
   <div class="text-center">
     <v-dialog
-      v-model="dialog"
+      v-model="show"
       width="500"
     >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="cyan darken-1"
-          dark
-          v-bind="attrs"
-          v-on="on"
-        >
-          <v-icon>mdi-help-circle-outline</v-icon>
-          <span class="d-none d-sm-flex ml-2">Help</span>
-        </v-btn>
-      </template>
-
       <v-stepper v-model="e1">
       <v-stepper-header>
         <v-stepper-step
@@ -101,7 +89,7 @@
             </v-card-text>
           </v-card>
 
-          <v-btn @click="dialog = false; e1 = 1" text>
+          <v-btn @click="e1 = 1; show = false" text>
             Let's Get Going!
           </v-btn>
         </v-stepper-content>
@@ -113,10 +101,27 @@
 
 <script>
 export default {
-  data: function() {
+  data() {
     return {
-      e1: 1,
-      dialog: false
+      e1: 1
+    }
+  },
+  props: {
+    visible: {
+      type: Boolean,
+      required: true
+    }
+  },
+  computed: {
+    show: {
+      get () {
+        return this.visible
+      },
+      set (value) {
+        if (!value) {
+          this.$emit('close-dialog')
+        }
+      }
     }
   }
 }

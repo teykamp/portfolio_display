@@ -6,9 +6,25 @@
       <MainToolbar
         :invalidComponents="invalidComponents"
         :editMode="true"
+        :loading="loading"
       /> 
 
-      <v-container fluid fill-height>  
+      <div v-if="loading">
+        <div v-for="i in 6" :key="i">
+          <v-skeleton-loader
+            class="mx-auto my-3"
+            height="75"
+            max-width="80vw"
+            type="image"
+          ></v-skeleton-loader>
+        </div>
+      </div>
+
+      <v-container 
+        v-else
+        fluid 
+        fill-height
+      >  
         <v-row 
           align="center" 
           justify="center"
@@ -84,7 +100,7 @@
       @update-component-data="updateComponentData($event)"
     />
 
-    <pre>{{userData}}</pre>
+    <!-- <pre>{{userData}}</pre> -->
 
     <DeleteDialog 
       :description="`Removing the ${addedPortfolioComponents[targetedComponentIndex] ? `${addedPortfolioComponents[targetedComponentIndex].name}` : `` } 
@@ -112,8 +128,10 @@ import MainToolbar from './CreateSubComponents/NonPortfolioComponents/MainToolba
 
 // Logic
 import draggable from 'vuedraggable'
+// import DatabaseServices from '../../DatabaseServices'
 import validatePortfolio from '../../utils/ValidatePortfolio'
 import HeaderClass from '../../utils/PortfolioSchemas/Header'
+// import DatabaseServices from '../../DatabaseServices'
 
 export default {
   components: {
@@ -128,13 +146,29 @@ export default {
     ComponentCard,
     MainToolbar
   },
-  mounted() {
-    if (!this.$route.params?.user) this.initalizeComponentArraysOnLoad();
+  async mounted() {
 
+    // const data = await DatabaseServices.getUserByUsername('yona');
+    // console.log(data)
+
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        this.loading = false
+        resolve()
+      }, 3000)
+    })
+    
+    console.log(Boolean(this.$store.state.portfolioItem))
+    this.initalizeComponentArraysOnLoad();
     this.userData.header = new HeaderClass();
+
+    // this.loading = false
   },
   data: () => {
     return {
+
+      // true if component is in a loading state and data has not finished fetching
+      loading: true,
 
       // unadded portfolio components
       portfolioComponents: [],

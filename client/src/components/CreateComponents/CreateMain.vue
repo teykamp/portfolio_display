@@ -100,7 +100,7 @@
       @update-component-data="updateComponentData($event)"
     />
 
-    <!-- <pre>{{userData}}</pre> -->
+    <pre>{{userData}}</pre>
 
     <DeleteDialog 
       :description="`Removing the ${addedPortfolioComponents[targetedComponentIndex] ? `${addedPortfolioComponents[targetedComponentIndex].name}` : `` } 
@@ -128,10 +128,9 @@ import MainToolbar from './CreateSubComponents/NonPortfolioComponents/MainToolba
 
 // Logic
 import draggable from 'vuedraggable'
-// import DatabaseServices from '../../DatabaseServices'
+import DatabaseServices from '../../DatabaseServices'
 import validatePortfolio from '../../utils/ValidatePortfolio'
 import HeaderClass from '../../utils/PortfolioSchemas/Header'
-// import DatabaseServices from '../../DatabaseServices'
 
 export default {
   components: {
@@ -148,21 +147,22 @@ export default {
   },
   async mounted() {
 
-    // const data = await DatabaseServices.getUserByUsername('yona');
-    // console.log(data)
-
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        this.loading = false
-        resolve()
-      }, 3000)
-    })
     
-    console.log(Boolean(this.$store.state.portfolioItem))
-    this.initalizeComponentArraysOnLoad();
-    this.userData.header = new HeaderClass();
 
-    // this.loading = false
+    // checks if unresolved session is saved in state, 
+    // this could be because user exited previously or is returning from a preview
+    if (this.$store.state.portfolioItem) this.userData = this.$store.state.portfolioItem;
+
+    else if (this.$route.fullPath.includes('create')) this.userData.header = new HeaderClass();
+    
+    else if (this.$route.fullPath.includes('edit')) { 
+      const data = await DatabaseServices.getUserByUsername('offline/yona');
+      this.userData = data.portfolioItem;
+    }
+    
+    this.initalizeComponentArraysOnLoad();
+
+    this.loading = false
   },
   data: () => {
     return {

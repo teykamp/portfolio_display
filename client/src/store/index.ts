@@ -5,6 +5,6 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    portfolioItem: 203
+    portfolioItem: undefined
   }
 })

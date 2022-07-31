@@ -1,19 +1,21 @@
 <template>
   <div>
+
     <div v-if="!editComponentView">
+
       <v-container fluid fill-height>  
         <v-row align="center" justify="center">
           <v-col cols="12" sm="10" md="8">
             <div 
-            v-for="(item, index) in portfolioComponents" 
-            :key="item.id"
+              v-for="(item, index) in portfolioComponents" 
+              :key="item.id"
             >
               <ComponentCard 
-              :item="item"
-              :removable="false"
-              :draggable="false"
-              :editable="false"
-              :onClick="() => addComponent(index)" 
+                :item="item"
+                :removable="false"
+                :draggable="false"
+                :editable="false"
+                :onClick="() => addComponent(index)" 
               />
             </div>
           </v-col>
@@ -23,27 +25,27 @@
 
           <v-col cols="12" sm="10" md="8">
 
-            <!-- HEADER -->
+            <!-- HEADER CARD -->
             <ComponentCard 
-            :draggable="false" 
-            :removable="false"
-            :invalid="invalidComponents.includes('header')"
-            :onClick="() => toggleEditView('Header')"
-            :item="{ name: 'header', color: 'pink' }"
+              :draggable="false" 
+              :removable="false"
+              :invalid="invalidComponents.includes('header')"
+              :onClick="() => toggleEditView('Header')"
+              :item="{ name: 'header', color: 'pink' }"
             />
             
             <!-- BODY CARDS -->
             <draggable v-model="addedPortfolioComponents">
               <TransitionGroup name="list"> 
                 <div 
-                v-for="(item, index) in addedPortfolioComponents" 
-                :key="item.id"
+                  v-for="(item, index) in addedPortfolioComponents" 
+                  :key="item.id"
                 >
                   <ComponentCard 
-                  :item="item" 
-                  :onClick="() => { toggleEditView(item.name) }"
-                  :invalid="invalidComponents.includes(item.name)"
-                  @remove="targetedComponentIndex = index; deleteConfirmationDialog = true;" 
+                    :item="item" 
+                    :onClick="() => { toggleEditView(item.name) }"
+                    :invalid="invalidComponents.includes(item.name)"
+                    @remove="targetedComponentIndex = index; deleteConfirmationDialog = true;" 
                   />
                 </div>
               </TransitionGroup>
@@ -51,10 +53,10 @@
 
             <!-- FOOTER CARD -->
             <ComponentCard 
-            :draggable="false" 
-            :removable="false"
-            :item="{ name: 'footer', color: 'teal', desc: 'Footer currently uneditable' }" 
-            :editable="false"
+              :draggable="false" 
+              :removable="false"
+              :item="{ name: 'footer', color: 'teal', desc: 'Footer currently uneditable' }" 
+              :editable="false"
             />
 
           </v-col>
@@ -63,7 +65,7 @@
 
     </div>
     
-    <component v-else :is="componentName" :userData="userData" />
+    <component v-else :is="componentBeingEdited" :userData="userData" />
 
     <DeleteDialog 
     :description="`Removing the ${addedPortfolioComponents[targetedComponentIndex] ? `${addedPortfolioComponents[targetedComponentIndex].name}` : `` } 
@@ -108,19 +110,30 @@ export default {
   },
   data: () => {
     return {
-      portfolioComponents: [],
-      addedPortfolioComponents: [],
-      editComponentView: false,
-      componentName: undefined,
 
+      // unadded portfolio components
+      portfolioComponents: [],
+
+      // components added by user
+      addedPortfolioComponents: [],
+
+      // true when a component is being edited by user and main interface is hidden
+      editComponentView: false,
+
+      // name of the component that is being edited, empty when no component is being worked on
+      componentBeingEdited: '',
+
+      // an integer that stores the index of an item that the user wants to remove from addedComponents
       targetedComponentIndex: 0,
+
+      // true when the dialog box is showing that asks for the user to confirm whether or they want a component deleted
       deleteConfirmationDialog: false
     }
   },
   methods: {
     initalizeComponentArraysOnLoad() {
 
-      /* injects components */
+      /* all components that we offer to users */
       this.portfolioComponents = [
         {id: 0, name: 'projects', color: 'red', desc: 'Flawlessly display software projects you have completed!'}, 
         {id: 1, name: 'education', color: 'yellow', desc: 'Include your academic achievements and degrees earned!'}, 
@@ -155,43 +168,38 @@ export default {
       this.addedPortfolioComponents.sort((a, b) => a.pageRank - b.pageRank);
     },
     toggleEditView(componentName) {
-      this.componentName = componentName;
+      this.componentBeingEdited = componentName;
       this.editComponentView = !this.editComponentView;
     },
     addComponent(index) {
+      this.$parent.userData[this.portfolioComponents[index].name] = { pageRank: 0, content: [] }
+      this.$parent.validatePortfolioComponents();
+
       this.addedPortfolioComponents.push(this.portfolioComponents[index]);
       this.portfolioComponents.splice(index, 1);
     },
     removeComponent(index) {
+      /* deletes all component data */
+      delete this.$parent.userData[this.addedPortfolioComponents[index].name];
+
+      /* patches edge case were a component is removed but persists in timeline */
+      if (this.$parent.userData?.timeline) {
+        if (this.$parent.userData.timeline.content.includes(this.addedPortfolioComponents[index].name)) {
+          this.$parent.userData.timeline.content.splice(this.$parent.userData.timeline.content.indexOf(this.addedPortfolioComponents[index].name), 1);
+          this.$parent.validatePortfolioComponents();
+        }
+      }
+
       this.portfolioComponents.push(this.addedPortfolioComponents[index]);
-      this.addedPortfolioComponents.splice(index, 1);
+      this.addedPortfolioComponents.splice(index, 1); 
     }
   },
   watch: {
     addedPortfolioComponents() {
       // Update Page Rankings
       for (let i = 0; i < this.addedPortfolioComponents.length; i++) {
-        const content = this.$parent.userData[this.addedPortfolioComponents[i].name]?.content ?? [];
-        this.$parent.userData[this.addedPortfolioComponents[i].name] = { pageRank: i, content: content };
+        this.$parent.userData[this.addedPortfolioComponents[i].name].pageRank = i;
       }
-
-      for (let i = 0; i < this.portfolioComponents.length; i++) {
-        if (this.$parent.userData[this.portfolioComponents[i].name]) {
-
-          /* deletes all component data */
-          delete this.$parent.userData[this.portfolioComponents[i].name];
-
-          /* patches edge case were a component is removed but persists in timeline */
-          if (this.$parent.userData?.timeline) {
-            if (this.$parent.userData.timeline.content.includes(this.portfolioComponents[i].name)) {
-              this.$parent.userData.timeline.content.splice(this.$parent.userData.timeline.content.indexOf(this.portfolioComponents[i].name), 1)
-            }
-          }
-        }
-      }
-      
-      /* updates state of validation errors */
-      this.$parent.validatePortfolioComponents();
     }
   }
 }

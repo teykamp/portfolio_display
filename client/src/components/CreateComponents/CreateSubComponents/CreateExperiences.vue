@@ -2,11 +2,11 @@
   <div>
 
     <Toolbar 
-    :title="'Experiences'" 
-    :exitAction="() => $parent.editComponentView = false"
-    :onAdd="() => addExperience()"
-    :listLength="experiences.length"
-    :disabledAt="4"
+      :title="'Experiences'" 
+      :exitAction="() => $parent.editComponentView = false"
+      :onAdd="() => addExperience()"
+      :listLength="experiences.length"
+      :disabledAt="4"
     />
 
     <div v-show="experiences.length === 0" style="display: flex; align-items: center; justify-content: center;">

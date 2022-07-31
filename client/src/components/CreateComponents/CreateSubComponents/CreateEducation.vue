@@ -103,11 +103,14 @@ export default {
     Toolbar,
     Calender
   },
-  props: [
-    'userData'
-  ],
+  props: {
+    userData: {
+      type: Object,
+      required: true
+    }
+  },
   destroyed() {
-    this.emitDataToGrandparent();
+    this.emitData();
   },
   created() {
     if (this.userData?.education) this.education = this.userData.education.content;
@@ -136,8 +139,8 @@ export default {
     addInstitution() {
       this.education.push(new Education());
     },
-    emitDataToGrandparent() {
-      this.$parent.$emit('update-component-data', {
+    emitData() {
+      this.$emit('update-component-data', {
         componentType: 'education',
         content: this.education
       });

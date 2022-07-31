@@ -2,53 +2,65 @@
   <div>
     
     <Toolbar
-    :title="'Header'"
-    :exitAction="() => $parent.editComponentView = false"
-    :disableAddBtn="true"
+      :title="'Header'"
+      :exitAction="() => $parent.editComponentView = false"
+      :disableAddBtn="true"
     />
 
     <div class="mx-12">
       <v-text-field
-      label="Name"
-      v-model="data.name"
-      :rules="[rules.required]"
-      :append-icon="data.name ? '' : 'mdi-alert'"
+        label="Name"
+        v-model="data.name"
+        :rules="[rules.required]"
+        :append-icon="data.name ? '' : 'mdi-alert'"
       ></v-text-field>
       <v-text-field
-      label="Professional Title"
-      v-model="data.professionalTitle"
-      :rules="[rules.required]"
-      :append-icon="data.professionalTitle ? '' : 'mdi-alert'"
+        label="Professional Title"
+        v-model="data.professionalTitle"
+        :rules="[rules.required]"
+        :append-icon="data.professionalTitle ? '' : 'mdi-alert'"
       ></v-text-field>
       <v-text-field
-      label="Headshot URL"
-      v-model="data.headshotURL"
+        label="Headshot URL"
+        v-model="data.headshotURL"
       ></v-text-field>
       <v-text-field
-      label="Email"
-      v-model="data.email"
-      :rules="[rules.email]"
-      :append-icon="validateEmail() ? '' : 'mdi-alert'"
+        label="Email"
+        v-model="data.email"
+        :rules="[rules.email]"
+        :append-icon="validateEmail() ? '' : 'mdi-alert'"
       ></v-text-field>
       <v-text-field
-      label="Phone Number"
-      v-model="data.phone"
-      :rules="[rules.phone]"
-      :append-icon="validatePhone() ? '' : 'mdi-alert'"
+        label="Phone Number"
+        v-model="data.phone"
+        :rules="[rules.phone]"
+        :append-icon="validatePhone() ? '' : 'mdi-alert'"
       ></v-text-field>
 
       <v-divider></v-divider>
 
       <div>
 
-        <v-btn class="ma-2" @click="showLinkDialog = true" color="blue" dark rounded>
+        <v-btn 
+          class="ma-2" 
+          @click="showLinkDialog = true" 
+          color="blue" 
+          dark 
+          rounded
+        >
           <v-icon>
             mdi-plus
           </v-icon>
           Add Social Links
         </v-btn>
 
-        <v-btn class="ma-2" color="grey lighten-3" v-for="(link, index) in data.links" :key="link.id" rounded>
+        <v-btn 
+          class="ma-2" 
+          color="grey lighten-3" 
+          v-for="(link, index) in data.links" 
+          :key="link.id" 
+          rounded
+        >
 
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
@@ -101,11 +113,19 @@ import AddLinkDialog from './NonPortfolioComponents/AddLinkDialog.vue'
 
 export default {
   components: { Toolbar, AddLinkDialog },
-  props: ['userData'],
+  props: {
+    userData: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
+      // portfolio header data
       data: {},
+      // true when the AddLink dialog is active
       showLinkDialog: false,
+      // stores the link object that is sent down to AddLinkDialog as a prop
       selectedLinkItem: undefined,
       rules: {
         required: value => !!value || 'Required.',
@@ -118,7 +138,7 @@ export default {
     this.data = this.userData.header;
   },
   destroyed() {
-    this.$parent.$emit('validate');
+    this.$parent.validatePortfolioComponents();
   },
   methods: {
     validatePhone() {

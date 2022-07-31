@@ -1,15 +1,13 @@
 export default class Header {
 
-  // header obj structure
-
-  // header: {
-  //   name: '',
-  //   headshotURL: '',
-  //   professionalTitle: '',  
-  //   links: [],    
-  //   email: '',
-  //   phone: ''
-  // }
+  constructor() {
+    this.name = '',
+    this.headshotURL = '',
+    this.professionalTitle = '',
+    this.links = [],
+    this.email = '',
+    this.phone = ''
+  }
 
   static validate(header) {
 

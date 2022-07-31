@@ -1,17 +1,12 @@
 <template>
   <div>
-    <Main
-      ref="main"
-      @validate="validatePortfolioComponents()"
-      :userData="userData"
-      :invalidComponents="invalidComponents"
-    />
+    <Main />
   </div>
 </template>
 
 <script>
 import Main from '../components/CreateComponents/CreateMain.vue'
-import DatabaseServices from '../DatabaseServices.js'
+import DatabaseServices from '../DatabaseServices.ts'
 
 export default {
   components: {

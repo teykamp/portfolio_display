@@ -5,8 +5,9 @@
 
       <MainToolbar
         :invalidComponents="invalidComponents"
-        :editMode="true"
+        :editMode="$route.fullPath.includes('edit')"
         :loading="loading"
+        :userData="userData"
       /> 
 
       <div v-if="loading">
@@ -100,7 +101,7 @@
       @update-component-data="updateComponentData($event)"
     />
 
-    <pre>{{userData}}</pre>
+    <!-- <pre>{{userData}}</pre> -->
 
     <DeleteDialog 
       :description="`Removing the ${addedPortfolioComponents[targetedComponentIndex] ? `${addedPortfolioComponents[targetedComponentIndex].name}` : `` } 
@@ -147,8 +148,6 @@ export default {
   },
   async mounted() {
 
-    
-
     // checks if unresolved session is saved in state, 
     // this could be because user exited previously or is returning from a preview
     if (this.$store.state.portfolioItem) this.userData = this.$store.state.portfolioItem;
@@ -160,11 +159,11 @@ export default {
       this.userData = data.portfolioItem;
     }
     
+    this.validatePortfolioComponents();
     this.initalizeComponentArraysOnLoad();
-
-    this.loading = false
+    this.loading = false;
   },
-  data: () => {
+  data() {
     return {
 
       // true if component is in a loading state and data has not finished fetching

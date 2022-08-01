@@ -2,11 +2,11 @@
   <div>
     <Toolbar 
       :title="$vuetify.breakpoint.smAndUp ? 'My Portfolio' : ''"
-      :exitAction="() => $router.push('/')"
+      :exitAction="() => showExitDialog = true"
     >
       <template #actions>
         <v-btn 
-          :disabled="invalidComponents.length > 0" 
+          :disabled="invalidComponents.length != 0" 
           class="mr-2" 
           color="primary" 
           :loading="loading"
@@ -32,8 +32,9 @@
         />
 
         <v-btn 
+          :disabled="invalidComponents.length != 0" 
           :loading="loading"
-          dark 
+          :dark="invalidComponents.length == 0"
           class="ml-2" 
           color="orange darken-1" 
           @click.stop="editMode ? updatePortfolioRemote() : createPortfolioRemote()"
@@ -52,12 +53,26 @@
     </div>
     <!-- TEMPORARY -->
 
+    <DialogBox
+      :title="'Hold Up!'" 
+      :description="'You are about to leave. Exiting now will only save the changes you have made locally, which puts them at risk!'"
+      :visible="showExitDialog"
+      :mainBtnColor="'green'"
+      :dark="true"
+      :mainBtnText="'stay'"
+      :secondaryBtnText="'leave'"
+      @confirmed="preventLeave = true"
+      @close="leaveCreateRoute()"
+    />
+
   </div>
 </template>
 
 <script>
+import DatabaseServices from '../../../../DatabaseServices'
 import Steps from './StepByStep.vue'
 import Toolbar from '../../../ReusableComponents/CreateToolbar.vue'
+import DialogBox from '../../../ReusableComponents/DialogBox.vue'
 
 export default {
   data() {
@@ -65,7 +80,11 @@ export default {
       // a temporary replacement until user auth is added
       username: '',
       // true when steps dialog is being displayed
-      showStepsDialog: false
+      showStepsDialog: false,
+      // true when exit dialog is being displayed
+      showExitDialog: false,
+      // tiggered if leave is prevented in exit dialog
+      preventLeave: false
     }
   },
   props: {
@@ -80,11 +99,40 @@ export default {
     loading: {
       type: Boolean,
       required: true
+    },
+    userData: {
+      type: Object,
+      required: true
     }
   },
   components: {
     Steps,
-    Toolbar
+    Toolbar,
+    DialogBox
+  },
+  methods: {
+    sendUserToPreview() {
+      this.$store.state.portfolioItem = this.userData;
+      this.$router.push({ name: 'PortfolioDisplayPreview' });
+    },
+    leaveCreateRoute() {
+      this.showExitDialog = false;
+      if (this.preventLeave) return this.preventLeave = false;
+      this.$router.push('/');
+    },
+    updatePortfolioRemote() {
+      DatabaseServices.updatePorfolio(this.username, this.userData);
+      this.$store.state.portfolioItem = undefined;
+      this.$router.push('/');
+    },
+    createPortfolioRemote() {
+      DatabaseServices.postPortfolio({
+        username: this.username,
+        portfolioItem: this.userData
+      });
+      this.$store.state.portfolioItem = undefined;
+      this.$router.push('/');
+    }
   }
 }
 </script>

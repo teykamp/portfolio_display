@@ -1,7 +1,7 @@
 {
   "name": "Portfolio Maker",
   "short_name": "Portfolio",
-  
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#FFA500",
   "theme_color": "#FFA500",

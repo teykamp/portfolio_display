@@ -19,11 +19,6 @@ export default {
       try {
         this.userData = JSON.parse(localStorage.userData);
         this.showIntro = false;
-        if (this.$route.params?.user) this.editMode = true;
-        setTimeout(() => {
-          this.$refs.main.initalizeComponentArraysOnLoad();
-          this.validatePortfolioComponents();
-        }, 100);
         localStorage.removeItem('userData');
       } catch (err) {
         /* if the JSON parse fails, the user is redirected back to the home screen as a fallback
@@ -55,30 +50,6 @@ export default {
     }
 
   },
-  methods: {
-    sendUserToPreview() {
-      localStorage.userData = JSON.stringify(this.userData);
-      this.$router.push({ name: 'PortfolioDisplayPreview', params: { data: this.userData }});
-    },
-    updatePortfolioRemote() {
-      if (this.$route.params?.user) {
-        DatabaseServices.updatePorfolio(this.$route.params.user, this.userData)
-      } else {
-        alert("I'm not sure what users' info needs to be updated...")
-      }
-      this.$router.push('/');
-    },
-    createPortfolioRemote() {
-      
-      this.$forceUpdate();
-
-      DatabaseServices.postPortfolio({
-        username: this.username,
-        portfolioItem: this.userData
-      });
-      
-      this.$router.push('/');
-    }
-  }
+ 
 }
 </script>

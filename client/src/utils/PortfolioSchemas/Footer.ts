@@ -1,6 +1,6 @@
 export default class Footer {
 
-  static validate(footer) {
+  static validate(footer: any): boolean {
     return Boolean(!footer)
   }
 }

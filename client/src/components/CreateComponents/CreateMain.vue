@@ -3,9 +3,38 @@
 
     <div v-if="!editComponentView">
 
-      <v-container fluid fill-height>  
-        <v-row align="center" justify="center">
-          <v-col cols="12" sm="10" md="8">
+      <MainToolbar
+        :invalidComponents="invalidComponents"
+        :editMode="$route.fullPath.includes('edit')"
+        :loading="loading"
+        :userData="userData"
+      /> 
+
+      <div v-if="loading">
+        <div v-for="i in 6" :key="i">
+          <v-skeleton-loader
+            class="mx-auto my-3"
+            height="75"
+            max-width="80vw"
+            type="image"
+          ></v-skeleton-loader>
+        </div>
+      </div>
+
+      <v-container 
+        v-else
+        fluid 
+        fill-height
+      >  
+        <v-row 
+          align="center" 
+          justify="center"
+        >
+          <v-col 
+            cols="12" 
+            sm="10" 
+            md="8"
+          >
             <div 
               v-for="(item, index) in portfolioComponents" 
               :key="item.id"
@@ -65,21 +94,29 @@
 
     </div>
     
-    <component v-else :is="componentBeingEdited" :userData="userData" />
+    <component 
+      v-else 
+      :is="componentBeingEdited" 
+      :userData="userData" 
+      @update-component-data="updateComponentData($event)"
+    />
+
+    <!-- <pre>{{userData}}</pre> -->
 
     <DeleteDialog 
-    :description="`Removing the ${addedPortfolioComponents[targetedComponentIndex] ? `${addedPortfolioComponents[targetedComponentIndex].name}` : `` } 
-    component from your portfolio will delete all the data contained inside and cannot be undone!`" 
-    :title="`Delete ${addedPortfolioComponents[targetedComponentIndex] ? `${addedPortfolioComponents[targetedComponentIndex].name}` : `` }?`" 
-    :visible="deleteConfirmationDialog" 
-    @close="deleteConfirmationDialog = false;"
-    @confirmed="deleteConfirmationDialog = false; removeComponent(targetedComponentIndex);" />
+      :description="`Removing the ${addedPortfolioComponents[targetedComponentIndex] ? `${addedPortfolioComponents[targetedComponentIndex].name}` : `` } 
+      component from your portfolio will delete all the data contained inside and cannot be undone!`" 
+      :title="`Delete ${addedPortfolioComponents[targetedComponentIndex] ? `${addedPortfolioComponents[targetedComponentIndex].name}` : `` }?`" 
+      :visible="deleteConfirmationDialog" 
+      @close="deleteConfirmationDialog = false;"
+      @confirmed="deleteConfirmationDialog = false; removeComponent(targetedComponentIndex);" 
+    />
 
   </div>
 </template>
 
 <script>
-import draggable from 'vuedraggable'
+// UI Components
 import Projects from '../CreateComponents/CreateSubComponents/CreateProjects.vue'
 import Accomplishments from '../CreateComponents/CreateSubComponents/CreateAccomplishments.vue'
 import Experiences from '../CreateComponents/CreateSubComponents/CreateExperiences.vue'
@@ -88,6 +125,13 @@ import DeleteDialog from '../ReusableComponents/DialogBox.vue'
 import Header from '../CreateComponents/CreateSubComponents/CreateHeader.vue'
 import Timeline from '../CreateComponents/CreateSubComponents/CreateTimeline.vue'
 import ComponentCard from './CreateSubComponents/NonPortfolioComponents/ComponentCard.vue'
+import MainToolbar from './CreateSubComponents/NonPortfolioComponents/MainToolbar.vue'
+
+// Logic
+import draggable from 'vuedraggable'
+import DatabaseServices from '../../DatabaseServices'
+import validatePortfolio from '../../utils/ValidatePortfolio'
+import HeaderClass from '../../utils/PortfolioSchemas/Header'
 
 export default {
   components: {
@@ -99,17 +143,31 @@ export default {
     Header,
     DeleteDialog,
     Timeline,
-    ComponentCard
+    ComponentCard,
+    MainToolbar
   },
-  props: [
-    'userData',
-    'invalidComponents'
-  ],
-  mounted() {
-    if (!this.$route.params?.user) this.initalizeComponentArraysOnLoad();
+  async mounted() {
+
+    // checks if unresolved session is saved in state, 
+    // this could be because user exited previously or is returning from a preview
+    if (this.$store.state.portfolioItem) this.userData = this.$store.state.portfolioItem;
+
+    else if (this.$route.fullPath.includes('create')) this.userData.header = new HeaderClass();
+    
+    else if (this.$route.fullPath.includes('edit')) { 
+      const data = await DatabaseServices.getUserByUsername('offline/yona');
+      this.userData = data.portfolioItem;
+    }
+    
+    this.validatePortfolioComponents();
+    this.initalizeComponentArraysOnLoad();
+    this.loading = false;
   },
-  data: () => {
+  data() {
     return {
+
+      // true if component is in a loading state and data has not finished fetching
+      loading: true,
 
       // unadded portfolio components
       portfolioComponents: [],
@@ -127,7 +185,13 @@ export default {
       targetedComponentIndex: 0,
 
       // true when the dialog box is showing that asks for the user to confirm whether or they want a component deleted
-      deleteConfirmationDialog: false
+      deleteConfirmationDialog: false,
+
+      // array of all invalid component
+      invalidComponents: [],
+
+      // userData object is the portfolioItem that is being edited by the user
+      userData: { visibility: true }
     }
   },
   methods: {
@@ -167,26 +231,36 @@ export default {
 
       this.addedPortfolioComponents.sort((a, b) => a.pageRank - b.pageRank);
     },
+    updateComponentData({ componentType, content }) {
+      this.userData[componentType].content = content;
+      this.validatePortfolioComponents();
+    },
+    validatePortfolioComponents() {
+      // validatePortolio takes a complete portfolio object 
+      // and returns an array containing string names of all invalid components
+      this.invalidComponents = validatePortfolio(this.userData);
+    },
     toggleEditView(componentName) {
       this.componentBeingEdited = componentName;
       this.editComponentView = !this.editComponentView;
     },
     addComponent(index) {
-      this.$parent.userData[this.portfolioComponents[index].name] = { pageRank: 0, content: [] }
-      this.$parent.validatePortfolioComponents();
+      // instanciates a new object with name of the component added & properties 'pageRank' & 'content' 
+      this.userData[this.portfolioComponents[index].name] = { pageRank: 0, content: [] }
+      this.validatePortfolioComponents();
 
       this.addedPortfolioComponents.push(this.portfolioComponents[index]);
       this.portfolioComponents.splice(index, 1);
     },
     removeComponent(index) {
       /* deletes all component data */
-      delete this.$parent.userData[this.addedPortfolioComponents[index].name];
+      delete this.userData[this.addedPortfolioComponents[index].name];
 
       /* patches edge case were a component is removed but persists in timeline */
-      if (this.$parent.userData?.timeline) {
-        if (this.$parent.userData.timeline.content.includes(this.addedPortfolioComponents[index].name)) {
-          this.$parent.userData.timeline.content.splice(this.$parent.userData.timeline.content.indexOf(this.addedPortfolioComponents[index].name), 1);
-          this.$parent.validatePortfolioComponents();
+      if (this.userData?.timeline) {
+        if (this.userData.timeline.content.includes(this.addedPortfolioComponents[index].name)) {
+          this.userData.timeline.content.splice(this.userData.timeline.content.indexOf(this.addedPortfolioComponents[index].name), 1);
+          this.validatePortfolioComponents();
         }
       }
 
@@ -198,7 +272,7 @@ export default {
     addedPortfolioComponents() {
       // Update Page Rankings
       for (let i = 0; i < this.addedPortfolioComponents.length; i++) {
-        this.$parent.userData[this.addedPortfolioComponents[i].name].pageRank = i;
+        this.userData[this.addedPortfolioComponents[i].name].pageRank = i;
       }
     }
   }

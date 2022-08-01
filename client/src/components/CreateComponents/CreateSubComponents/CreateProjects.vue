@@ -99,12 +99,12 @@
 
     <div v-else>
       <Toolbar 
-      :title="'Technology'"
-      :exitAction="() => techView = false"
-      :onAdd="() => projectSelected.technologies.push({ name: '', logo: '' })"
-      :addBtnColor="'red'"
-      :listLength="projectSelected.technologies.length"
-      :disabledAt="99"
+        :title="'Technology'"
+        :exitAction="() => techView = false"
+        :onAdd="() => projectSelected.technologies.push({ name: '', logo: '' })"
+        :addBtnColor="'red'"
+        :listLength="projectSelected.technologies.length"
+        :disabledAt="99"
       />
 
       <v-container fluid fill-height>
@@ -121,20 +121,20 @@
             <v-card>
               <div class="pa-3">
                 <v-text-field
-                label="Name"
-                v-model="projectSelected.technologies[index].name"
-                :rules="[required]"         
+                  label="Name"
+                  v-model="projectSelected.technologies[index].name"
+                  :rules="[required]"         
                 ></v-text-field>
                 <v-text-field
-                label="Logo URL"
-                v-model="projectSelected.technologies[index].logo"
+                  label="Logo URL"
+                  v-model="projectSelected.technologies[index].logo"
                 ></v-text-field>
               </div>
               <div class="center pb-3">
                 <v-card-actions>
                   <v-btn
-                  @click="projectSelected.technologies.splice(index, 1)" 
-                  color="error"
+                    @click="projectSelected.technologies.splice(index, 1)" 
+                    color="error"
                   >
                     <v-icon>mdi-close</v-icon>
                     <span>Remove</span>
@@ -158,9 +158,12 @@ import Calender from '../../ReusableComponents/CreateCalender.vue'
 import Project from '../../../utils/PortfolioSchemas/Projects'
 
 export default {
-  props: [
-    'userData'
-  ],
+  props: {
+    userData: {
+      type: Object,
+      required: true
+    }
+  },
   components: {
     Toolbar,
     Calender
@@ -169,7 +172,7 @@ export default {
     if (this.userData?.projects?.content) this.projects = this.userData.projects.content;
   },
   destroyed() {
-    this.emitDataToGrandparent();
+    this.emitData();
   },
   data: () => {
     return {
@@ -193,8 +196,8 @@ export default {
     missingInfo(obj) {
       return !Project.validate(obj);
     },
-    emitDataToGrandparent() {
-      this.$parent.$emit('update-component-data', {
+    emitData() {
+      this.$emit('update-component-data', {
         componentType: 'projects',
         content: this.projects
       });

@@ -60,7 +60,7 @@ export default {
     disabledAt: {
       type: Number,
       required: false,
-      validator: (passedValue) => passedValue > 0
+      validator: passedValue => passedValue > 0
     },
   }
 }

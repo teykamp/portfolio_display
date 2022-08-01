@@ -1,6 +1,6 @@
 export default class Timeline {
   
-  static validate(timeline) {
+  static validate(timeline: string[]): boolean {
     return timeline.length != 0;
   }
 }

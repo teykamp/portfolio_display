@@ -93,9 +93,12 @@ import Calender from '../../ReusableComponents/CreateCalender.vue'
 import Accomplishment from '../../../utils/PortfolioSchemas/Accomplishments'
 
 export default {
-  props: [
-    'userData'
-  ],
+  props: {
+    userData: {
+      type: Object,
+      required: true
+    }
+  },
   components: {
     Toolbar,
     Calender
@@ -104,7 +107,7 @@ export default {
     if (this.userData?.accomplishments) this.accomplishments = this.userData.accomplishments.content;
   },
   destroyed() {
-    this.emitDataToGrandparent();
+    this.emitData();
   },
   data: () => {
     return {
@@ -121,8 +124,8 @@ export default {
     missingInfo(accomplishment) {
       return !Accomplishment.validate(accomplishment)
     },
-    emitDataToGrandparent() {
-      this.$parent.$emit('update-component-data', {
+    emitData() {
+      this.$emit('update-component-data', {
         componentType: 'accomplishments',
         content: this.accomplishments
       });

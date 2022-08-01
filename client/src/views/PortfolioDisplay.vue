@@ -11,20 +11,12 @@
 
       <div> 
         <v-btn 
-          v-if="!previewMode" 
           depressed 
           color="accent"
           style="z-index: 10;" 
           class="position-absolute" 
-          @click="$router.push(`/edit/${$route.params.user}`)"
-        >Edit</v-btn>
-        <v-btn 
-          v-else
-          style="z-index: 10;"
-          color="accent"
-          class="position-absolute" 
-          @click="returnFromPreview()"
-        >Back</v-btn>
+          @click="back"
+        >{{ previewMode ? 'Back' : 'Edit' }}</v-btn>
       </div>
 
       <div>
@@ -63,9 +55,13 @@ export default {
   async created() {
 
     // if true, loads preview mode
-    if (this.$route.params?.data) {
+    if (this.$route.fullPath.includes('preview') && this.$store.state.portfolioItem) {
       this.previewMode = true;
-      return this.formatDataForDisplay(this.$route.params.data);
+      return this.formatDataForDisplay(this.$store.state.portfolioItem);
+    // catched edge case were someone tries to manually enters preview route without info being stored
+    } else if (this.$route.fullPath.includes('preview')) {
+      alert('There seems to be nothing here to preview!');
+      this.$router.push('/');
     }
 
     const response = await DatabaseServices.getUserByUsername(this.$route.params.user);
@@ -91,7 +87,7 @@ export default {
     }
   },
   methods: {
-    returnFromPreview() {
+    back() {
       history.back();
     },
     formatDataForDisplay(userData) {

@@ -100,14 +100,17 @@ import Experience from '../../../utils/PortfolioSchemas/Experiences'
 
 export default {
   components: { Toolbar, Calender },
-  props: [
-    'userData'
-  ],
+  props: {
+    userData: {
+      type: Object,
+      required: true
+    }
+  },
   created() {
     if (this.userData?.experiences) this.experiences = this.userData.experiences.content;
   },
   destroyed() {
-    this.emitDataToGrandparent();
+    this.emitData();
   },
   data: () => {
     return {
@@ -125,8 +128,8 @@ export default {
     missingInfo(obj) {
       return !Experience.validate(obj);
     },
-    emitDataToGrandparent() {
-      this.$parent.$emit('update-component-data', {
+    emitData() {
+      this.$emit('update-component-data', {
         componentType: 'experiences',
         content: this.experiences
       });

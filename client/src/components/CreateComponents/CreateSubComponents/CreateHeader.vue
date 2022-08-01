@@ -139,6 +139,7 @@ export default {
   },
   destroyed() {
     this.$parent.validatePortfolioComponents();
+    this.$parent.saveSessionLocally();
   },
   methods: {
     validatePhone() {

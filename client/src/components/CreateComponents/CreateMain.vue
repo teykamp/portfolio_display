@@ -269,12 +269,13 @@ export default {
       if (this.userData?.timeline) {
         if (this.userData.timeline.content.includes(this.addedPortfolioComponents[index].name)) {
           this.userData.timeline.content.splice(this.userData.timeline.content.indexOf(this.addedPortfolioComponents[index].name), 1);
-          this.validatePortfolioComponents();
         }
       }
 
       this.portfolioComponents.push(this.addedPortfolioComponents[index]);
       this.addedPortfolioComponents.splice(index, 1); 
+
+      this.validatePortfolioComponents();
     }
   },
   watch: {

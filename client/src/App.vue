@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-app>
-      <router-view />
+      <router-view :key="showSessionRestorationDialog" />
       <DialogBox 
         :visible="showSessionRestorationDialog"
         :title="'Restore Previous Session?'"

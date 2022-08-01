@@ -42,10 +42,10 @@
                       </v-tooltip>     
                     </div>
 
-                    <v-col cols="10" sm="9">
+                    <v-col cols="9" sm="10">
                       <v-text-field 
                       v-model="projects[index].name" 
-                      placeholder="Enter Project Name"
+                      placeholder="Enter Proj. Name"
                       style="font-weight: bold; font-size: 18pt;"
                       outlined
                       clearable
@@ -108,15 +108,19 @@
       />
 
       <v-container fluid fill-height>
-        <v-row align="center" justify="center">
-          
+        <v-row 
+          align="center" 
+          justify="center"
+        >
           <div v-show="projectSelected.technologies.length === 0">
             <span style="font-size: 16pt">Added Technologies {{ !projectSelected.name ? '' : ` For ${projectSelected.name}` }} Will Go Here!</span>
           </div>
 
           <v-col 
-          v-for="(tech, index) in projectSelected.technologies" :key="tech.id"
-          class="col-xs-12 col-sm-6 col-md-4"
+            v-for="(tech, index) in projectSelected.technologies" :key="tech.id"
+            cols="12"
+            sm="6"
+            md="4"
           >
             <v-card>
               <div class="pa-3">

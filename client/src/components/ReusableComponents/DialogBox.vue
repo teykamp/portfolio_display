@@ -5,7 +5,7 @@
     persistent
   >
     <v-card class="pb-2">
-      <v-card-title class="text-h5">
+      <v-card-title style="word-break: break-word" class="text-h5">
         {{ title }}
       </v-card-title>
       <v-card-text>

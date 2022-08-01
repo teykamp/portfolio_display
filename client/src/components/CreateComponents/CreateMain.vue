@@ -234,11 +234,20 @@ export default {
     updateComponentData({ componentType, content }) {
       this.userData[componentType].content = content;
       this.validatePortfolioComponents();
+      this.saveSessionLocally();
     },
     validatePortfolioComponents() {
       // validatePortolio takes a complete portfolio object 
       // and returns an array containing string names of all invalid components
       this.invalidComponents = validatePortfolio(this.userData);
+    },
+    saveSessionLocally() {
+      // adds unsaved changes to localStorage for backup in case session is closed unexpectedly
+      try {
+        localStorage.setItem('unsavedSessionData', JSON.stringify(this.userData));
+      } catch {
+        throw new Error('An issue was encountered when trying to backup session data locally.')
+      }
     },
     toggleEditView(componentName) {
       this.componentBeingEdited = componentName;

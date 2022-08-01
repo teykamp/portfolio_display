@@ -113,16 +113,19 @@ export default {
   methods: {
     sendUserToPreview() {
       this.$store.state.portfolioItem = this.userData;
+      this.$parent.saveSessionLocally();
       this.$router.push({ name: 'PortfolioDisplayPreview' });
     },
     leaveCreateRoute() {
       this.showExitDialog = false;
       if (this.preventLeave) return this.preventLeave = false;
+      this.$parent.saveSessionLocally();
       this.$router.push('/');
     },
     updatePortfolioRemote() {
       DatabaseServices.updatePorfolio(this.username, this.userData);
       this.$store.state.portfolioItem = undefined;
+      localStorage.removeItem('unsavedSessionData');
       this.$router.push('/');
     },
     createPortfolioRemote() {
@@ -131,6 +134,7 @@ export default {
         portfolioItem: this.userData
       });
       this.$store.state.portfolioItem = undefined;
+      localStorage.removeItem('unsavedSessionData');
       this.$router.push('/');
     }
   }

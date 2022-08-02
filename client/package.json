@@ -19,6 +19,7 @@
     "portal-vue": "^2.1.7",
     "vue": "^2.6.14",
     "vue-class-component": "^7.2.3",
+    "vue-google-oauth2": "^1.5.8",
     "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.5.1",
     "vuedraggable": "^2.24.3",
@@ -45,6 +46,7 @@
     "typescript": "~4.5.5",
     "vue-cli-plugin-bootstrap-vue": "^0.8.2",
     "vue-cli-plugin-vuetify": "^2.5.1",
+    "vue-google-login": "^2.0.5",
     "vue-template-compiler": "^2.6.14",
     "vuetify-loader": "^1.7.0"
   },

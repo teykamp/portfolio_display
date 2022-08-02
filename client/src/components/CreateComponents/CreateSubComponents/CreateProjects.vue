@@ -123,16 +123,19 @@
             md="4"
           >
             <v-card>
-              <div class="pa-3">
-                <v-text-field
+              <div class="pa-3 center">
+                <v-autocomplete
                   label="Name"
+                  :items="techList"
                   v-model="projectSelected.technologies[index].name"
                   :rules="[required]"         
-                ></v-text-field>
-                <v-text-field
-                  label="Logo URL"
-                  v-model="projectSelected.technologies[index].logo"
-                ></v-text-field>
+                ></v-autocomplete>
+                <img 
+                  v-if="projectSelected.technologies[index].name" 
+                  :src="require(`../../../assets/techLogos/${getImg(index)}`)" 
+                  style="width: 30%" 
+                  :alt="projectSelected.technologies[index].name"
+                >
               </div>
               <div class="center pb-3">
                 <v-card-actions>
@@ -160,6 +163,7 @@
 import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
 import Calender from '../../ReusableComponents/CreateCalender.vue'
 import Project from '../../../utils/PortfolioSchemas/Projects'
+import techKeys from '../../../assets/techKeys'
 
 export default {
   props: {
@@ -173,6 +177,7 @@ export default {
     Calender
   },
   created() {
+    this.techList = Object.keys(techKeys);
     if (this.userData?.projects?.content) this.projects = this.userData.projects.content;
   },
   destroyed() {
@@ -183,10 +188,14 @@ export default {
       projects: [],
       techView: false,
       projectSelected: {},
+      techList: [],
       required: value => !!value || 'Required.'
     }
   },
   methods: {
+    getImg(index) {
+      return techKeys[this.projectSelected.technologies[index].name]
+    },
     editTechUsed(project) {
       this.projectSelected = project;
       this.techView = true;

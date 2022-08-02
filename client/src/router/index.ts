@@ -21,12 +21,12 @@ const routes = [
     component: () => import('../views/PortfolioDisplay.vue')
   },
   {
-    path: '/display/preview/:data',
+    path: '/display/preview',
     name: 'PortfolioDisplayPreview',
     component: () => import('../views/PortfolioDisplay.vue')
   },
   {
-    path: '/edit/:user',
+    path: '/edit',
     name: 'EditPortfolio',
     component: () => import('../views/CreatePortfolio.vue')
   },

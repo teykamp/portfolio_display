@@ -6,10 +6,10 @@ import Education from '../utils/PortfolioSchemas/Education'
 import Header from '../utils/PortfolioSchemas/Header'
 import Footer from '../utils/PortfolioSchemas/Footer'
 
-// takes full portfolio data and returns an array of components that are invalid
-export default function validatePortfolio(portfolioData) {
+// takes full portfolio data (of type object) and returns an array<string> of components that are invalid
+export default function validatePortfolio(portfolioData: any) {
 
-  let invalidComponents = []
+  const invalidComponents: Array<string> = []
 
   // validate method returns a boolean, true = valid, false = invalid
   if (portfolioData?.projects) {

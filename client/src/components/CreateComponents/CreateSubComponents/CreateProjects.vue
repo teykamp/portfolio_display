@@ -42,10 +42,10 @@
                       </v-tooltip>     
                     </div>
 
-                    <v-col cols="10" sm="9">
+                    <v-col cols="9" sm="10">
                       <v-text-field 
                       v-model="projects[index].name" 
-                      placeholder="Enter Project Name"
+                      placeholder="Enter Proj. Name"
                       style="font-weight: bold; font-size: 18pt;"
                       outlined
                       clearable
@@ -99,42 +99,49 @@
 
     <div v-else>
       <Toolbar 
-      :title="'Technology'"
-      :exitAction="() => techView = false"
-      :onAdd="() => projectSelected.technologies.push({ name: '', logo: '' })"
-      :addBtnColor="'red'"
-      :listLength="projectSelected.technologies.length"
-      :disabledAt="99"
+        :title="'Technology'"
+        :exitAction="() => techView = false"
+        :onAdd="() => projectSelected.technologies.push({ name: '', logo: '' })"
+        :addBtnColor="'red'"
+        :listLength="projectSelected.technologies.length"
+        :disabledAt="99"
       />
 
       <v-container fluid fill-height>
-        <v-row align="center" justify="center">
-          
+        <v-row 
+          align="center" 
+          justify="center"
+        >
           <div v-show="projectSelected.technologies.length === 0">
             <span style="font-size: 16pt">Added Technologies {{ !projectSelected.name ? '' : ` For ${projectSelected.name}` }} Will Go Here!</span>
           </div>
 
           <v-col 
-          v-for="(tech, index) in projectSelected.technologies" :key="tech.id"
-          class="col-xs-12 col-sm-6 col-md-4"
+            v-for="(tech, index) in projectSelected.technologies" :key="tech.id"
+            cols="12"
+            sm="6"
+            md="4"
           >
             <v-card>
-              <div class="pa-3">
-                <v-text-field
-                label="Name"
-                v-model="projectSelected.technologies[index].name"
-                :rules="[required]"         
-                ></v-text-field>
-                <v-text-field
-                label="Logo URL"
-                v-model="projectSelected.technologies[index].logo"
-                ></v-text-field>
+              <div class="pa-3 center">
+                <v-autocomplete
+                  label="Name"
+                  :items="techList"
+                  v-model="projectSelected.technologies[index].name"
+                  :rules="[required]"         
+                ></v-autocomplete>
+                <img 
+                  v-if="projectSelected.technologies[index].name" 
+                  :src="require(`../../../assets/techLogos/${getImg(index)}`)" 
+                  style="width: 30%" 
+                  :alt="projectSelected.technologies[index].name"
+                >
               </div>
               <div class="center pb-3">
                 <v-card-actions>
                   <v-btn
-                  @click="projectSelected.technologies.splice(index, 1)" 
-                  color="error"
+                    @click="projectSelected.technologies.splice(index, 1)" 
+                    color="error"
                   >
                     <v-icon>mdi-close</v-icon>
                     <span>Remove</span>
@@ -156,30 +163,39 @@
 import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
 import Calender from '../../ReusableComponents/CreateCalender.vue'
 import Project from '../../../utils/PortfolioSchemas/Projects'
+import techKeys from '../../../assets/techKeys'
 
 export default {
-  props: [
-    'userData'
-  ],
+  props: {
+    userData: {
+      type: Object,
+      required: true
+    }
+  },
   components: {
     Toolbar,
     Calender
   },
   created() {
+    this.techList = Object.keys(techKeys);
     if (this.userData?.projects?.content) this.projects = this.userData.projects.content;
   },
   destroyed() {
-    this.emitDataToGrandparent();
+    this.emitData();
   },
   data: () => {
     return {
       projects: [],
       techView: false,
       projectSelected: {},
+      techList: [],
       required: value => !!value || 'Required.'
     }
   },
   methods: {
+    getImg(index) {
+      return techKeys[this.projectSelected.technologies[index].name]
+    },
     editTechUsed(project) {
       this.projectSelected = project;
       this.techView = true;
@@ -193,8 +209,8 @@ export default {
     missingInfo(obj) {
       return !Project.validate(obj);
     },
-    emitDataToGrandparent() {
-      this.$parent.$emit('update-component-data', {
+    emitData() {
+      this.$emit('update-component-data', {
         componentType: 'projects',
         content: this.projects
       });

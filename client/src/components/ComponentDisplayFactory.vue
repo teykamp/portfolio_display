@@ -1,25 +1,23 @@
 <template>
   <div>
-
     <component :is="componentType" :relevantInfo="relevantInfo"></component>
-
   </div>
 </template>
 
 <script>
-import Accomplishments from './SubComponents/AccomplishmentsDisplay.vue'
-import Projects from './SubComponents/ProjectsDisplay.vue'
-import Education from './SubComponents/EducationDisplay.vue'
-import Experiences from './SubComponents/ExperiencesDisplay.vue'
-import Timeline from './SubComponents/TimelineDisplay.vue'
+import accomplishments from './SubComponents/AccomplishmentsDisplay.vue'
+import projects from './SubComponents/ProjectsDisplay.vue'
+import education from './SubComponents/EducationDisplay.vue'
+import experiences from './SubComponents/ExperiencesDisplay.vue'
+import timeline from './SubComponents/TimelineDisplay.vue'
 
 export default {
   components: {
-    Accomplishments,
-    Projects,
-    Education,
-    Experiences,
-    Timeline
+    accomplishments,
+    projects,
+    education,
+    experiences,
+    timeline
   },
   props: [
     'componentType',

@@ -1,4 +1,10 @@
 export default class Education {
+  institution: string;
+  degreeType: string;
+  degreeField: string;
+  description: string;
+  date: string
+
   constructor() {
     this.institution = '',
     this.degreeType = '',
@@ -8,7 +14,7 @@ export default class Education {
   }
 
   // each obj has to pass this criteria to be considered valid
-  static validate(education) {
+  static validate(education: Education): boolean {
     
     if (!education.institution) return false
     if (!education.degreeType) return false

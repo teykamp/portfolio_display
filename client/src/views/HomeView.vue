@@ -1,39 +1,89 @@
 <template>
   <div>
-    <div class="header pa-2" elevation="40" :style="`background-color: rgba(255, 255, 255, ${barWhiteness});`"> 
-      <v-btn text>Build</v-btn>
-      <v-btn text>Register</v-btn>
-      <v-btn text>Explore</v-btn>
+
+    <div 
+      class="header pa-2" 
+      :style="`background-color: rgba(255, 255, 255, ${barWhiteness}); box-shadow: 0px 0px ${calcShadow()}px`"
+    > 
+      <v-btn
+        :text="currentSection !== 'register'"
+        :color="currentSection !== 'register' ? '' : 'info'"
+      >Register</v-btn>
+      <v-btn 
+        :text="currentSection !== 'build'"
+        :color="currentSection !== 'build' ? '' : 'error'"
+      >Build</v-btn>
+      <v-btn 
+        :text="currentSection !== 'explore'"
+        :color="currentSection !== 'explore' ? '' : 'success'"
+      >Explore</v-btn>
     </div>
-    <v-container fill-height fluid>
-      <v-row>
-        <v-img position="absolute" width="100vw" src="../assets/LandingPage/smilingman2.jpeg" />
-        <h1 position="relative" class="text-h1">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam laboriosam similique nostrum voluptate neque officiis doloribus quo, vitae qui optio consequatur porro, cupiditate in illo? Eum asperiores cupiditate quas sit vel at consectetur iure, fuga libero nulla quam ullam. Ex dolorum velit dolore expedita nobis voluptate esse deleniti assumenda? Quaerat veniam rerum hic quisquam sed, officiis corporis, incidunt saepe nulla accusantium quos totam eaque. Laboriosam iure velit quidem. Illo dolorem illum nulla eligendi quaerat nam facere culpa est voluptates sunt distinctio neque iste enim molestiae eius dicta nostrum, maxime quis! Nulla earum modi soluta deserunt delectus doloremque facere ipsam vel.</h1>
-      </v-row>
-    </v-container>
+
+    <article id="invigorate">
+      <v-img position="absolute" width="100vw" src="../assets/LandingPage/smilingman2.jpeg" />
+    </article>
+    <article id="register" style="background-color: white;" class="content-container">
+      <Register />
+    </article>
+    <article id="build" style="background-color: white;" class="content-container">
+      <Build />
+    </article>
+    <article id="explore" style="background-color: white;" class="content-container">
+      <Explore />
+    </article>
+    <article id="footer" style="height: 50vh" class="content-container"></article>
+  
   </div>
 </template>
 
 <script>
+import Register from '../components/HomeComponents/RegisterSection.vue'
+import Build from '../components/HomeComponents/BuildSection.vue'
+import Explore from '../components/HomeComponents/ExploreSection.vue'
 
 export default {
   name: 'HomeView',
   data: () => {
     return {
-      query: '',
-      barWhiteness: 0
+      barWhiteness: 0,
+      currentSection: 0,
     }
+  },
+  components: {
+    Register,
+    Build,
+    Explore
   },
   mounted() {
     document.addEventListener('scroll', this.adjustTopBar);
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.intersectionRatio > 0) {
+          this.currentSection = entry.target.getAttribute('id')
+        }
+      })
+    }, {
+      rootMargin: '0px 0px -93% 0px'
+    })
+
+    document.querySelectorAll('article').forEach((section) => {
+      observer.observe(section)
+    })
   },
   destroyed() {
     document.removeEventListener('scroll');
   },
   methods: {
+    calcShadow() {
+      let shadow;
+      const maxShadow = 8;
+      if ((window.scrollY / 50) < maxShadow) shadow = window.scrollY / 50;
+      else shadow = maxShadow;
+      return shadow;
+    },
     adjustTopBar() {
-      this.barWhiteness = window.scrollY / 400
-      
+      this.barWhiteness = window.scrollY / 400;
     },
     handleCreate() {
       this.$router.push("/create");
@@ -52,5 +102,8 @@ export default {
     position: fixed;
     z-index: 2;
     width: 100vw;
+  }
+  .content-container {
+    /* height: 75vh; */
   }
 </style>

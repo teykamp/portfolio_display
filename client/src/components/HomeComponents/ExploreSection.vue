@@ -33,7 +33,9 @@
             >mdi-chevron-left</v-icon>
             <v-text-field 
               class="mt-3 pr-10"
+              v-model="searchQuery"
               label="Search Portfolios"
+              @keyup.enter="search()"
             />
           </v-row>
           
@@ -47,7 +49,16 @@
 export default {
   data() {
     return {
-      showSearch: false
+      showSearch: false,
+      searchQuery: ''
+    }
+  },
+  methods: {
+    search() {
+      if (this.searchQuery.trim()) {
+        window.scrollTo(0, 0)
+        this.$router.push(`/display/${this.searchQuery.trim()}`);
+      }
     }
   }
 }

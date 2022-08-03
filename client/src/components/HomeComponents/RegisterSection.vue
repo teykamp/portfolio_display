@@ -14,15 +14,15 @@
         </ul>
       </div>
       <div>
-        <v-btn color="red" class="mr-2" dark>
+        <v-btn color="red" class="mr-2 mb-2" dark>
           <v-icon class="mr-2">mdi-google</v-icon>
           Sign-in with google
         </v-btn>
-        <v-btn color="blue" class="mr-2" dark>
+        <v-btn color="blue" class="mr-2 mb-2" dark>
           <v-icon class="mr-2">mdi-facebook</v-icon>
           Sign-in with facebook
         </v-btn>
-        <v-btn color="black" class="mr-2" dark>
+        <v-btn color="black" class="mr-2 mb-2" dark>
           <v-icon class="mr-2">mdi-github</v-icon>
           Sign-in with github
         </v-btn>

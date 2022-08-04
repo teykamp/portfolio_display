@@ -24,7 +24,11 @@
       </div>
 
       <div v-for="component in componentArray" :key="component.id">
-        <component-display-factory :relevantInfo="component.content" :componentType="component.category" />
+        <component-display-factory 
+          :relevantInfo="component.content" 
+          :componentType="component.category" 
+          :backgroundColor="setComponentBackground(indexOf(component))"
+        />
       </div>
 
       <div>
@@ -90,6 +94,7 @@ export default {
     back() {
       history.back();
     },
+
     formatDataForDisplay(userData) {
 
       /* sorts data into seperate categories for passing down sub-component specific info */
@@ -102,6 +107,32 @@ export default {
         version: '0.1.0',
         githubSource: 'https://github.com/teykamp/portfolio_display',
         logo: 'https://avatars.githubusercontent.com/u/46391052?s=120&v=4',
+      }
+    },
+
+    setComponentBackground(componentIndex) {
+      switch (this.componentArray.length) {
+        // "" means white or black, the default color of the background
+        case 3: {
+          const colors = ["", "secondary", ""];
+          return colors[componentIndex];
+        }
+        case 4: {
+          const colors = ["", "secondary", "", ""];
+          return colors[componentIndex];
+        }
+        case 5: {
+          const colors = ["", "secondary", "", "secondary", ""];
+          return colors[componentIndex];
+        }
+        case 6: {
+          const colors = ["", "", "secondary", "", "secondary", ""];
+          return colors[componentIndex];
+        }
+        // mostly used for 1, 2 lengths
+        default: {
+          return ""
+        }
       }
     }
   }

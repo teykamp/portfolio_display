@@ -31,6 +31,11 @@ const routes = [
     component: () => import('../views/CreatePortfolio.vue')
   },
   {
+    path: '/auth',
+    name: 'Auth',
+    component: () => import('../views/AuthPage.vue')
+  },
+  {
     path: '*',
     name: '404Error',
     component: () => import('../views/404.vue')

@@ -8,6 +8,7 @@
       <v-btn
         :text="currentSection !== 'register'"
         :color="currentSection !== 'register' ? '' : 'info'"
+        @click.stop="$router.push({ name: 'Auth', query: { type: 'register' } })"
       >Register</v-btn>
       <v-btn 
         :text="currentSection !== 'build'"

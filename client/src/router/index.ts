@@ -32,7 +32,7 @@ const routes = [
   },
   {
     path: '/auth',
-    name: 'Authentication',
+    name: 'Auth',
     component: () => import('../views/AuthPage.vue')
   },
   {

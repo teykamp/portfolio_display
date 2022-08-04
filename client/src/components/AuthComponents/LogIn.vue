@@ -19,7 +19,7 @@
     />
     <!-- <v-divider></v-divider> -->
     <v-card-actions>
-      <v-btn :disabled="!(password && username)" color="info">
+      <v-btn @click="submit()" :disabled="!(password && username)" color="info">
         Login
       </v-btn>
       <v-btn @click.stop="$parent.formType = !$parent.formType" text color="info">
@@ -36,6 +36,11 @@ export default {
       username: '',
       password: '',
       showPassword: false
+    }
+  },
+  methods: {
+    submit() {
+      this.$emit('form-submission')
     }
   }
 }

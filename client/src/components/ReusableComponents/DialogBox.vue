@@ -12,19 +12,21 @@
         {{ description }}
       </v-card-text>
       <v-card-actions>
-        <v-btn
-          :color="mainBtnColor"
-          :dark="dark"                           
-          @click.stop="confirmed()"
-        >
-          {{ mainBtnText }}
-        </v-btn>
-        <v-btn                            
-          text
-          @click.stop="show = false"
-        >
-          {{ secondaryBtnText }}
-        </v-btn>
+        <slot name="actions">
+          <v-btn
+            :color="mainBtnColor"
+            :dark="dark"                           
+            @click.stop="confirmed()"
+          >
+            {{ mainBtnText }}
+          </v-btn>
+          <v-btn                            
+            text
+            @click.stop="show = false"
+          >
+            {{ secondaryBtnText }}
+          </v-btn>
+        </slot>
       </v-card-actions>
     </v-card>
   </v-dialog>

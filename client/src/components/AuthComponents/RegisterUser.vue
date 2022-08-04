@@ -27,7 +27,7 @@
     />
     <!-- <v-divider></v-divider> -->
     <v-card-actions>
-      <v-btn :disabled="validateInput()" color="success">
+      <v-btn @click.stop="submit()" :disabled="validateInput()" color="success">
         Create
       </v-btn>
       <v-spacer></v-spacer>
@@ -39,6 +39,8 @@
 </template>
 
 <script>
+// import DatabaseServices from '../../DatabaseServices'
+
 export default {
   data() {
     return {
@@ -60,6 +62,42 @@ export default {
       if (/\s/.test(this.username + this.password)) return true
       if (this.password.length <= 5) return true
       if (this.password !== this.rePassword) return true
+    },
+    async submit() {
+
+      this.$parent.formSubmitted = true;
+      // make get request to see if username is taken
+
+      await new Promise(resolve => setTimeout(resolve, 1500))
+
+      this.exitProcess(
+        'Username Taken',
+        'This username has already been taken, try registering with a different name and resubmitting',
+        'Retry',
+        true,
+        () => { this.resubmitRegisterForm() }
+      )
+      
+      
+      // make post request
+
+      // run in 2.5 seconds to see if user was successfully posted to db
+      
+    },
+    exitProcess(title, desc, btnTxt, formValid, action) {
+      this.$parent.showCompletionDialog = true;
+      this.$parent.dialogContent = {
+        title,
+        desc,
+        btnTxt,
+        formValid,
+        action
+      }
+    },
+    resubmitRegisterForm() {
+      this.$parent.formType = true;
+      this.$parent.formSubmitted = false;
+      this.$parent.showCompletionDialog = false;
     }
   }
 }

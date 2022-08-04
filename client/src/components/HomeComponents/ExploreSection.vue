@@ -31,12 +31,15 @@
               @click.stop="showSearch = false"
               class="mx-2"
             >mdi-chevron-left</v-icon>
-            <v-text-field 
-              class="mt-3 pr-10"
-              v-model="searchQuery"
-              label="Search Portfolios"
-              @keyup.enter="search()"
-            />
+            <form action=".">
+              <v-text-field 
+                class="mt-3 pr-10"
+                v-model="searchQuery"
+                label="Search Portfolios"
+                type="search"
+                @keyup.enter="search()"
+              />
+            </form>
           </v-row>
           
         </v-btn>

@@ -72,7 +72,7 @@ export default {
     })
   },
   destroyed() {
-    document.removeEventListener('scroll');
+    document.removeEventListener('scroll', this.adjustTopBar);
   },
   methods: {
     calcShadow() {
@@ -88,10 +88,10 @@ export default {
     handleCreate() {
       this.$router.push("/create");
     },
-    async login() {
-      const googleUser = await this.$gAuth.signIn();
-      console.log(googleUser)
-    }
+    // async login() {
+    //   const googleUser = await this.$gAuth.signIn();
+    //   console.log(googleUser)
+    // }
   }
 }
 </script>

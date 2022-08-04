@@ -27,7 +27,7 @@
         <component-display-factory 
           :relevantInfo="component.content" 
           :componentType="component.category" 
-          :backgroundColor="setComponentBackground(indexOf(component))"
+          :backgroundColor="setComponentBackground(componentArray.indexOf(component))"
         />
       </div>
 

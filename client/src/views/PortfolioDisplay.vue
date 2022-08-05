@@ -131,7 +131,7 @@ export default {
         }
         // mostly used for 1, 2 lengths
         default: {
-          return ""
+          return "";
         }
       }
     }

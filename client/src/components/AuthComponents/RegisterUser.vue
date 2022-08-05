@@ -1,8 +1,14 @@
 <template>
-  <v-card class="pa-5 ma-4" max-width="800px">
-    <v-row align="center" justify="center">
+  <v-card 
+    :min-width="$vuetify.breakpoint.smAndUp ? '400px' : '90vw'" 
+    class="pa-5 ma-4"
+  >
+    <v-row 
+      align="center" 
+      justify="center"
+    >
       <v-card-title>
-        Register Account
+        Register
       </v-card-title>
     </v-row>
     <v-divider></v-divider>
@@ -32,7 +38,7 @@
       </v-btn>
       <v-spacer></v-spacer>
        <v-btn @click.stop="$parent.formType = !$parent.formType" text color="info">
-        Have an account? Login
+        Login Here
       </v-btn>
     </v-card-actions>
   </v-card>

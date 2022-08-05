@@ -53,10 +53,8 @@ export default {
       // true when user hits create/login button
       formSubmitted: false,
       // true when component has finished processing a 
-      //user request and is ready to show user their next steps using a dialog box
+      // user request and is ready to show user their next steps using a dialog box
       showCompletionDialog: false,
-      // true between the time that form is submitted and completion dialog is false
-      loadingOverlay: false,
       // an object containing all necessary information that must be fed into dialog component
       dialogContent: {
         title: '',
@@ -70,12 +68,9 @@ export default {
   created() {
     this.formType = this.$route.query.type === 'register';
   },
-  watch: {
-    formSubmitted() {
-      this.loadingOverlay = (this.formSubmitted && !this.showCompletionDialog);
-    },
-    showCompletionDialog() {
-      this.loadingOverlay = (this.formSubmitted && !this.showCompletionDialog);
+  computed: {
+    loadingOverlay() {
+      return this.formSubmitted && !this.showCompletionDialog;
     }
   },
   methods: {

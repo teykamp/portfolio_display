@@ -14,7 +14,11 @@
         </ul>
       </div>
       <div>
-        <v-btn color="white" class="mr-2 mb-2">
+        <v-btn 
+          color="white" 
+          class="mr-2 mb-2"
+          @click.stop="$router.push({ name: 'Auth', query: { type: 'register' } })"
+        >
           <v-icon class="mr-2">mdi-account</v-icon>
           Create an account
         </v-btn>

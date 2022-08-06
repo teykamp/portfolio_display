@@ -31,7 +31,7 @@
               @click.stop="showSearch = false"
               class="mx-2"
             >mdi-chevron-left</v-icon>
-            <form action=".">
+            <!-- <form action=""> -->
               <v-text-field 
                 class="mt-3 pr-10"
                 v-model="searchQuery"
@@ -39,7 +39,7 @@
                 type="search"
                 @keyup.enter="search()"
               />
-            </form>
+            <!-- </form> -->
           </v-row>
           
         </v-btn>

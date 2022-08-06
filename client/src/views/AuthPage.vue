@@ -4,7 +4,8 @@
     <!-- User input forms -->
     <transition name="slide">
       <component 
-        v-if="!formSubmitted"
+        style="position: fixed; top: 0" 
+        v-if="!formSubmitted" 
         :is="formType ? 'register' : 'login'" 
       />
     </transition>
@@ -47,10 +48,14 @@ export default {
   },
   data() {
     return {
+      // true for register, false for login
       formType: true,
+      // true when user hits create/login button
       formSubmitted: false,
+      // true when component has finished processing a 
+      // user request and is ready to show user their next steps using a dialog box
       showCompletionDialog: false,
-      loadingOverlay: false,
+      // an object containing all necessary information that must be fed into dialog component
       dialogContent: {
         title: '',
         desc: '',
@@ -63,17 +68,13 @@ export default {
   created() {
     this.formType = this.$route.query.type === 'register';
   },
-  watch: {
-    formSubmitted() {
-      this.loadingOverlay = (this.formSubmitted && !this.showCompletionDialog);
-    },
-    showCompletionDialog() {
-      this.loadingOverlay = (this.formSubmitted && !this.showCompletionDialog);
+  computed: {
+    loadingOverlay() {
+      return this.formSubmitted && !this.showCompletionDialog;
     }
   },
   methods: {
     callDialog(dialogContent) {
-      console.log('content')
       this.dialogContent = dialogContent;
       this.showCompletionDialog = true;
     }
@@ -82,22 +83,22 @@ export default {
 </script>
 
 <style scoped>
-.slide-enter-from {
+.slide-enter {
   transform: translateX(100vw);
 }
 .slide-enter-to {
   transform: translateX(0);
 }
 .slide-enter-active {
-  transition: all 500ms;
+  transition: all 300ms;
 }
 .slide-leave-from {
-  transform: translateX(0)
+  transform: translateX(0);
 }
 .slide-leave-to {
-  transform: translateX(-100vw)
+  transform: translateX(-100vw);
 }
 .slide-leave-active {
-  transition: all 500ms;
+  transition: all 300ms;
 }
 </style>

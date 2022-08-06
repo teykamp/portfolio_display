@@ -1,19 +1,19 @@
 <template>
   <v-card 
-  :color="`${item.color} lighten-1`"  
-  @click.stop="onClick"               
+    :color="`${item.color} lighten-1`"  
+    @click.stop="onClick"               
   >
-    
     <v-row
-    no-gutters
-    align="center"
-    justify="center">
+      no-gutters
+      align="center"
+      justify="center"
+    >
       <v-col 
-      v-show="removable" 
-      :retain-focus="false" 
-      cols="1" 
-      class="ml-3" 
-      @click.stop="$emit('remove')"
+        v-show="removable" 
+        :retain-focus="false" 
+        cols="1" 
+        class="ml-3" 
+        @click.stop="$emit('remove')"
       >
         <v-row justify="center">                      
           <v-tooltip bottom>
@@ -54,7 +54,11 @@
       </v-col>
 
       <!-- Draggable -->
-      <v-col v-show="draggable" cols="1" :class="$vuetify.breakpoint.smAndUp ? '' : 'mr-2'">
+      <v-col 
+        v-show="draggable" 
+        cols="1" 
+        :class="$vuetify.breakpoint.smAndUp ? '' : 'mr-2'"
+      >
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-icon
@@ -83,9 +87,9 @@
         </v-tooltip>                
       </v-col>
       <v-col 
-      v-else-if="!editable" 
-      :style="$vuetify.breakpoint.smAndUp ? '' : 'font-size: 9pt'"
-      :class="$vuetify.breakpoint.smAndUp ? 'mr-6 mt-4': 'mr-3 mt-5'">
+        v-else-if="!editable" 
+        :style="$vuetify.breakpoint.smAndUp ? '' : 'font-size: 9pt'"
+        :class="$vuetify.breakpoint.smAndUp ? 'mr-6 mt-4': 'mr-3 mt-5'">
         <p>{{ item.desc  }}</p>
       </v-col>
     </v-row>

@@ -42,7 +42,11 @@
         Create
       </v-btn>
       <v-spacer></v-spacer>
-       <v-btn @click.stop="$parent.formType = !$parent.formType" text color="info">
+       <v-btn 
+        @click.stop="$parent.formType = !$parent.formType" 
+        text
+        color="info"
+      >
         Login Here
       </v-btn>
     </v-card-actions>
@@ -82,8 +86,8 @@ export default {
       if (usernameTaken) {
         this.exitProcess(
           'Username Taken',
-          'This username has already been taken, try registering with a different name and resubmitting',
-          'Retry',
+          'This username has already been taken, try something similar',
+          'ok',
           false,
           () => { this.resubmitRegisterForm() }
         );
@@ -112,6 +116,8 @@ export default {
           false,
           () => { this.resubmitRegisterForm() }
         );
+
+        return;
       }
 
       // if everything checks out and we can confirm our changes to the db, we send this exit msg

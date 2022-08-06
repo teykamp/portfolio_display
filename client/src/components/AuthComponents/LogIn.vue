@@ -43,8 +43,66 @@ export default {
     }
   },
   methods: {
-    submit() {
-      this.$emit('form-submission')
+    async submit() {
+
+      this.$parent.formSubmitted = true;
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      // send get req for user
+
+      // if user is not found
+      const user = false;
+      if (user) {
+        this.exitProcess(
+          'Incorrect Username or Password',
+          'The username or password that was entered do not match our records',
+          'Try again',
+          false,
+          () => { this.sendUserToLoginForm() }
+        );
+
+        return;
+      }
+
+      // if password is incorrect
+      const passwordCorrect = true;
+      if (!passwordCorrect) {
+        this.exitProcess(
+          'Incorrect Username or Password',
+          'The username or password that was entered do not match our records',
+          'Try again',
+          false,
+          () => { this.sendUserToLoginForm() }
+        );
+
+        return;
+      }
+      
+      // if everything is successful
+      this.exitProcess(
+        'Login Successful',
+        `You have successfully logged in as ${this.username}!`,
+        'jump to user panel',
+        true,
+        () => { this.$router.push('/create') }
+      );
+      
+    },
+    exitProcess(title, desc, btnTxt, formValid, action) {
+      this.$parent.dialogContent = {
+        title,
+        desc,
+        btnTxt,
+        formValid,
+        action
+      };
+
+      this.$parent.showCompletionDialog = true;
+    },
+    sendUserToLoginForm() {
+      this.$parent.formType = false;
+      this.$parent.formSubmitted = false;
+      this.$parent.showCompletionDialog = false;
     }
   }
 }

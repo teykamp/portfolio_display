@@ -31,12 +31,12 @@
       v-model="rePassword"
       :rules="[rules.matchingPasswords]"
     />
+
     <!-- <v-divider></v-divider> -->
-    <!-- :disabled="validateInput"  -->
     <v-card-actions>
       <v-btn 
         @click.stop="submit()" 
-        
+        :disabled="validateInput"
         color="success"
       >
         Create
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-// import DatabaseServices from '../../DatabaseServices'
+import DatabaseServices from '../../DatabaseServices'
 
 export default {
   data() {
@@ -70,19 +70,23 @@ export default {
       }
     }
   },
-  methods: {
+  computed: {
     validateInput() {
       if (!this.username) return true
       if (!this.password) return true
       if (/\s/.test(this.username + this.password)) return true
       if (this.password.length <= 5) return true
       if (this.password !== this.rePassword) return true
-    },
+
+      return false
+    }
+  },
+  methods: {
     async submit() {
 
       // make get request to see if username is taken
-      // if not takes do this
-      const usernameTaken = false;
+      const usernameTaken = await DatabaseServices.isUsernameTaken(this.username);
+
       if (usernameTaken) {
         this.exitProcess(
           'Username Taken',
@@ -97,14 +101,20 @@ export default {
 
       // tells parent to transition away from register and to a loading state
       this.$parent.formSubmitted = true;
-
-      // simulates time that it would take to post to db and do 
-      // final check to see if there are no naming conflicts
-      await new Promise(resolve => setTimeout(resolve, 1500))
       
+      // TODO: Hash Password Here
       // make post request
+      DatabaseServices.postAccount({
+        username: this.username,
+        password: this.password
+      });
+
+      // will await the actual post when i figure out how
+      // the flip to add an async promise to axios post/put!
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
       // check if name conflict exists
+
 
       // if it does then delete the account
       const usernameTakenAgain = false;

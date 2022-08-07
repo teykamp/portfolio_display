@@ -24,6 +24,24 @@ router.get('/:username', async (req, res) => {
 
 });
 
+router.get('/:username/istaken?', async (req, res) => {
+
+  try {
+    /* asks mongo for the first document containing a username property that matches :username
+    route param, then asks for only the username of that document to save on the cost of
+    the operation. -_id tells mongo to leave out the _id property in object that it returns
+    which i include only because mongos default behavior is to throw id in the response to
+    any document query. Lastly i tell my api to response with the boolean representation of
+    the return value mongo gave to me. Mongo responds with 'null' as in false for no matches
+    and true if the query returned a match to one of the documents inside the cluster */
+    const account = await Account.findOne({ username: req.params.username }, 'username -_id');
+    res.json(!!account)
+  } catch (error) {
+    res.json({ message: error });
+  };
+
+});
+
 router.post('/', async (req, res) => {
 
   const createdUser = new Account({

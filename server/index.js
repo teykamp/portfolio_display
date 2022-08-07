@@ -7,10 +7,10 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-const users = require('./api/users');
+const portfolios = require('./api/portfolios');
 const auth = require('./api/auth');
 const account = require('./api/accounts');
-app.use('/api/users', users);
+app.use('/api/portfolios', portfolios);
 app.use('/api/auth', auth);
 app.use('/api/accounts', account);
 

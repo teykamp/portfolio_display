@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-const conn = mongoose.createConnection('mongodb+srv://math-race-users:userData@math-race-users.awkeu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
+const conn = mongoose.createConnection('mongodb+srv://nodebackend:portfolio@cluster0.qcf3a.mongodb.net/?retryWrites=true&w=majority');
 
 const AccountSchema = mongoose.Schema({
-  
+
   username: {
     type: String,
     required: true

@@ -3,7 +3,7 @@ import axios from 'axios'
 // switch between online and offline mode by adding and 
 // removing 'offline/' on requests to the portfolio API
 
-const portfolioURL = '/api/users/';
+const portfolioURL = '/api/portfolios/';
 const accountsURL = '/api/accounts/'
 
 export default class DatabaseServices {
@@ -61,6 +61,17 @@ export default class DatabaseServices {
       return { error };
     }
   }  
+
+  static async isUsernameTaken(username: string): Promise<object> {
+    try {
+      const res = await axios.get(`${accountsURL}${username}/istaken?`);
+      const data = res.data;
+      return data;
+    } catch (error) {
+      console.log(error);
+      return { error };
+    }
+  }
 
   static postAccount(account: object) {
     return axios.post(accountsURL, account);

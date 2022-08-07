@@ -35,11 +35,16 @@ router.get('/:username/istaken?', async (req, res) => {
     the return value mongo gave to me. Mongo responds with 'null' as in false for no matches
     and true if the query returned a match to one of the documents inside the cluster */
     const account = await Account.findOne({ username: req.params.username }, 'username -_id');
-    res.json(!!account)
+    res.json(!!account);
   } catch (error) {
     res.json({ message: error });
   };
 
+});
+
+router.get('/all/:username', async (req, res) => {
+  const accounts = await Account.find({ username: req.params.username }, '_id');
+  res.json(accounts.map(obj => obj._id));
 });
 
 router.post('/', async (req, res) => {
@@ -61,8 +66,8 @@ router.post('/', async (req, res) => {
 router.delete('/:id', async (req, res) => {
 
   try {
-    const deletedUser = await UserBase.deleteOne({ _id: req.params.id });
-    res.json(deletedUser);
+    const deletedAccount = await Account.deleteOne({ _id: req.params.id });
+    res.json(deletedAccount);
   } catch (error) {
     res.json({ message: error });
   };

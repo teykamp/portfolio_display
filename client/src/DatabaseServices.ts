@@ -39,6 +39,10 @@ export default class DatabaseServices {
     return axios.put(`${portfolioURL}${username}`, { portfolioItem });
   }
 
+  static deletePortfolioByID(id: string) {
+    return axios.delete(`${portfolioURL}${id}`);
+  }
+
   // Accounts API
   static async getAllAccounts(): Promise<Array<string>> {
     try {
@@ -62,14 +66,26 @@ export default class DatabaseServices {
     }
   }  
 
-  static async isUsernameTaken(username: string): Promise<object> {
+  static async isUsernameTaken(username: string): Promise<boolean> {
     try {
       const res = await axios.get(`${accountsURL}${username}/istaken?`);
       const data = res.data;
       return data;
     } catch (error) {
       console.log(error);
-      return { error };
+      return true;
+    }
+  }
+
+  // for account validation purposes
+  // return array of _id strings
+  static async getAllUsersWithUsername(username: string): Promise<Array<string>> {
+    try {
+      const res = await axios.get(`${accountsURL}/all/${username}`);
+      return res.data;
+    } catch (error) {
+      console.log(error);
+      return [];
     }
   }
 

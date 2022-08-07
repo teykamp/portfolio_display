@@ -111,17 +111,34 @@ export default {
 
       // will await the actual post when i figure out how
       // the flip to add an async promise to axios post/put!
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 3000));
 
       // check if name conflict exists
+      // if it does, it will delete all accounts with username to prevent naming conflicts
+      const userIDsForUsername = await DatabaseServices.getAllUsersWithUsername(this.username);
 
+      if (userIDsForUsername.length > 1) {
 
-      // if it does then delete the account
-      const usernameTakenAgain = false;
-      if (usernameTakenAgain) {
+        userIDsForUsername.forEach(id => DatabaseServices.deleteAccountByID(id));
+
         this.exitProcess(
           'There seems to have been an issue :(',
           'Unfortunately an issue was encountered whilst in the process of creating your account, please try again.',
+          'Try again',
+          false,
+          () => { this.resubmitRegisterForm() }
+        );
+
+        return;
+
+      // for the edge case were db connection was lost or obstructed and account creation didn't post
+      } else if (userIDsForUsername.length === 0) {
+
+        this.exitProcess(
+          'There was an issue connecting with our servers :(',
+          `Unfortunately the connection to our servers failed. This means that either 
+          our servers are down (highly unlikely) or you are broke and cannot afford good 
+          internet (judging by your geo location address highly likely), please try again.`,
           'Try again',
           false,
           () => { this.resubmitRegisterForm() }

@@ -52,7 +52,18 @@ router.put('/:username', async (req, res) => {
   } catch (error) {
     res.json({ message: error })
   }
-  
+
+});
+
+router.delete('/:id', async (req, res) => {
+
+  try {
+    const deletedPorfolio = await PortfolioItem.deleteOne({ _id: req.params.id });
+    res.json(deletedPorfolio);
+  } catch (error) {
+    res.json({ message: error });
+  };
+
 });
 
 router.get('/offline/:username', async (req, res) => {

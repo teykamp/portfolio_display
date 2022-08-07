@@ -292,9 +292,6 @@ export default {
       this.addedPortfolioComponents.splice(index, 1); 
 
       this.validatePortfolioComponents();
-    },
-    storageListener() {
-      console.log('a change was detected')
     }
   },
   watch: {

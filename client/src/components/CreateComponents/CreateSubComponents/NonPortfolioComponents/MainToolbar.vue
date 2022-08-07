@@ -45,7 +45,7 @@
     </Toolbar>
 
     <div class="mx-3">
-      Logged In As {{ username }}
+      Logged in as {{ username }}
     </div>
  
     <DialogBox

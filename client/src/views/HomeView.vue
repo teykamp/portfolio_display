@@ -13,6 +13,7 @@
       <v-btn 
         :text="currentSection !== 'build'"
         :color="currentSection !== 'build' ? '' : 'error'"
+        @click.stop="$router.push({ name: 'Build' })"
       >Build</v-btn>
       <v-btn 
         :text="currentSection !== 'explore'"
@@ -69,7 +70,7 @@ export default {
     })
 
     document.querySelectorAll('article').forEach((section) => {
-      observer.observe(section)
+      observer.observe(section);
     })
   },
   destroyed() {

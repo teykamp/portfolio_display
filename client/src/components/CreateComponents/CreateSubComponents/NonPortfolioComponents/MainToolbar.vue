@@ -37,22 +37,17 @@
           :dark="invalidComponents.length == 0"
           class="ml-2" 
           color="orange darken-1" 
-          @click.stop="editMode ? updatePortfolioRemote() : createPortfolioRemote()"
+          @click.stop="savePortfolioRemote()"
         >
-          {{ editMode ? 'Save' : 'Create' }}
+          Save
         </v-btn>
       </template>
     </Toolbar>
 
-    <!-- TEMPORARY -->
-    <div class="mx-12" v-if="!loading">
-      <v-text-field 
-        label="Username of Portfolio (for lookup)"
-        v-model="username"
-      />
+    <div class="mx-3">
+      Logged In As {{ username }}
     </div>
-    <!-- TEMPORARY -->
-
+ 
     <DialogBox
       :title="'Hold Up!'" 
       :description="'You are about to leave. Exiting now will only save the changes you have made locally, which puts them at risk!'"
@@ -77,23 +72,19 @@ import DialogBox from '../../../ReusableComponents/DialogBox.vue'
 export default {
   data() {
     return {
-      // a temporary replacement until user auth is added
-      username: '',
+      // username of logged in account
+      username: localStorage.username,
       // true when steps dialog is being displayed
       showStepsDialog: false,
       // true when exit dialog is being displayed
       showExitDialog: false,
       // tiggered if leave is prevented in exit dialog
-      preventLeave: false
+      preventLeave: false,
     }
   },
   props: {
     invalidComponents: {
       type: Array,
-      required: true
-    },
-    editMode: {
-      type: Boolean,
       required: true
     },
     loading: {
@@ -122,19 +113,23 @@ export default {
       this.$parent.saveSessionLocally();
       this.$router.push('/');
     },
-    updatePortfolioRemote() {
-      DatabaseServices.updatePorfolio(this.username, this.userData);
+    async savePortfolioRemote() {
+
+      // makes get to see if user already has a portfolio
+      const userAlreadyHasPortfolio = true;
+
+      if (userAlreadyHasPortfolio) {
+        DatabaseServices.updatePorfolio(this.username, this.userData);
+      } else {
+        DatabaseServices.postPortfolio({
+          username: this.username,
+          portfolioItem: this.userData
+        });
+      }
+      
       this.$store.state.portfolioItem = undefined;
       localStorage.removeItem('unsavedSessionData');
-      this.$router.push('/');
-    },
-    createPortfolioRemote() {
-      DatabaseServices.postPortfolio({
-        username: this.username,
-        portfolioItem: this.userData
-      });
-      this.$store.state.portfolioItem = undefined;
-      localStorage.removeItem('unsavedSessionData');
+
       this.$router.push('/');
     }
   }

@@ -11,11 +11,6 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/create',
-    name: 'CreatePortfo',
-    component: () => import('../views/CreatePortfolio.vue')
-  },
-  {
     path: '/display/:user',
     name: 'PortfolioDisplay',
     component: () => import('../views/PortfolioDisplay.vue')
@@ -26,8 +21,8 @@ const routes = [
     component: () => import('../views/PortfolioDisplay.vue')
   },
   {
-    path: '/edit',
-    name: 'EditPortfolio',
+    path: '/build',
+    name: 'Build',
     component: () => import('../views/CreatePortfolio.vue')
   },
   {

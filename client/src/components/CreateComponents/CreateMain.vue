@@ -5,7 +5,6 @@
 
       <MainToolbar
         :invalidComponents="invalidComponents"
-        :editMode="$route.fullPath.includes('edit')"
         :loading="loading"
         :userData="userData"
       /> 
@@ -101,8 +100,6 @@
       @update-component-data="updateComponentData($event)"
     />
 
-    <!-- <pre>{{userData}}</pre> -->
-
     <DeleteDialog 
       :description="`Removing the ${addedPortfolioComponents[targetedComponentIndex] ? `${addedPortfolioComponents[targetedComponentIndex].name}` : `` } 
       component from your portfolio will delete all the data contained inside and cannot be undone!`" 
@@ -148,15 +145,32 @@ export default {
   },
   async mounted() {
 
+    // checks if user is logged in
+    if (!localStorage.getItem('username')) {
+      this.$router.push({ name: 'Auth', query: { type: 'login' } });
+    }
+
     // checks if unresolved session is saved in state, 
     // this could be because user exited previously or is returning from a preview
-    if (this.$store.state.portfolioItem) this.userData = this.$store.state.portfolioItem;
+    else if (this.$store.state.portfolioItem) {
+      this.userData = this.$store.state.portfolioItem;
+    } 
 
-    else if (this.$route.fullPath.includes('create')) this.userData.header = new HeaderClass();
-    
-    else if (this.$route.fullPath.includes('edit')) { 
-      const data = await DatabaseServices.getUserByUsername('offline/yona');
-      this.userData = data.portfolioItem;
+    else {
+
+      // send get to see if user already has portfolio
+      // add get for user once user auth is added
+
+      const sessionUser = localStorage.getItem('username');
+      const data = await DatabaseServices.getUserByUsername(sessionUser);
+
+      // if yes
+      if (data?.portfolioItem) {
+        this.userData = data.portfolioItem;
+      // if no
+      } else {
+        this.userData.header = new HeaderClass();
+      }
     }
     
     this.validatePortfolioComponents();
@@ -246,8 +260,10 @@ export default {
       try {
         localStorage.setItem('unsavedSessionData', JSON.stringify(this.userData));
       } catch {
-        throw new Error('An issue was encountered when trying to backup session data locally.')
+        throw new Error('An issue was encountered when trying to backup session data locally.');
       }
+
+      this.$store.state.portfolioItem = this.userData;
     },
     toggleEditView(componentName) {
       this.componentBeingEdited = componentName;

@@ -1,9 +1,7 @@
 <template>
   <div>
     <v-app>
-      <transition name="slide">
-        <router-view :key="showSessionRestorationDialog" />
-      </transition>
+      <router-view :key="showSessionRestorationDialog" />
       <DialogBox 
         :visible="showSessionRestorationDialog"
         :title="'Restore Previous Session?'"
@@ -37,7 +35,7 @@ export default Vue.extend({
   methods: {
     restoreSession() {
       this.$store.state.portfolioItem = JSON.parse(localStorage.unsavedSessionData);
-      this.$router.push('/edit');
+      this.$router.push({ name: 'Build' });
     },
     dialogClosed() {
       this.showSessionRestorationDialog = false;
@@ -48,26 +46,4 @@ export default Vue.extend({
 </script>
 
 <style>
-
-.slide-enter {
-  transform: translateX(100vw);
-  opacity: 0
-}
-.slide-enter-to {
-  transform: translateX(0);
-  opacity: 1
-}
-.slide-enter-active {
-  transition: all 3s;
-}
-.slide-leave-from {
-  transform: translateX(0);
-}
-.slide-leave-to {
-  transform: translateX(-100vw);
-}
-.slide-leave-active {
-  transition: all 3s;
-}
-
 </style>

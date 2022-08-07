@@ -36,6 +36,7 @@
     <article id="footer" style="height: 50vh" class="content-container"></article>
   
     <v-btn 
+      v-if="username"
       color="error"
       @click.stop="logout()"
     >Logout</v-btn>

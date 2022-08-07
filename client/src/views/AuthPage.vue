@@ -4,8 +4,8 @@
     <!-- User input forms -->
     <transition name="slide">
       <component 
-        style="position: fixed; top: 0" 
         v-if="!formSubmitted" 
+        style="position: fixed; top: 0" 
         :is="formType ? 'register' : 'login'" 
       />
     </transition>

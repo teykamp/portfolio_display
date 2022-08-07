@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import DatabaseServices from '../../DatabaseServices'
+
 export default {
   data() {
     return {
@@ -46,12 +48,10 @@ export default {
     async submit() {
 
       this.$parent.formSubmitted = true;
-      await new Promise(resolve => setTimeout(resolve, 1500));
 
-      // send get req for user
+      const user = await DatabaseServices.getAccountByUsername(this.username);
 
       // if user is not found
-      const user = true;
       if (!user) {
         this.exitProcess(
           'Incorrect Username or Password',
@@ -64,8 +64,9 @@ export default {
         return;
       }
 
+      // TODO: import bcrypt and compare hashes
       // if password is incorrect
-      const passwordCorrect = true;
+      const passwordCorrect = this.password === user.password;
       if (!passwordCorrect) {
         this.exitProcess(
           'Incorrect Username or Password',
@@ -80,6 +81,7 @@ export default {
       
       // if everything is successful
       localStorage.setItem('username', this.username);
+
       this.exitProcess(
         'Login Successful',
         `You have successfully logged in as ${this.username}!`,

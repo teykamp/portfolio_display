@@ -23,7 +23,7 @@ export default Vue.extend({
   name: 'App',
   data() {
     return {
-      showSessionRestorationDialog: false
+      showSessionRestorationDialog: false,
     }
   },
   components: {

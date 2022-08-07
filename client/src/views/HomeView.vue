@@ -35,6 +35,11 @@
     </article>
     <article id="footer" style="height: 50vh" class="content-container"></article>
   
+    <v-btn 
+      color="error"
+      @click.stop="logout()"
+    >Logout</v-btn>
+
   </div>
 </template>
 
@@ -49,6 +54,7 @@ export default {
     return {
       barWhiteness: 0,
       currentSection: 0,
+      username: localStorage.username
     }
   },
   components: {
@@ -62,7 +68,7 @@ export default {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.intersectionRatio > 0) {
-          this.currentSection = entry.target.getAttribute('id')
+          this.currentSection = entry.target.getAttribute('id');
         }
       })
     }, {
@@ -71,7 +77,7 @@ export default {
 
     document.querySelectorAll('article').forEach((section) => {
       observer.observe(section);
-    })
+    });
   },
   destroyed() {
     document.removeEventListener('scroll', this.adjustTopBar);
@@ -88,8 +94,13 @@ export default {
       this.barWhiteness = window.scrollY / 400;
     },
     handleCreate() {
-      this.$router.push("/create");
+      this.$router.push({ name: 'Build' });
     },
+    logout() {
+      localStorage.clear();
+      this.$router.push({ name: 'Auth' });
+      setTimeout(() => location.reload(), 25);
+    }
     // async login() {
     //   const googleUser = await this.$gAuth.signIn();
     //   console.log(googleUser)

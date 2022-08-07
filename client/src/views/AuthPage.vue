@@ -78,6 +78,11 @@ export default {
       this.dialogContent = dialogContent;
       this.showCompletionDialog = true;
     }
+  },
+  watch: {
+    formType(newValue) {
+      this.$router.replace({ name: 'Auth', query: { type: newValue ? 'register' : 'login' } });
+    }
   }
 }
 </script>

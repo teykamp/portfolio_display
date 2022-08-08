@@ -116,7 +116,7 @@ export default {
     async savePortfolioRemote() {
 
       // makes get to see if user already has a portfolio
-      const userAlreadyHasPortfolio = true;
+      const userAlreadyHasPortfolio = await DatabaseServices.getPortfolioByUsername(this.username);
 
       if (userAlreadyHasPortfolio) {
         DatabaseServices.updatePorfolio(this.username, this.userData);

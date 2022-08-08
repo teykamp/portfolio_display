@@ -9,7 +9,7 @@ const accountsURL = '/api/accounts/'
 export default class DatabaseServices {
 
   // Portfolio API
-  static async getAllUsers(): Promise<Array<string>> {
+  static async getAllPortfolios(): Promise<Array<string>> {
     try {
       const res = await axios.get(portfolioURL);
       const data = res.data;
@@ -20,7 +20,7 @@ export default class DatabaseServices {
     }
   }
 
-  static async getUserByUsername(username: string): Promise<object> {
+  static async getPortfolioByUsername(username: string): Promise<object> {
     try {
       const res = await axios.get(`${portfolioURL}${username}`);
       const data = res.data;

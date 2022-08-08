@@ -162,7 +162,7 @@ export default {
       // add get for user once user auth is added
 
       const sessionUser = localStorage.getItem('username');
-      const data = await DatabaseServices.getUserByUsername(sessionUser);
+      const data = await DatabaseServices.getPortfolioByUsername(sessionUser);
 
       // if yes
       if (data?.portfolioItem) {

@@ -3,20 +3,31 @@
 
     <!-- Error With Profile -->
     <div v-if="error">
-      <Error :errorType="error" :username="this.user.name" />
+      <Error 
+        :errorType="error"
+        :username="'Add Username Here'" 
+      />
     </div>
 
     <!-- Porfolio Display -->
     <div v-else>
 
       <div> 
-        <v-btn 
+        <v-btn
           depressed 
           color="accent"
           style="z-index: 10;" 
           class="position-absolute" 
           @click="back"
-        >{{ previewMode ? 'Back' : 'Edit' }}</v-btn>
+        >Back</v-btn>
+        <v-btn
+          v-if="canEditPortfolio"
+          depressed 
+          color="info"
+          style="z-index: 10;" 
+          class="position-absolute" 
+          @click="$router.push({ name: 'Build' })"
+        >Edit</v-btn>
       </div>
 
       <div>
@@ -24,11 +35,7 @@
       </div>
 
       <div v-for="component in componentArray" :key="component.id">
-        <component-display-factory 
-          :relevantInfo="component.content" 
-          :componentType="component.category" 
-          :backgroundColor="setComponentBackground(componentArray.indexOf(component))"
-        />
+        <component-display-factory :relevantInfo="component.content" :componentType="component.category" />
       </div>
 
       <div>
@@ -49,7 +56,6 @@ import Header from '../components/PortfolioHeader.vue'
 import Footer from '../components/PortfolioFooter.vue'
 
 export default {
-
   components: {
     ComponentDisplayFactory,
     Error,
@@ -68,7 +74,7 @@ export default {
       this.$router.push('/');
     }
 
-    const response = await DatabaseServices.getUserByUsername('offline/yona');
+    const response = await DatabaseServices.getPortfolioByUsername(this.$route.params.user);
 
     // There has been an issue connecting with our servers, this may be an internet connectivity issue.
     // this may also be triggered if the user does not exist in this version
@@ -90,11 +96,15 @@ export default {
       previewMode: false,
     }
   },
+  computed: {
+    canEditPortfolio() {
+      return this.$route.params.user === localStorage.getItem('username') && !this.previewMode;
+    }
+  },
   methods: {
     back() {
       history.back();
     },
-
     formatDataForDisplay(userData) {
 
       /* sorts data into seperate categories for passing down sub-component specific info */
@@ -107,32 +117,6 @@ export default {
         version: '0.1.0',
         githubSource: 'https://github.com/teykamp/portfolio_display',
         logo: 'https://avatars.githubusercontent.com/u/46391052?s=120&v=4',
-      }
-    },
-
-    setComponentBackground(componentIndex) {
-      switch (this.componentArray.length) {
-        // "" means white or black, the default color of the background
-        case 3: {
-          const colors = ["", "secondary", ""];
-          return colors[componentIndex];
-        }
-        case 4: {
-          const colors = ["", "secondary", "", ""];
-          return colors[componentIndex];
-        }
-        case 5: {
-          const colors = ["", "secondary", "", "secondary", ""];
-          return colors[componentIndex];
-        }
-        case 6: {
-          const colors = ["", "", "secondary", "", "secondary", ""];
-          return colors[componentIndex];
-        }
-        // mostly used for 1, 2 lengths
-        default: {
-          return "";
-        }
       }
     }
   }

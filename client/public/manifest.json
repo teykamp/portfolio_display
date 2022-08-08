@@ -1,7 +1,7 @@
 {
   "name": "Portfolio Maker",
   "short_name": "Portfolio",
-  "start_url": "/index.html",
+  "start_url": "https://portfolio-display-app.herokuapp.com/",
   "display": "standalone",
   "background_color": "#FFA500",
   "theme_color": "#FFA500",

@@ -1,6 +1,10 @@
 <template>
   <div>
-    <component :is="componentType" :relevantInfo="relevantInfo"></component>
+    <component 
+      :is="componentType" 
+      :relevantInfo="relevantInfo"
+      :backgroundColor="backgroundColor"
+    ></component>
   </div>
 </template>
 
@@ -17,11 +21,12 @@ export default {
     projects,
     education,
     experiences,
-    timeline
+    timeline,
   },
   props: [
     'componentType',
-    'relevantInfo'
+    'relevantInfo',
+    'backgroundColor',
   ]
 }
 </script>

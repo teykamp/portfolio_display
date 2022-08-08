@@ -5,7 +5,13 @@
         <h4>Education</h4>
       </v-row>
       <v-row justify="center">
-        <v-col xs="12" sm="10" md="8" lg="6" xl="6">
+        <v-col 
+          xs="12" 
+          sm="10" 
+          md="8" 
+          lg="6" 
+          xl="6"
+        >
           <v-expansion-panels inset>
             <v-expansion-panel
               v-for="education in relevantInfo"
@@ -41,7 +47,8 @@ import dateDisplay from "../../utils/DateToText.ts"
 
 export default {
   props: [
-    'relevantInfo'
+    'relevantInfo',
+    'backgroundColor',
   ],
   data() {
     return {

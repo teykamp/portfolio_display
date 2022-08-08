@@ -3,20 +3,31 @@
 
     <!-- Error With Profile -->
     <div v-if="error">
-      <Error :errorType="error" :username="this.user.name" />
+      <Error 
+        :errorType="error"
+        :username="'Add Username Here'" 
+      />
     </div>
 
     <!-- Porfolio Display -->
     <div v-else>
 
       <div> 
-        <v-btn 
+        <v-btn
           depressed 
           color="accent"
           style="z-index: 10;" 
           class="position-absolute" 
           @click="back"
-        >{{ previewMode ? 'Back' : 'Edit' }}</v-btn>
+        >Back</v-btn>
+        <v-btn
+          v-if="canEditPortfolio"
+          depressed 
+          color="info"
+          style="z-index: 10;" 
+          class="position-absolute" 
+          @click="$router.push({ name: 'Build' })"
+        >Edit</v-btn>
       </div>
 
       <div>
@@ -45,7 +56,6 @@ import Header from '../components/PortfolioHeader.vue'
 import Footer from '../components/PortfolioFooter.vue'
 
 export default {
-
   components: {
     ComponentDisplayFactory,
     Error,
@@ -64,7 +74,7 @@ export default {
       this.$router.push('/');
     }
 
-    const response = await DatabaseServices.getUserByUsername(this.$route.params.user);
+    const response = await DatabaseServices.getPortfolioByUsername(this.$route.params.user);
 
     // There has been an issue connecting with our servers, this may be an internet connectivity issue.
     // this may also be triggered if the user does not exist in this version
@@ -83,7 +93,12 @@ export default {
       footerData: {},      
 
       error: undefined,
-      previewMode: false
+      previewMode: false,
+    }
+  },
+  computed: {
+    canEditPortfolio() {
+      return this.$route.params.user === localStorage.getItem('username') && !this.previewMode;
     }
   },
   methods: {

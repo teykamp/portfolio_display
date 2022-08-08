@@ -146,7 +146,7 @@ export default {
     backgroundColor: {
       type: String,
       required: true
-    }
+    },
   },
   data() {
     return {

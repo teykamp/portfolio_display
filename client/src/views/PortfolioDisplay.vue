@@ -87,7 +87,7 @@ export default {
       footerData: {},      
 
       error: undefined,
-      previewMode: false
+      previewMode: false,
     }
   },
   methods: {

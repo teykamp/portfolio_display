@@ -9,7 +9,7 @@ export default function dateToText(dateString: string): string {
     "Jul", 
     "Aug", 
     "Sep", 
-    "Oct", 
+    "Oct",
     "Nov", 
     "Dec"
   ];

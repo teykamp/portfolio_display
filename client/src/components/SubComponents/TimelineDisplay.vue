@@ -136,40 +136,43 @@
 
 <script>
 import displayDate from "../../utils/DateToText.ts"
+
 export default {
-  props: [
-    'relevantInfo',
-    ],
+  props: {
+    relevantInfo: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
+      // filtered and sorted version of the relevantInfo prop
       displayData: [],
+      // icons that are displayed inside the timeline circles
       typeIcons: [],
+      // key value pairs that match the object types with mdi-icons
+      iconData: {
+        projects: 'mdi-projector-screen',
+        education: 'mdi-school',
+        accomplishments: 'mdi-trophy',
+        experiences: 'mdi-briefcase'
+      },
+
+      // imported function
       displayDate
     }
   },
-  methods: {
-    iconData(type) {
-      switch(type) {
-        case 'projects':
-          return 'mdi-projector-screen'
-        case 'education':
-          return 'mdi-school'
-        case 'accomplishments':
-          return 'mdi-trophy'
-        case 'experiences':
-          return 'mdi-briefcase'
-        default:
-          return 'mdi-archive'
-      }
-    }
-  },
   created() {
-    
-    const removedNullData = this.relevantInfo.filter(item => { if (item.date) return true });
-    const sortedDateData = removedNullData.sort((b, a) => parseInt(a.date.replace('-', '')) - parseInt(b.date.replace('-', '')));
-    this.displayData = sortedDateData;
+    const removedNullData = this.relevantInfo.filter(item => item.date);
+
+    const sortedDataByDate = removedNullData.sort((b, a) => {
+      return parseInt(a.date.replace('-', '')) - parseInt(b.date.replace('-', ''));
+    });
+
+    this.displayData = sortedDataByDate;
+
     this.displayData.forEach(item => {
-      this.typeIcons.push(this.iconData(item.type))
+      this.typeIcons.push(this.iconData[item.type]);
     })
   }
 }

@@ -64,7 +64,7 @@ export default {
       this.$router.push('/');
     }
 
-    const response = await DatabaseServices.getUserByUsername(this.$route.params.user);
+    const response = await DatabaseServices.getUserByUsername('offline/yona');
 
     // There has been an issue connecting with our servers, this may be an internet connectivity issue.
     // this may also be triggered if the user does not exist in this version

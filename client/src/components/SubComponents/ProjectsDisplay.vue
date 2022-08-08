@@ -135,7 +135,8 @@
 import TechnologyDisplay from '../ReusableComponents/ProjectTechnologySheet.vue'
 export default {
   props: [
-    'relevantInfo'
+    'relevantInfo',
+    'backgroundColor',
   ],
   components: {
     TechnologyDisplay,

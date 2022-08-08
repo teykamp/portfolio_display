@@ -139,6 +139,7 @@ import displayDate from "../../utils/DateToText.ts"
 export default {
   props: [
     'relevantInfo',
+    'backgroundColor',
     ],
   data() {
     return {

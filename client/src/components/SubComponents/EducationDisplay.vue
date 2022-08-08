@@ -41,7 +41,8 @@ import dateDisplay from "../../utils/DateToText.ts"
 
 export default {
   props: [
-    'relevantInfo'
+    'relevantInfo',
+    'backgroundColor',
   ],
   data() {
     return {

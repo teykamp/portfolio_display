@@ -142,6 +142,10 @@ export default {
     relevantInfo: {
       type: Array,
       required: true
+    },
+    backgroundColor: {
+      type: String,
+      required: true
     }
   },
   data() {

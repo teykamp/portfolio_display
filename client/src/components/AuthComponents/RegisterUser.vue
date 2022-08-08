@@ -31,12 +31,12 @@
       v-model="rePassword"
       :rules="[rules.matchingPasswords]"
     />
+
     <!-- <v-divider></v-divider> -->
-    <!-- :disabled="validateInput"  -->
     <v-card-actions>
       <v-btn 
         @click.stop="submit()" 
-        
+        :disabled="validateInput"
         color="success"
       >
         Create
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-// import DatabaseServices from '../../DatabaseServices'
+import DatabaseServices from '../../DatabaseServices'
 
 export default {
   data() {
@@ -70,19 +70,23 @@ export default {
       }
     }
   },
-  methods: {
+  computed: {
     validateInput() {
       if (!this.username) return true
       if (!this.password) return true
       if (/\s/.test(this.username + this.password)) return true
       if (this.password.length <= 5) return true
       if (this.password !== this.rePassword) return true
-    },
+
+      return false
+    }
+  },
+  methods: {
     async submit() {
 
       // make get request to see if username is taken
-      // if not takes do this
-      const usernameTaken = false;
+      const usernameTaken = await DatabaseServices.isUsernameTaken(this.username);
+
       if (usernameTaken) {
         this.exitProcess(
           'Username Taken',
@@ -97,21 +101,44 @@ export default {
 
       // tells parent to transition away from register and to a loading state
       this.$parent.formSubmitted = true;
-
-      // simulates time that it would take to post to db and do 
-      // final check to see if there are no naming conflicts
-      await new Promise(resolve => setTimeout(resolve, 1500))
       
+      // TODO: Hash Password Here
       // make post request
+      DatabaseServices.postAccount({
+        username: this.username,
+        password: this.password
+      });
+
+      // will await the actual post when i figure out how
+      // the flip to add an async promise to axios post/put!
+      await new Promise(resolve => setTimeout(resolve, 3000));
 
       // check if name conflict exists
+      // if it does, it will delete all accounts with username to prevent naming conflicts
+      const userIDsForUsername = await DatabaseServices.getAllUsersWithUsername(this.username);
 
-      // if it does then delete the account
-      const usernameTakenAgain = false;
-      if (usernameTakenAgain) {
+      if (userIDsForUsername.length > 1) {
+
+        userIDsForUsername.forEach(id => DatabaseServices.deleteAccountByID(id));
+
         this.exitProcess(
           'There seems to have been an issue :(',
           'Unfortunately an issue was encountered whilst in the process of creating your account, please try again.',
+          'Try again',
+          false,
+          () => { this.resubmitRegisterForm() }
+        );
+
+        return;
+
+      // for the edge case were db connection was lost or obstructed and account creation didn't post
+      } else if (userIDsForUsername.length === 0) {
+
+        this.exitProcess(
+          'There was an issue connecting with our servers :(',
+          `Unfortunately the connection to our servers failed. This means that either 
+          our servers are down (highly unlikely) or you are broke and cannot afford good 
+          internet (judging by your geo location address highly likely), please try again.`,
           'Try again',
           false,
           () => { this.resubmitRegisterForm() }

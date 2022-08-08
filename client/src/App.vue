@@ -23,7 +23,7 @@ export default Vue.extend({
   name: 'App',
   data() {
     return {
-      showSessionRestorationDialog: false
+      showSessionRestorationDialog: false,
     }
   },
   components: {
@@ -35,7 +35,7 @@ export default Vue.extend({
   methods: {
     restoreSession() {
       this.$store.state.portfolioItem = JSON.parse(localStorage.unsavedSessionData);
-      this.$router.push('/edit');
+      this.$router.push({ name: 'Build' });
     },
     dialogClosed() {
       this.showSessionRestorationDialog = false;
@@ -46,5 +46,4 @@ export default Vue.extend({
 </script>
 
 <style>
-
 </style>

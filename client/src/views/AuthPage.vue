@@ -4,8 +4,8 @@
     <!-- User input forms -->
     <transition name="slide">
       <component 
-        style="position: fixed; top: 0" 
         v-if="!formSubmitted" 
+        style="position: fixed; top: 0" 
         :is="formType ? 'register' : 'login'" 
       />
     </transition>
@@ -77,6 +77,11 @@ export default {
     callDialog(dialogContent) {
       this.dialogContent = dialogContent;
       this.showCompletionDialog = true;
+    }
+  },
+  watch: {
+    formType(newValue) {
+      this.$router.replace({ name: 'Auth', query: { type: newValue ? 'register' : 'login' } });
     }
   }
 }

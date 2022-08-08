@@ -21,7 +21,7 @@ export default {
     projects,
     education,
     experiences,
-    timeline
+    timeline,
   },
   props: [
     'componentType',

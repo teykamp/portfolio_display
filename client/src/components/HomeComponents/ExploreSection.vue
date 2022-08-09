@@ -31,7 +31,11 @@
               @click.stop="showSearch = false"
               class="mx-2"
             >mdi-chevron-left</v-icon>
-            <!-- <form action=""> -->
+            <!-- Form is there to make mobile keyboards know to turn 'return' into 'go/search' -->
+            <form 
+              action
+              @submit="(ev) => ev.preventDefault()"
+            >
               <v-text-field 
                 class="mt-3 pr-10"
                 v-model="searchQuery"
@@ -39,7 +43,7 @@
                 type="search"
                 @keyup.enter="search()"
               />
-            <!-- </form> -->
+            </form>
           </v-row>
           
         </v-btn>
@@ -59,7 +63,6 @@ export default {
   methods: {
     search() {
       if (this.searchQuery.trim()) {
-        window.scrollTo(0, 0)
         this.$router.push(`/display/${this.searchQuery.trim()}`);
       }
     }

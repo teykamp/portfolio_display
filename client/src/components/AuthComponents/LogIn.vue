@@ -1,9 +1,12 @@
 <template>
-  <v-card 
+  <v-card
     :min-width="$vuetify.breakpoint.smAndUp ? '400px' : '90vw'" 
     class="pa-5 ma-4"
   >
-    <v-row align="center" justify="center">
+    <v-row 
+      align="center" 
+      justify="center"
+    >
       <v-card-title>
         Login
       </v-card-title>

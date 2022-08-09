@@ -12,23 +12,23 @@
     <!-- Porfolio Display -->
     <div v-else>
 
-      <div> 
+      <v-row
+        style="
+        z-index: 2;
+        top: 10px;
+        position: fixed;"
+        class="ml-1"
+      >  
         <v-btn
-          depressed 
-          color="accent"
-          style="z-index: 10;" 
-          class="position-absolute" 
+          text
           @click="back"
         >Back</v-btn>
         <v-btn
           v-if="canEditPortfolio"
-          depressed 
-          color="info"
-          style="z-index: 10;" 
-          class="position-absolute" 
+          text
           @click="$router.push({ name: 'Build' })"
         >Edit</v-btn>
-      </div>
+      </v-row>
 
       <div>
         <Header :data="headerData" />

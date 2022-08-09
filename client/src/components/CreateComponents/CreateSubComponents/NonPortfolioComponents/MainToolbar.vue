@@ -103,7 +103,6 @@ export default {
   },
   methods: {
     sendUserToPreview() {
-      this.$store.state.portfolioItem = this.userData;
       this.$parent.saveSessionLocally();
       this.$router.push({ name: 'PortfolioDisplayPreview' });
     },

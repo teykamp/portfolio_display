@@ -1,6 +1,6 @@
 <template>
   <v-card 
-    :color="`white`"  
+    :color="item.color"  
     @click.stop="onClick"               
   >
     <v-row
@@ -46,7 +46,7 @@
                 mdi-plus
               </v-icon>
             </template>
-            <span>Add {{ item.name }}</span>
+            <span>{{ item.name }} can be added</span>
           </v-tooltip>     
         </v-row>         
       </v-col>

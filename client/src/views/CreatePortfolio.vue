@@ -8,6 +8,8 @@
 import Main from '../components/CreateComponents/CreateMain.vue'
 
 export default {
-  components: { Main }
+  components: {
+    Main
+  }
 }
 </script>

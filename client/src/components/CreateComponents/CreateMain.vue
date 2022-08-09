@@ -34,6 +34,7 @@
             sm="10" 
             md="8"
           >
+          <draggable v-model="portfolioComponents" :group="'cards'">
             <div 
               v-for="(item, index) in portfolioComponents" 
               :key="item.id"
@@ -46,6 +47,7 @@
                 :onClick="() => addComponent(index)" 
               />
             </div>
+          </draggable>
           </v-col>
         </v-row>
 
@@ -63,8 +65,8 @@
             />
             
             <!-- BODY CARDS -->
-            <draggable v-model="addedPortfolioComponents">
-              <TransitionGroup name="list"> 
+            <draggable v-model="addedPortfolioComponents" :group="'cards'">
+              <!-- <TransitionGroup name="list">  -->
                 <div 
                   v-for="(item, index) in addedPortfolioComponents" 
                   :key="item.id"
@@ -76,16 +78,16 @@
                     @remove="targetedComponentIndex = index; deleteConfirmationDialog = true;" 
                   />
                 </div>
-              </TransitionGroup>
+              <!-- </TransitionGroup> -->
             </draggable>
 
             <!-- FOOTER CARD -->
-            <ComponentCard 
+            <!-- <ComponentCard 
               :draggable="false" 
               :removable="false"
               :item="{ name: 'footer', color: 'teal', desc: 'Footer currently uneditable' }" 
               :editable="false"
-            />
+            /> -->
 
           </v-col>
         </v-row> 
@@ -213,11 +215,11 @@ export default {
 
       /* all components that we offer to users */
       this.portfolioComponents = [
-        {id: 0, name: 'projects', color: 'red', desc: 'Flawlessly display software projects you have completed!'}, 
-        {id: 1, name: 'education', color: 'yellow', desc: 'Include your academic achievements and degrees earned!'}, 
-        {id: 2, name: 'accomplishments', color: 'blue', desc: 'The perfect way to show your most valuable competitive accolades!'}, 
-        {id: 3, name: 'experiences', color: 'green', desc: 'Highlight professional internship or work experiences.'},
-        {id: 4, name: 'timeline', color: 'purple', desc: 'Display a timeline that chronicals your personal development.'}
+        {id: 0, name: 'projects', color: 'info', desc: 'Flawlessly display software projects you have completed!'}, 
+        {id: 1, name: 'education', color: 'info', desc: 'Include your academic achievements and degrees earned!'}, 
+        {id: 2, name: 'accomplishments', color: 'info', desc: 'The perfect way to show your most valuable competitive accolades!'}, 
+        {id: 3, name: 'experiences', color: 'info', desc: 'Highlight professional internship or work experiences.'},
+        {id: 4, name: 'timeline', color: 'info', desc: 'Display a timeline that chronicals your personal development.'}
       ];
 
       /* loops through all components and makes sure that the components that already 

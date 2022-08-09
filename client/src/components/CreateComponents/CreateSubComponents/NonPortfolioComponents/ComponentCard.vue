@@ -1,6 +1,6 @@
 <template>
   <v-card 
-    :color="`${item.color} lighten-1`"  
+    :color="`white`"  
     @click.stop="onClick"               
   >
     <v-row
@@ -9,7 +9,7 @@
       justify="center"
     >
       <v-col 
-        v-show="removable" 
+        v-if="removable" 
         :retain-focus="false" 
         cols="1" 
         class="ml-3" 
@@ -26,6 +26,27 @@
               </v-icon>
             </template>
             <span>Remove {{ item.name }}</span>
+          </v-tooltip>     
+        </v-row>         
+      </v-col>
+
+      <v-col 
+        v-else-if="item.name != 'header'"
+        :retain-focus="false" 
+        cols="1" 
+        class="ml-3"
+      >
+        <v-row justify="center">                      
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-icon
+                v-bind="attrs"
+                v-on="on"
+              >
+                mdi-plus
+              </v-icon>
+            </template>
+            <span>Add {{ item.name }}</span>
           </v-tooltip>     
         </v-row>         
       </v-col>

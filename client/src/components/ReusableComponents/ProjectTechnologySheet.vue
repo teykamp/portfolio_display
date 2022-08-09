@@ -19,7 +19,7 @@
                 contain
                 max-height="100"
                 max-width="100"
-                :src="technology.logo"
+                :src="require(`../../assets/techLogos/${techKeys[technology.name]}`)"
                 aspect-ratio="1"
               >
               </v-img>
@@ -37,10 +37,17 @@
 </template>
 
 <script>
+import techKeys from '../../assets/techKeys'
+
 export default {
   props: [
     'technologies',
     'maxTechnologies',
-  ]
+  ],
+  data() { 
+    return { 
+      techKeys 
+    }
+  }
 }
 </script>

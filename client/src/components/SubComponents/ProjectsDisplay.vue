@@ -83,7 +83,10 @@
                           </v-card-text>
                         </v-card>
 
-                        <TechnologyDisplay :technologies="project.technologies" :maxTechnologies="project.technologies.length"/>
+                        <TechnologyDisplay 
+                          :technologies="project.technologies" 
+                          :maxTechnologies="project.technologies.length"
+                        />
 
                         <v-divider></v-divider>
 

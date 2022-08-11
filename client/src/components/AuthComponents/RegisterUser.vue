@@ -92,6 +92,7 @@ export default {
       let usernameTaken;
       try {
         usernameTaken = await DatabaseServices.isUsernameTaken(this.username);
+        // console.log()
       } catch {
         this.exitProcess(
           'There has been an issue with a request made to our servers',

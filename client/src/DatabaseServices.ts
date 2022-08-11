@@ -5,12 +5,19 @@ import axios from 'axios'
 const portfolioURL = '/api/portfolios/';
 const accountsURL = '/api/accounts/';
 
+// defines request timeout in milliseconds
+const timeout = 2000;
+
 export default class DatabaseServices {
 
   // Portfolio API
   static async getAllPortfolios(): Promise<Array<string>> {
     try {
-      const res = await axios.get(portfolioURL);
+      const res = await axios({
+        method: 'get',
+        url: portfolioURL,
+        timeout
+      });
       const data = res.data;
       return data;
     } catch (error) {
@@ -70,7 +77,11 @@ export default class DatabaseServices {
 
   static async isUsernameTaken(username: string): Promise<boolean> {
     try {
-      const res = await axios.get(`${accountsURL}${username}/istaken?`);
+      const res = await axios({
+        method: 'get',
+        url: `${accountsURL}${username}/istaken?`,
+        timeout
+      });
       const data = res.data;
       return data;
     } catch (error) {

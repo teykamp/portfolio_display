@@ -15,11 +15,13 @@
     <v-text-field 
       label="Username"
       v-model="username"
+      prepend-icon="mdi-account-circle"
     />
     <v-text-field 
       label="Password"
       :type="showPassword ? 'text' : 'password'"
       :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+      prepend-icon="mdi-lock"
       @click:append="showPassword = !showPassword"
       v-model="password"
     />

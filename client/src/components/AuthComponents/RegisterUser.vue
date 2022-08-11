@@ -15,12 +15,14 @@
     <v-text-field 
       label="Username"
       v-model="username"
+      prepend-icon="mdi-account-circle"
       :rules="[rules.containsSpaces]"
     />
     <v-text-field 
       label="Password"
       :type="showPassword ? 'text' : 'password'"
       :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+      prepend-icon="mdi-lock"
       @click:append="showPassword = !showPassword"
       v-model="password"
       :rules="[rules.passwordLength, rules.containsSpaces]"
@@ -28,6 +30,7 @@
     <v-text-field 
       label="Confirm Password"
       :type="showPassword ? 'text' : 'password'"
+      prepend-icon="mdi-redo-variant"
       v-model="rePassword"
       :rules="[rules.matchingPasswords]"
     />

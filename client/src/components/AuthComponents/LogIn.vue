@@ -40,7 +40,8 @@
 
 <script>
 import DatabaseServices from '../../DatabaseServices'
-
+import { compareSync } from 'bcryptjs'
+ 
 export default {
   data() {
     return {
@@ -69,9 +70,9 @@ export default {
         return;
       }
 
-      // TODO: import bcrypt and compare hashes
-      // if password is incorrect
-      const passwordCorrect = this.password === user.password;
+      // if password is correct by comparing what is on the db with the hashed password
+      const passwordCorrect = compareSync(this.password, user.password);
+      
       if (!passwordCorrect) {
         this.exitProcess(
           'Incorrect Username or Password',

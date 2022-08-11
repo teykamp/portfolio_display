@@ -58,6 +58,7 @@
 
 <script>
 import DatabaseServices from '../../DatabaseServices'
+import { hashSync } from 'bcryptjs'
 
 export default {
   data() {
@@ -105,7 +106,9 @@ export default {
       // tells parent to transition away from register and to a loading state
       this.$parent.formSubmitted = true;
       
-      // TODO: Hash Password Here
+      // hashes password for security
+      this.password = hashSync(this.password);
+
       // make post request
       DatabaseServices.postAccount({
         username: this.username,

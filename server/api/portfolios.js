@@ -7,7 +7,7 @@ router.get('/', async (req, res) => {
 
   try {
     const portfolios = await PortfolioItem.find();
-    res.json(portfolios)
+    res.json(portfolios);
   } catch (error) {
     res.json({ message: error });
   }
@@ -50,7 +50,7 @@ router.put('/:username', async (req, res) => {
     );
     res.json(updatedPortfolioItem);
   } catch (error) {
-    res.json({ message: error })
+    res.json({ message: error });
   }
 
 });
@@ -77,6 +77,6 @@ router.get('/offline/:username', async (req, res) => {
     res.json({ message: error });
   };
 
-})
+});
 
 module.exports = router;

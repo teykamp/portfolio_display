@@ -103,7 +103,6 @@ export default {
   },
   methods: {
     sendUserToPreview() {
-      this.$store.state.portfolioItem = this.userData;
       this.$parent.saveSessionLocally();
       this.$router.push({ name: 'PortfolioDisplayPreview' });
     },
@@ -119,12 +118,22 @@ export default {
       const userAlreadyHasPortfolio = await DatabaseServices.getPortfolioByUsername(this.username);
 
       if (userAlreadyHasPortfolio) {
-        DatabaseServices.updatePorfolio(this.username, this.userData);
+        try {
+          await DatabaseServices.updatePorfolio(this.username, this.userData);
+        } catch (error) {
+          console.error('Put request was unsuccessful!', error);
+          return;
+        }
       } else {
-        DatabaseServices.postPortfolio({
-          username: this.username,
-          portfolioItem: this.userData
-        });
+        try {
+          await DatabaseServices.postPortfolio({
+            username: this.username,
+            portfolioItem: this.userData
+          });
+        } catch (error) {
+          console.error('Post request was unsuccessful!', error);
+          return;
+        }
       }
       
       this.$store.state.portfolioItem = undefined;

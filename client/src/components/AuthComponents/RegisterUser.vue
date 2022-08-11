@@ -15,12 +15,14 @@
     <v-text-field 
       label="Username"
       v-model="username"
+      prepend-icon="mdi-account-circle"
       :rules="[rules.containsSpaces]"
     />
     <v-text-field 
       label="Password"
       :type="showPassword ? 'text' : 'password'"
       :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+      prepend-icon="mdi-lock"
       @click:append="showPassword = !showPassword"
       v-model="password"
       :rules="[rules.passwordLength, rules.containsSpaces]"
@@ -28,6 +30,7 @@
     <v-text-field 
       label="Confirm Password"
       :type="showPassword ? 'text' : 'password'"
+      prepend-icon="mdi-redo-variant"
       v-model="rePassword"
       :rules="[rules.matchingPasswords]"
     />
@@ -55,6 +58,7 @@
 
 <script>
 import DatabaseServices from '../../DatabaseServices'
+import { hashSync } from 'bcryptjs'
 
 export default {
   data() {
@@ -85,7 +89,21 @@ export default {
     async submit() {
 
       // make get request to see if username is taken
-      const usernameTaken = await DatabaseServices.isUsernameTaken(this.username);
+      let usernameTaken;
+      try {
+        usernameTaken = await DatabaseServices.isUsernameTaken(this.username);
+        // console.log()
+      } catch {
+        this.exitProcess(
+          'There has been an issue with a request made to our servers',
+          'This could be an issue with connectivity on your end, or a server problem on ours.',
+          'Try one more time',
+          false,
+          () => { this.resubmitRegisterForm() }
+        );
+
+        return;
+      }
 
       if (usernameTaken) {
         this.exitProcess(
@@ -102,16 +120,26 @@ export default {
       // tells parent to transition away from register and to a loading state
       this.$parent.formSubmitted = true;
       
-      // TODO: Hash Password Here
-      // make post request
-      DatabaseServices.postAccount({
-        username: this.username,
-        password: this.password
-      });
+      // hashes password for security
+      this.password = hashSync(this.password);
 
-      // will await the actual post when i figure out how
-      // the flip to add an async promise to axios post/put!
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      // make post request
+      try {
+        await DatabaseServices.postAccount({
+          username: this.username,
+          password: this.password
+        });
+      } catch {
+        this.exitProcess(
+          'There has been an issue with a request made to our servers',
+          'This could be an issue with connectivity on your end, or a server problem on ours.',
+          'Try one more time',
+          false,
+          () => { this.resubmitRegisterForm() }
+        );
+
+        return;
+      }
 
       // check if name conflict exists
       // if it does, it will delete all accounts with username to prevent naming conflicts

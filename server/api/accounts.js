@@ -6,7 +6,7 @@ router.get('/', async (req, res) => {
 
   try {
     const accounts = await Account.find();
-    res.json(accounts)
+    res.json(accounts);
   } catch (error) {
     res.json({ message: error });
   };

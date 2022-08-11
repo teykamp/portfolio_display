@@ -2,16 +2,22 @@ import axios from 'axios'
 
 // switch between online and offline mode by adding and 
 // removing 'offline/' on requests to the portfolio API
-
 const portfolioURL = '/api/portfolios/';
-const accountsURL = '/api/accounts/'
+const accountsURL = '/api/accounts/';
+
+// defines request timeout in milliseconds
+const timeout = 2000;
 
 export default class DatabaseServices {
 
   // Portfolio API
   static async getAllPortfolios(): Promise<Array<string>> {
     try {
-      const res = await axios.get(portfolioURL);
+      const res = await axios({
+        method: 'get',
+        url: portfolioURL,
+        timeout
+      });
       const data = res.data;
       return data;
     } catch (error) {
@@ -31,16 +37,19 @@ export default class DatabaseServices {
     }
   }  
 
-  static postPortfolio(portfolio: object) {
-    return axios.post(portfolioURL, portfolio);
+  static async postPortfolio(portfolio: object) {
+    const post = await axios.post(portfolioURL, portfolio);
+    return post;
   }
 
-  static updatePorfolio(username: string, portfolioItem: object) {
-    return axios.put(`${portfolioURL}${username}`, { portfolioItem });
+  static async updatePorfolio(username: string, portfolioItem: object) {
+    const put = await axios.put(`${portfolioURL}${username}`, { portfolioItem });
+    return put;
   }
 
-  static deletePortfolioByID(id: string) {
-    return axios.delete(`${portfolioURL}${id}`);
+  static async deletePortfolioByID(id: string) {
+    const remove = await axios.delete(`${portfolioURL}${id}`);
+    return remove;
   }
 
   // Accounts API
@@ -68,7 +77,11 @@ export default class DatabaseServices {
 
   static async isUsernameTaken(username: string): Promise<boolean> {
     try {
-      const res = await axios.get(`${accountsURL}${username}/istaken?`);
+      const res = await axios({
+        method: 'get',
+        url: `${accountsURL}${username}/istaken?`,
+        timeout
+      });
       const data = res.data;
       return data;
     } catch (error) {
@@ -89,12 +102,14 @@ export default class DatabaseServices {
     }
   }
 
-  static postAccount(account: object) {
-    return axios.post(accountsURL, account);
+  static async postAccount(account: object) {
+    const post = await axios.post(accountsURL, account);
+    return post;
   }
 
-  static deleteAccountByID(accountID: string) {
-    return axios.delete(`${accountsURL}${accountID}`);
+  static async deleteAccountByID(accountID: string) {
+    const remove = await axios.delete(`${accountsURL}${accountID}`);
+    return remove;
   }
 }
 

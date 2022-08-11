@@ -15,11 +15,13 @@
     <v-text-field 
       label="Username"
       v-model="username"
+      prepend-icon="mdi-account-circle"
     />
     <v-text-field 
       label="Password"
       :type="showPassword ? 'text' : 'password'"
       :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+      prepend-icon="mdi-lock"
       @click:append="showPassword = !showPassword"
       v-model="password"
     />
@@ -38,7 +40,8 @@
 
 <script>
 import DatabaseServices from '../../DatabaseServices'
-
+import { compareSync } from 'bcryptjs'
+ 
 export default {
   data() {
     return {
@@ -52,7 +55,20 @@ export default {
 
       this.$parent.formSubmitted = true;
 
-      const user = await DatabaseServices.getAccountByUsername(this.username);
+      let user;
+      try {
+        user = await DatabaseServices.getAccountByUsername(this.username);
+      } catch {
+        this.exitProcess(
+          'There has been an issue with a request made to our servers',
+          'This could be an issue with connectivity on your end, or a server problem on ours.',
+          'Try one more time',
+          false,
+          () => { this.sendUserToLoginForm() }
+        );
+
+        return;
+      }
 
       // if user is not found
       if (!user) {
@@ -67,9 +83,9 @@ export default {
         return;
       }
 
-      // TODO: import bcrypt and compare hashes
-      // if password is incorrect
-      const passwordCorrect = this.password === user.password;
+      // if password is correct by comparing what is on the db with the hashed password
+      const passwordCorrect = compareSync(this.password, user.password);
+
       if (!passwordCorrect) {
         this.exitProcess(
           'Incorrect Username or Password',

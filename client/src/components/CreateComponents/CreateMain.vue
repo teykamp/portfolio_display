@@ -34,18 +34,21 @@
             sm="10" 
             md="8"
           >
-            <div 
-              v-for="(item, index) in portfolioComponents" 
-              :key="item.id"
-            >
-              <ComponentCard 
-                :item="item"
-                :removable="false"
-                :draggable="false"
-                :editable="false"
-                :onClick="() => addComponent(index)" 
-              />
-            </div>
+          <draggable v-model="portfolioComponents" :group="'cards'">
+            <TransitionGroup name="list"> 
+              <div 
+                v-for="item in portfolioComponents" 
+                :key="item.id"
+              >
+                <ComponentCard 
+                  :item="item"
+                  :removable="false"
+                  :draggable="false"
+                  :editable="false"
+                />
+              </div>
+            </TransitionGroup>
+          </draggable>
           </v-col>
         </v-row>
 
@@ -63,7 +66,11 @@
             />
             
             <!-- BODY CARDS -->
-            <draggable v-model="addedPortfolioComponents">
+            <draggable 
+              v-model="addedPortfolioComponents" 
+              :group="{ name: 'cards', pull: false }"
+              :empty-insert-threshold="300"
+            >
               <TransitionGroup name="list"> 
                 <div 
                   v-for="(item, index) in addedPortfolioComponents" 
@@ -80,12 +87,12 @@
             </draggable>
 
             <!-- FOOTER CARD -->
-            <ComponentCard 
+            <!-- <ComponentCard 
               :draggable="false" 
               :removable="false"
               :item="{ name: 'footer', color: 'teal', desc: 'Footer currently uneditable' }" 
               :editable="false"
-            />
+            /> -->
 
           </v-col>
         </v-row> 
@@ -213,30 +220,21 @@ export default {
 
       /* all components that we offer to users */
       this.portfolioComponents = [
-        {id: 0, name: 'projects', color: 'red', desc: 'Flawlessly display software projects you have completed!'}, 
-        {id: 1, name: 'education', color: 'yellow', desc: 'Include your academic achievements and degrees earned!'}, 
-        {id: 2, name: 'accomplishments', color: 'blue', desc: 'The perfect way to show your most valuable competitive accolades!'}, 
-        {id: 3, name: 'experiences', color: 'green', desc: 'Highlight professional internship or work experiences.'},
-        {id: 4, name: 'timeline', color: 'purple', desc: 'Display a timeline that chronicals your personal development.'}
+        {id: 0, name: 'projects', color: 'blue lighten-4', desc: 'Flawlessly display software projects you have completed!'}, 
+        {id: 1, name: 'education', color: 'blue lighten-4', desc: 'Include your academic achievements and degrees earned!'}, 
+        {id: 2, name: 'accomplishments', color: 'blue lighten-4', desc: 'The perfect way to show your most valuable competitive accolades!'}, 
+        {id: 3, name: 'experiences', color: 'blue lighten-4', desc: 'Highlight professional internship or work experiences.'},
+        {id: 4, name: 'timeline', color: 'blue lighten-4', desc: 'Display a timeline that chronicals your personal development.'}
       ];
 
       /* loops through all components and makes sure that the components that already 
       have been edited by user are shown on the 'added' components tab */
-      const addedComponents = [];
-      for (let i = 0; i < this.portfolioComponents.length; i++) {
-        
+      for (let i = this.portfolioComponents.length - 1; i >= 0; i--) {
         if (this.userData[this.portfolioComponents[i].name]) {
           this.addedPortfolioComponents.push(this.portfolioComponents[i]);
-          addedComponents.push(this.portfolioComponents[i]);
+          this.portfolioComponents.splice(i, 1);
         }
       }
-
-      /* remove component from portfolioComponents so that a duplicate doesn't exist */
-      addedComponents.forEach(component => {
-        if (this.portfolioComponents.includes(component)) {
-          this.portfolioComponents.splice(this.portfolioComponents.indexOf(component), 1);
-        }
-      })
 
       /* adds the pageRank back to the added components based on the order previously determined by user */
       for (let i = 0; i < this.addedPortfolioComponents.length; i++) {
@@ -271,11 +269,11 @@ export default {
     },
     addComponent(index) {
       // instanciates a new object with name of the component added & properties 'pageRank' & 'content' 
-      this.userData[this.portfolioComponents[index].name] = { pageRank: 0, content: [] }
+      this.userData[this.addedPortfolioComponents[index].name] = { pageRank: 0, content: [] }
       this.validatePortfolioComponents();
 
-      this.addedPortfolioComponents.push(this.portfolioComponents[index]);
-      this.portfolioComponents.splice(index, 1);
+      // this.addedPortfolioComponents.push(this.portfolioComponents[index]);
+      // this.portfolioComponents.splice(index, 1);
     },
     removeComponent(index) {
       /* deletes all component data */
@@ -298,6 +296,10 @@ export default {
     addedPortfolioComponents() {
       // Update Page Rankings
       for (let i = 0; i < this.addedPortfolioComponents.length; i++) {
+        // calls addComponent if component is new to the list
+        if (this.userData[this.addedPortfolioComponents[i].name]?.pageRank === undefined) {
+          this.addComponent(i);
+        }
         this.userData[this.addedPortfolioComponents[i].name].pageRank = i;
       }
     }

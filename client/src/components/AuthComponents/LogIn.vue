@@ -55,7 +55,20 @@ export default {
 
       this.$parent.formSubmitted = true;
 
-      const user = await DatabaseServices.getAccountByUsername(this.username);
+      let user;
+      try {
+        user = await DatabaseServices.getAccountByUsername(this.username);
+      } catch {
+        this.exitProcess(
+          'There has been an issue with a request made to our servers',
+          'This could be an issue with connectivity on your end, or a server problem on ours.',
+          'Try one more time',
+          false,
+          () => { this.sendUserToLoginForm() }
+        );
+
+        return;
+      }
 
       // if user is not found
       if (!user) {
@@ -72,7 +85,7 @@ export default {
 
       // if password is correct by comparing what is on the db with the hashed password
       const passwordCorrect = compareSync(this.password, user.password);
-      
+
       if (!passwordCorrect) {
         this.exitProcess(
           'Incorrect Username or Password',

@@ -89,7 +89,20 @@ export default {
     async submit() {
 
       // make get request to see if username is taken
-      const usernameTaken = await DatabaseServices.isUsernameTaken(this.username);
+      let usernameTaken;
+      try {
+        usernameTaken = await DatabaseServices.isUsernameTaken(this.username);
+      } catch {
+        this.exitProcess(
+          'There has been an issue with a request made to our servers',
+          'This could be an issue with connectivity on your end, or a server problem on ours.',
+          'Try one more time',
+          false,
+          () => { this.resubmitRegisterForm() }
+        );
+
+        return;
+      }
 
       if (usernameTaken) {
         this.exitProcess(
@@ -110,14 +123,22 @@ export default {
       this.password = hashSync(this.password);
 
       // make post request
-      DatabaseServices.postAccount({
-        username: this.username,
-        password: this.password
-      });
+      try {
+        await DatabaseServices.postAccount({
+          username: this.username,
+          password: this.password
+        });
+      } catch {
+        this.exitProcess(
+          'There has been an issue with a request made to our servers',
+          'This could be an issue with connectivity on your end, or a server problem on ours.',
+          'Try one more time',
+          false,
+          () => { this.resubmitRegisterForm() }
+        );
 
-      // will await the actual post when i figure out how
-      // the flip to add an async promise to axios post/put!
-      await new Promise(resolve => setTimeout(resolve, 3000));
+        return;
+      }
 
       // check if name conflict exists
       // if it does, it will delete all accounts with username to prevent naming conflicts

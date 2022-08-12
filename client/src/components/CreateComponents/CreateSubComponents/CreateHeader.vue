@@ -108,16 +108,15 @@
 </template>
 
 <script>
-import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
+import CreateMixin from './CreateMixin'
 import AddLinkDialog from './NonPortfolioComponents/AddLinkDialog.vue'
 
 export default {
-  components: { Toolbar, AddLinkDialog },
-  props: {
-    userData: {
-      type: Object,
-      required: true
-    }
+  mixins: [
+    CreateMixin
+  ],
+  components: { 
+    AddLinkDialog 
   },
   data() {
     return {
@@ -137,11 +136,11 @@ export default {
   created() { 
     this.data = this.userData.header;
   },
-  destroyed() {
-    this.$parent.validatePortfolioComponents();
-    this.$parent.saveSessionLocally();
-  },
   methods: {
+    emitData() {
+      this.$parent.validatePortfolioComponents();
+      this.$parent.saveSessionLocally();
+    },
     validatePhone() {
       if (!this.data.phone) return true
       const pattern = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/

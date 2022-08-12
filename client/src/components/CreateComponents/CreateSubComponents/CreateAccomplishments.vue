@@ -88,26 +88,15 @@
 </template>
 
 <script>
-import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
-import Calender from '../../ReusableComponents/CreateCalender.vue'
+import CreateMixin from './CreateMixin'
 import Accomplishment from '../../../utils/PortfolioSchemas/Accomplishments'
 
 export default {
-  props: {
-    userData: {
-      type: Object,
-      required: true
-    }
-  },
-  components: {
-    Toolbar,
-    Calender
-  },
+  mixins: [
+    CreateMixin
+  ],
   created() {
     if (this.userData?.accomplishments) this.accomplishments = this.userData.accomplishments.content;
-  },
-  destroyed() {
-    this.emitData();
   },
   data: () => {
     return {

@@ -22,56 +22,93 @@ export default class DatabaseServices {
       return data;
     } catch (error) {
       console.log(error);
-      return [];
+      return Promise.reject(error);
     }
   }
 
   static async getPortfolioByUsername(username: string): Promise<object> {
     try {
-      const res = await axios.get(`${portfolioURL}${username}`);
+      const res = await axios({
+        method: 'get',
+        url: `${portfolioURL}${username}`,
+        timeout
+      });
       const data = res.data;
       return data;
     } catch (error) {
       console.log(error);
-      return { error };
+      return Promise.reject(error);
     }
   }  
 
-  static async postPortfolio(portfolio: object) {
-    const post = await axios.post(portfolioURL, portfolio);
-    return post;
+  static async postPortfolio(portfolio: object): Promise<object> {
+    try {
+      const post = await axios.post(portfolioURL, portfolio, { 
+        timeout 
+      });
+      return post;
+    } catch (error) {
+      console.log(error);
+      return Promise.reject(error);
+    }    
   }
 
-  static async updatePorfolio(username: string, portfolioItem: object) {
-    const put = await axios.put(`${portfolioURL}${username}`, { portfolioItem });
-    return put;
+  static async updatePorfolio(username: string, portfolioItem: object): Promise<object> {
+    try {
+      const put = await axios.put(`${portfolioURL}${username}`, {
+        portfolioItem 
+      }, {
+        timeout
+      });
+      return put;
+    } catch (error) {
+      console.log(error);
+      return Promise.reject(error);
+    }
   }
 
-  static async deletePortfolioByID(id: string) {
-    const remove = await axios.delete(`${portfolioURL}${id}`);
-    return remove;
+  static async deletePortfolioByID(id: string): Promise<object> {
+    try {
+      const remove = await axios({
+        method: 'delete',
+        url: `${portfolioURL}${id}`,
+        timeout
+      });
+      return remove;
+    } catch (error) {
+      console.log(error);
+      return Promise.reject(error);
+    }
   }
 
   // Accounts API
   static async getAllAccounts(): Promise<Array<string>> {
     try {
-      const res = await axios.get(accountsURL);
+      const res = await axios({
+        method: 'get',
+        url: accountsURL,
+        timeout
+      });
       const data = res.data;
       return data;
     } catch (error) {
       console.log(error);
-      return [];
+      return Promise.reject(error);
     }
   }
 
   static async getAccountByUsername(username: string): Promise<object> {
     try {
-      const res = await axios.get(`${accountsURL}${username}`);
+      const res = await axios({
+        method: 'get',
+        url: `${accountsURL}${username}`,
+        timeout
+      });
       const data = res.data;
       return data;
     } catch (error) {
       console.log(error);
-      return { error };
+      return Promise.reject(error);
     }
   }  
 
@@ -86,7 +123,7 @@ export default class DatabaseServices {
       return data;
     } catch (error) {
       console.log(error);
-      return true;
+      return Promise.reject(error);
     }
   }
 
@@ -94,22 +131,40 @@ export default class DatabaseServices {
   // return array of _id strings
   static async getAllUsersWithUsername(username: string): Promise<Array<string>> {
     try {
-      const res = await axios.get(`${accountsURL}/all/${username}`);
+      const res = await axios({
+        method: 'get',
+        url: `${accountsURL}/all/${username}`,
+        timeout
+      });
       return res.data;
     } catch (error) {
       console.log(error);
-      return [];
+      return Promise.reject(error);
     }
   }
 
-  static async postAccount(account: object) {
-    const post = await axios.post(accountsURL, account);
-    return post;
+  static async postAccount(account: object): Promise<object> {
+    try {
+      const post = await axios.post(accountsURL, account, { timeout });
+      return post;
+    } catch (error) {
+      console.log(error);
+      return Promise.reject(error);
+    }
   }
 
-  static async deleteAccountByID(accountID: string) {
-    const remove = await axios.delete(`${accountsURL}${accountID}`);
-    return remove;
+  static async deleteAccountByID(accountID: string): Promise<object> {
+    try {
+      const remove = await axios({
+        method: 'delete',
+        url: `${accountsURL}${accountID}`,
+        timeout
+      });   
+      return remove;
+    } catch (error) {
+      console.log(error);
+      return Promise.reject(error);
+    }
   }
 }
 

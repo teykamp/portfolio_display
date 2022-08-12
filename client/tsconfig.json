@@ -35,7 +35,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-  ],
+, "src/components/AuthComponents/AuthMixin.js"  ],
   "exclude": [
     "node_modules"
   ]

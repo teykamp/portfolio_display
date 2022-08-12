@@ -40,16 +40,13 @@
 
 <script>
 import DatabaseServices from '../../DatabaseServices'
+import AuthMixin from './AuthMixin'
 import { compareSync } from 'bcryptjs'
  
 export default {
-  data() {
-    return {
-      username: '',
-      password: '',
-      showPassword: false
-    }
-  },
+  mixins: [ 
+    AuthMixin
+  ],
   methods: {
     async submit() {
 
@@ -108,22 +105,6 @@ export default {
         true,
         () => { this.$router.push({ name: 'Build' }) }
       );   
-    },
-    exitProcess(title, desc, btnTxt, formValid, action) {
-      this.$parent.dialogContent = {
-        title,
-        desc,
-        btnTxt,
-        formValid,
-        action
-      };
-
-      this.$parent.showCompletionDialog = true;
-    },
-    sendUserToLoginForm() {
-      this.$parent.formType = false;
-      this.$parent.formSubmitted = false;
-      this.$parent.showCompletionDialog = false;
     }
   }
 }

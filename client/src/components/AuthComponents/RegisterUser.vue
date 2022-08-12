@@ -58,15 +58,16 @@
 
 <script>
 import DatabaseServices from '../../DatabaseServices'
+import AuthMixin from './AuthMixin'
 import { hashSync } from 'bcryptjs'
 
 export default {
+  mixins: [
+    AuthMixin
+  ],
   data() {
     return {
-      username: '',
-      password: '',
       rePassword: '',
-      showPassword: false,
       rules: {
         matchingPasswords: value => (value === this.password) || 'Passwords do not match',
         passwordLength: value => (value.length > 5) || 'Password is to short',
@@ -92,16 +93,8 @@ export default {
       let usernameTaken;
       try {
         usernameTaken = await DatabaseServices.isUsernameTaken(this.username);
-        // console.log()
       } catch {
-        this.exitProcess(
-          'There has been an issue with a request made to our servers',
-          'This could be an issue with connectivity on your end, or a server problem on ours.',
-          'Try one more time',
-          false,
-          () => { this.resubmitRegisterForm() }
-        );
-
+        this.catchStatement();
         return;
       }
 
@@ -111,9 +104,8 @@ export default {
           'This username has already been taken, try something similar',
           'ok',
           false,
-          () => { this.resubmitRegisterForm() }
+          () => { this.sendUserToRegisterForm() }
         );
-
         return;
       }
 
@@ -130,48 +122,52 @@ export default {
           password: this.password
         });
       } catch {
-        this.exitProcess(
-          'There has been an issue with a request made to our servers',
-          'This could be an issue with connectivity on your end, or a server problem on ours.',
-          'Try one more time',
-          false,
-          () => { this.resubmitRegisterForm() }
-        );
-
+        this.catchStatement();
         return;
       }
 
       // check if name conflict exists
-      // if it does, it will delete all accounts with username to prevent naming conflicts
-      const userIDsForUsername = await DatabaseServices.getAllUsersWithUsername(this.username);
-
-      if (userIDsForUsername.length > 1) {
-
-        userIDsForUsername.forEach(id => DatabaseServices.deleteAccountByID(id));
-
-        this.exitProcess(
-          'There seems to have been an issue :(',
-          'Unfortunately an issue was encountered whilst in the process of creating your account, please try again.',
-          'Try again',
-          false,
-          () => { this.resubmitRegisterForm() }
-        );
-
+      let userIDsForUsername;
+      try {
+        userIDsForUsername = await DatabaseServices.getAllUsersWithUsername(this.username);
+      } catch {
+        this.catchStatement();
         return;
-
-      // for the edge case were db connection was lost or obstructed and account creation didn't post
-      } else if (userIDsForUsername.length === 0) {
-
+      }
+      // if it does, it will delete all accounts with that username
+      if (userIDsForUsername.length > 1) {
+        userIDsForUsername.forEach(id => DatabaseServices.deleteAccountByID(id));
+      }
+      // message given to user if accounts were created at the same time
+      if (userIDsForUsername.length != 1) {
         this.exitProcess(
-          'There was an issue connecting with our servers :(',
-          `Unfortunately the connection to our servers failed. This means that either 
-          our servers are down (highly unlikely) or you are broke and cannot afford good 
-          internet (judging by your geo location address highly likely), please try again.`,
-          'Try again',
+          'What a coincidence!',
+          `It seems like another person tried to register for the username ${this.username} at the same time as you. Because you both pressed create at the same time, no one has been given the account, meaning ${this.username} is still available, hurry up and try re-registering.`,
+          'Try again (fast!!!)',
           false,
-          () => { this.resubmitRegisterForm() }
+          () => { this.sendUserToRegisterForm() }
         );
+        return;
+      }
 
+      await new Promise(resolve => setTimeout(() => resolve, 1000));
+
+      // wait 1 before preforming one final sanity check to make sure the account 
+      // was created and is accessible
+      try {
+        const sanityCheck = await DatabaseServices.isUsernameTaken(this.username);
+        if (!sanityCheck) {
+          this.exitProcess(
+            'What a coincidence!',
+            `It seems like another person tried to register for the username ${this.username} at the same time as you. Because you both pressed create at the same time, no one has been given the account, meaning ${this.username} is still available, hurry up and try re-registering.`,
+            'Try again (fast!!!)',
+            false,
+            () => { this.sendUserToRegisterForm() }
+          );
+          return;
+        }
+      } catch {
+        this.catchStatement();
         return;
       }
 
@@ -184,27 +180,6 @@ export default {
         () => { this.sendUserToLoginForm() }
       );
       
-    },
-    exitProcess(title, desc, btnTxt, formValid, action) {
-      this.$parent.dialogContent = {
-        title,
-        desc,
-        btnTxt,
-        formValid,
-        action
-      };
-
-      this.$parent.showCompletionDialog = true;
-    },
-    resubmitRegisterForm() {
-      this.$parent.formType = true;
-      this.$parent.formSubmitted = false;
-      this.$parent.showCompletionDialog = false;
-    },
-    sendUserToLoginForm() {
-      this.$parent.formType = false;
-      this.$parent.formSubmitted = false;
-      this.$parent.showCompletionDialog = false;
     }
   }
 }

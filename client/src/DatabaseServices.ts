@@ -22,7 +22,7 @@ export default class DatabaseServices {
       return data;
     } catch (error) {
       console.log(error);
-      return [];
+      return Promise.reject(error);
     }
   }
 
@@ -33,23 +33,38 @@ export default class DatabaseServices {
       return data;
     } catch (error) {
       console.log(error);
-      return { error };
+      return Promise.reject(error);
     }
   }  
 
-  static async postPortfolio(portfolio: object) {
-    const post = await axios.post(portfolioURL, portfolio);
-    return post;
+  static async postPortfolio(portfolio: object): Promise<object> {
+    try {
+      const post = await axios.post(portfolioURL, portfolio);
+      return post;
+    } catch (error) {
+      console.log(error);
+      return Promise.reject(error);
+    }    
   }
 
-  static async updatePorfolio(username: string, portfolioItem: object) {
-    const put = await axios.put(`${portfolioURL}${username}`, { portfolioItem });
-    return put;
+  static async updatePorfolio(username: string, portfolioItem: object): Promise<object> {
+    try {
+      const put = await axios.put(`${portfolioURL}${username}`, { portfolioItem });
+      return put;
+    } catch (error) {
+      console.log(error);
+      return Promise.reject(error);
+    }
   }
 
-  static async deletePortfolioByID(id: string) {
-    const remove = await axios.delete(`${portfolioURL}${id}`);
-    return remove;
+  static async deletePortfolioByID(id: string): Promise<object> {
+    try {
+      const remove = await axios.delete(`${portfolioURL}${id}`);
+      return remove;
+    } catch (error) {
+      console.log(error);
+      return Promise.reject(error);
+    }
   }
 
   // Accounts API
@@ -60,7 +75,7 @@ export default class DatabaseServices {
       return data;
     } catch (error) {
       console.log(error);
-      return [];
+      return Promise.reject(error);
     }
   }
 
@@ -71,7 +86,7 @@ export default class DatabaseServices {
       return data;
     } catch (error) {
       console.log(error);
-      return { error };
+      return Promise.reject(error);
     }
   }  
 
@@ -86,7 +101,7 @@ export default class DatabaseServices {
       return data;
     } catch (error) {
       console.log(error);
-      return true;
+      return Promise.reject(error);
     }
   }
 
@@ -98,18 +113,28 @@ export default class DatabaseServices {
       return res.data;
     } catch (error) {
       console.log(error);
-      return [];
+      return Promise.reject(error);
     }
   }
 
-  static async postAccount(account: object) {
-    const post = await axios.post(accountsURL, account);
-    return post;
+  static async postAccount(account: object): Promise<object> {
+    try {
+      const post = await axios.post(accountsURL, account);
+      return post;
+    } catch (error) {
+      console.log(error);
+      return Promise.reject(error);
+    }
   }
 
-  static async deleteAccountByID(accountID: string) {
-    const remove = await axios.delete(`${accountsURL}${accountID}`);
-    return remove;
+  static async deleteAccountByID(accountID: string): Promise<object> {
+    try {
+      const remove = await axios.delete(`${accountsURL}${accountID}`);   
+      return remove;
+    } catch (error) {
+      console.log(error);
+      return Promise.reject(error);
+    }
   }
 }
 

@@ -2,11 +2,11 @@
   <div>
 
     <Toolbar
-    :title="'Education'" 
-    :exitAction="() => $parent.editComponentView = false"
-    :onAdd="() => addInstitution()"
-    :listLength="education.length"
-    :disabledAt="4"
+      :title="'Education'" 
+      :exitAction="() => $parent.editComponentView = false"
+      :onAdd="() => addInstitution()"
+      :listLength="education.length"
+      :disabledAt="4"
     />
 
     <div v-show="education.length === 0" style="display: flex; align-items: center; justify-content: center;">
@@ -16,10 +16,9 @@
     
     <v-container fill-height fluid>
       <v-row>
-        <!-- <TransitionGroup name="list"> -->
         <v-col 
-        class="col-sm-12 col-md-6"
-        v-for="(institution, index) in education" :key="institution.id">
+          class="col-sm-12 col-md-6"
+          v-for="(institution, index) in education" :key="institution.id">
           <v-card>
             
             <div class="pa-4 pt-0">
@@ -41,32 +40,42 @@
 
                 <v-col cols="9">
                   <v-text-field 
-                  v-model="education[index].institution" 
-                  placeholder="Enter Institution"
-                  style="font-weight: bold; font-size: 18pt;"
-                  outlined
-                  clearable
-                  color="blue"
+                    v-model="education[index].institution" 
+                    placeholder="Enter Institution"
+                    style="font-weight: bold; font-size: 18pt;"
+                    outlined
+                    clearable
+                    color="blue"
                   >{{ education[index].institution }}</v-text-field>
                 </v-col>
 
                 <v-spacer></v-spacer>
 
                 <v-hover v-slot="{ hover }">
-                  <v-icon large right class="mb-7 mr-1" @click="removeInstitution(index)" color="error">{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
+                  <v-icon 
+                    large 
+                    right 
+                    class="mb-7 mr-1" 
+                    @click="removeInstitution(index)" 
+                    color="error"
+                  >{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
                 </v-hover>            
               </v-row>
 
               <v-autocomplete 
                 label="Degree Type"
                 :items="degreeTypes"
-                v-model="education[index].degreeType">
+                v-model="education[index].degreeType"
+                :rules="[required]"
+              >
               </v-autocomplete>
 
               <v-text-field 
                 v-if="education[index].degreeType != 'High School' && education[index].degreeType"
                 label="Degree Field"
-                v-model="education[index].degreeField">
+                v-model="education[index].degreeField"
+                :rules="[required]"
+              >
               </v-text-field>
 
               <v-textarea
@@ -84,9 +93,7 @@
             
           </v-card>
           
-        </v-col>
-        <!-- </TransitionGroup> -->
-            
+        </v-col>            
       </v-row>
     </v-container>
 
@@ -94,24 +101,13 @@
 </template>
 
 <script>
-import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
-import Calender from '../../ReusableComponents/CreateCalender.vue'
+import CreateMixin from './CreateMixin'
 import Education from '../../../utils/PortfolioSchemas/Education'
 
 export default {
-  components: {
-    Toolbar,
-    Calender
-  },
-  props: {
-    userData: {
-      type: Object,
-      required: true
-    }
-  },
-  destroyed() {
-    this.emitData();
-  },
+  mixins: [
+    CreateMixin
+  ],
   created() {
     if (this.userData?.education) this.education = this.userData.education.content;
   },

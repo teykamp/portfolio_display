@@ -44,12 +44,12 @@
 
                     <v-col cols="9" sm="10">
                       <v-text-field 
-                      v-model="projects[index].name" 
-                      placeholder="Enter Proj. Name"
-                      style="font-weight: bold; font-size: 18pt;"
-                      outlined
-                      clearable
-                      color="blue"                
+                        v-model="projects[index].name" 
+                        placeholder="Enter Proj. Name"
+                        style="font-weight: bold; font-size: 18pt;"
+                        outlined
+                        clearable
+                        color="blue"                
                       >{{ projects[index].name }}</v-text-field>
                     </v-col>
                     <v-spacer></v-spacer>
@@ -82,8 +82,8 @@
                 ></v-textarea>
 
                 <Calender
-                :providedDate="projects[index].date"
-                @date-updated="projects[index].date = $event"
+                  :providedDate="projects[index].date"
+                  @date-updated="projects[index].date = $event"
                 />
      
               </div>
@@ -160,28 +160,17 @@
 </template>
 
 <script>
-import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
-import Calender from '../../ReusableComponents/CreateCalender.vue'
+import CreateMixin from './CreateMixin'
 import Project from '../../../utils/PortfolioSchemas/Projects'
 import techKeys from '../../../assets/techKeys'
 
 export default {
-  props: {
-    userData: {
-      type: Object,
-      required: true
-    }
-  },
-  components: {
-    Toolbar,
-    Calender
-  },
+  mixins: [
+    CreateMixin
+  ],
   created() {
     this.techList = Object.keys(techKeys);
     if (this.userData?.projects?.content) this.projects = this.userData.projects.content;
-  },
-  destroyed() {
-    this.emitData();
   },
   data: () => {
     return {
@@ -189,7 +178,6 @@ export default {
       techView: false,
       projectSelected: {},
       techList: [],
-      required: value => !!value || 'Required.'
     }
   },
   methods: {

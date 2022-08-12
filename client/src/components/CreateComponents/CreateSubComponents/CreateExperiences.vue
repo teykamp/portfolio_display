@@ -16,10 +16,11 @@
     
     <v-container fill-height fluid>
       <v-row>
-        <!-- <TransitionGroup name="list"> -->
         <v-col 
-        class="col-sm-12 col-md-6"
-        v-for="(experience, index) in experiences" :key="experience.id">
+          class="col-sm-12 col-md-6"
+          v-for="(experience, index) in experiences" 
+          :key="index"
+        >
           <v-card>
             
             <div class="pa-4 pt-0">
@@ -83,10 +84,8 @@
             </div>
             
           </v-card>
-          
-        </v-col>
-        <!-- </TransitionGroup> -->
-            
+        </v-col>    
+
       </v-row>
     </v-container>
 
@@ -94,28 +93,19 @@
 </template>
 
 <script>
-import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
-import Calender from '../../ReusableComponents/CreateCalender.vue'
+import CreateMixin from './CreateMixin'
 import Experience from '../../../utils/PortfolioSchemas/Experiences'
 
 export default {
-  components: { Toolbar, Calender },
-  props: {
-    userData: {
-      type: Object,
-      required: true
-    }
-  },
+  mixins: [
+    CreateMixin
+  ],
   created() {
     if (this.userData?.experiences) this.experiences = this.userData.experiences.content;
-  },
-  destroyed() {
-    this.emitData();
   },
   data: () => {
     return {
       experiences: [],
-      required: value => !!value || 'Required'
     }
   },
   methods: {
@@ -137,11 +127,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.list-move, /* apply transition to moving elements */
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.5s ease;
-}
-</style>

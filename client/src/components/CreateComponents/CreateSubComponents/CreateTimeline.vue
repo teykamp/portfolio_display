@@ -16,9 +16,8 @@
       
       <div
         v-for="component in timelineCompatible"
-        :key="component.name"
+        :key="component.id"
       >
-    
         <v-btn
           class="mb-2"
           min-width="200px"
@@ -39,16 +38,12 @@
 </template>
 
 <script>
-import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
+import CreateMixin from './CreateMixin'
 
-export default {
-  components: { Toolbar },
-  props: {
-    userData: {
-      type: Object,
-      required: true
-    }
-  },
+export default { 
+  mixins: [
+    CreateMixin
+  ],
   mounted() {
     // takes a look to see if any items have been previously selected for timeline and re-selects them
     if (this.userData.timeline.content.length > 0) {
@@ -58,9 +53,6 @@ export default {
         }
       })
     }
-  },
-  destroyed() {
-    this.emitData();
   },
   data() {
     return {

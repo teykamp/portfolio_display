@@ -2,7 +2,7 @@
   <div>
     <Toolbar 
       :title="$vuetify.breakpoint.smAndUp ? 'My Portfolio' : ''"
-      :exitAction="() => showExitDialog = true"
+      :exitAction="intendToExit"
     >
       <template #actions>
         <v-btn 
@@ -94,6 +94,10 @@ export default {
     userData: {
       type: Object,
       required: true
+    },
+    userDataOnStart: {
+      type: String,
+      required: true
     }
   },
   components: {
@@ -102,9 +106,15 @@ export default {
     DialogBox
   },
   methods: {
+    hasDataChanged() {
+      return this.userDataOnStart != JSON.stringify(this.userData);
+    },
     sendUserToPreview() {
       this.$parent.saveSessionLocally();
       this.$router.push({ name: 'PortfolioDisplayPreview' });
+    },
+    intendToExit() {
+      this.hasDataChanged() ? this.showExitDialog = true : this.$router.push('/');
     },
     leaveCreateRoute() {
       this.showExitDialog = false;
@@ -113,14 +123,27 @@ export default {
       this.$router.push('/');
     },
     async savePortfolioRemote() {
+      // checks if user has done anything before using bandwidth to send a bunch of requests
+      if (!this.hasDataChanged()) {
+        return this.$store.state.snackbarText = 'There is nothing to save!';
+      }
 
       // makes get to see if user already has a portfolio
-      const userAlreadyHasPortfolio = await DatabaseServices.getPortfolioByUsername(this.username);
+      let userAlreadyHasPortfolio;
+      try {
+        userAlreadyHasPortfolio = await DatabaseServices.getPortfolioByUsername(this.username);
+      } catch (error) {
+        this.$store.state.snackbarText = 'Connection error! Work not saved';
+        console.error('Get request was unsuccessful!', error);
+        return;
+      }
 
       if (userAlreadyHasPortfolio) {
         try {
           await DatabaseServices.updatePorfolio(this.username, this.userData);
+          this.$store.state.snackbarText = 'Your portfolio has been successfully updated!';
         } catch (error) {
+          this.$store.state.snackbarText = 'There has been an issue making contact with our servers, your work has not been saved';
           console.error('Put request was unsuccessful!', error);
           return;
         }
@@ -130,7 +153,9 @@ export default {
             username: this.username,
             portfolioItem: this.userData
           });
+          this.$store.state.snackbarText = 'Your portfolio has been successfully created';
         } catch (error) {
+          this.$store.state.snackbarText = 'There has been an issue making contact with our servers, your work has not been saved';
           console.error('Post request was unsuccessful!', error);
           return;
         }

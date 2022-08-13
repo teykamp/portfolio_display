@@ -27,11 +27,19 @@
     />
     <!-- <v-divider></v-divider> -->
     <v-card-actions>
-      <v-btn @click.stop="submit()" :disabled="!username || !password" color="success">
+      <v-btn 
+        @click.stop="submit()" 
+        :disabled="!username || !password" 
+        color="success"
+      >
         Login
       </v-btn>
       <v-spacer></v-spacer>
-       <v-btn @click.stop="$parent.formType = !$parent.formType" text color="info">
+      <v-btn 
+        @click.stop="$parent.formType = !$parent.formType" 
+        text 
+        color="info"
+      >
         Register Here
       </v-btn>
     </v-card-actions>

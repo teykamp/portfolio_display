@@ -6,7 +6,7 @@ const portfolioURL = '/api/portfolios/';
 const accountsURL = '/api/accounts/';
 
 // defines request timeout in milliseconds
-const timeout = 2000;
+const timeout = 3000;
 
 export default class DatabaseServices {
 

@@ -1,7 +1,9 @@
 <template>
   <div>
     <v-app>
+
       <router-view :key="showSessionRestorationDialog" />
+
       <DialogBox 
         :visible="showSessionRestorationDialog"
         :title="'Restore Previous Session?'"
@@ -11,6 +13,24 @@
         @confirmed="restoreSession"
         @close="dialogClosed"
       />
+
+      <v-snackbar
+        v-model="showSnackbar"
+        :multi-line="true"
+      >
+        {{ $store.state.snackbarText }}
+
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            color="red"
+            text
+            v-bind="attrs"
+            @click.stop="showSnackbar = false"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
     </v-app>
   </div>
 </template>
@@ -24,22 +44,40 @@ export default Vue.extend({
   data() {
     return {
       showSessionRestorationDialog: false,
+      showSnackbar: false,
     }
   },
   components: {
     DialogBox
   },
-  created() {
+  mounted() {
+    // check for snackbar messages committed to vuex, if message exists
+    // showSnackbar is set to true and displayed
+    this.$watch(() => this.$store.state.snackbarText, (newValue) => {
+      this.showSnackbar = !!newValue;
+    });
+    // check for unresolved session
     if (localStorage?.unsavedSessionData) this.showSessionRestorationDialog = true;
   },
   methods: {
     restoreSession() {
-      this.$store.state.portfolioItem = JSON.parse(localStorage.unsavedSessionData);
+      try {
+        this.$store.state.portfolioItem = JSON.parse(localStorage.unsavedSessionData);
+      } catch {
+        this.$store.state.snackbarText = 'Unfortunately, the previously saved version was corrupted and could not be loaded in :(';
+        return;
+      }
       this.$router.push({ name: 'Build' });
     },
     dialogClosed() {
       this.showSessionRestorationDialog = false;
       setTimeout(() => localStorage.removeItem('unsavedSessionData'), 100);
+    }
+  },
+  watch: {
+    showSnackbar(v) {
+      // checks if snackbar was closed by user, if so, resets snackbarText
+      if (!v) this.$store.state.snackbarText = undefined;
     }
   }
 })

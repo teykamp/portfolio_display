@@ -2,15 +2,26 @@
   <div>
 
     <!-- User input forms -->
-      <center>
-        <transition name="slide">
-          <component 
-            style="position: fixed; top: 0" 
-            v-if="!formSubmitted" 
-            :is="formType ? 'register' : 'login'" 
-          />
-        </transition>
-      </center>
+    <div class="center">
+      <transition name="slide">
+        <component 
+          v-if="!formSubmitted && !username" 
+          style="position: absolute; top: 5%" 
+          :is="formType ? 'register' : 'login'" 
+        />
+        <LoggedIn 
+          v-else-if="!formSubmitted"
+          style="position: absolute; top: 5%" 
+        />
+      </transition>
+      <v-btn
+        style="position: absolute; top: 1%"
+        v-if="!formSubmitted"
+        color="error"
+        rounded
+        @click.stop="$router.push('/')"
+      >home</v-btn>
+    </div>
    
     <!-- Loading Overlay -->
     <v-overlay :value="loadingOverlay">
@@ -38,6 +49,7 @@
 </template>
 
 <script>
+import LoggedIn from '../components/AuthComponents/CurrentlyLoggedIn.vue'
 import register from '../components/AuthComponents/RegisterUser.vue'
 import login from '../components/AuthComponents/LogIn.vue'
 import DialogBox from '../components/ReusableComponents/DialogBox.vue'
@@ -46,10 +58,13 @@ export default {
   components: {
     register,
     login,
-    DialogBox
+    DialogBox,
+    LoggedIn
   },
   data() {
     return {
+      // gets username from localStorage to see if already logged in
+      username: localStorage.getItem('username'),
       // true for register, false for login
       formType: true,
       // true when user hits create/login button

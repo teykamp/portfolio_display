@@ -19,7 +19,6 @@
       
       <v-container fill-height fluid>
         <v-row>
-          <!-- <TransitionGroup name="list"> -->
           <v-col 
           class="col-sm-12 col-md-6"
           v-for="(project, index) in projects" :key="project.id">
@@ -90,9 +89,7 @@
               
             </v-card>
             
-          </v-col>
-          <!-- </TransitionGroup> -->
-              
+          </v-col>              
         </v-row>
       </v-container>
     </div>
@@ -182,7 +179,7 @@ export default {
   },
   methods: {
     getImg(index) {
-      return techKeys[this.projectSelected.technologies[index].name]
+      return techKeys[this.projectSelected.technologies[index].name];
     },
     editTechUsed(project) {
       this.projectSelected = project;

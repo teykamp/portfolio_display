@@ -7,6 +7,7 @@
         :invalidComponents="invalidComponents"
         :loading="loading"
         :userData="userData"
+        :userDataOnStart="userDataOnStart"
       /> 
 
       <div v-if="loading">
@@ -166,10 +167,14 @@ export default {
     else {
 
       // send get to see if user already has portfolio
-      // add get for user once user auth is added
-
       const sessionUser = localStorage.getItem('username');
-      const data = await DatabaseServices.getPortfolioByUsername(sessionUser);
+      let data;
+      try {
+        data = await DatabaseServices.getPortfolioByUsername(sessionUser);
+      } catch {
+        this.$store.state.snackbarText = 'There was an issue connecting to our servers';
+        this.$router.push('/');
+      }
 
       // if yes
       if (data?.portfolioItem) {
@@ -180,12 +185,15 @@ export default {
       }
     }
     
+    this.userDataOnStart = JSON.stringify(this.userData);
     this.validatePortfolioComponents();
     this.initalizeComponentArraysOnLoad();
     this.loading = false;
   },
   data() {
     return {
+      // captures userData on mounted and compares it with the userData on exit
+      userDataOnStart: '',
 
       // true if component is in a loading state and data has not finished fetching
       loading: true,
@@ -227,8 +235,8 @@ export default {
         {id: 4, name: 'timeline', color: 'blue lighten-4', desc: 'Display a timeline that chronicals your personal development.'}
       ];
 
-      /* loops through all components and makes sure that the components that already 
-      have been edited by user are shown on the 'added' components tab */
+      /* loops through all components backwards and makes sure that the components 
+      that already have been edited by user are shown on the 'added' components tab */
       for (let i = this.portfolioComponents.length - 1; i >= 0; i--) {
         if (this.userData[this.portfolioComponents[i].name]) {
           this.addedPortfolioComponents.push(this.portfolioComponents[i]);

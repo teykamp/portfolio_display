@@ -70,7 +70,7 @@ export default {
       return this.formatDataForDisplay(this.$store.state.portfolioItem);
     // catched edge case were someone tries to manually enters preview route without info being stored
     } else if (this.$route.fullPath.includes('preview')) {
-      alert('There seems to be nothing here to preview!');
+      this.$store.state.snackbarText = 'There seems to be nothing to preview!';
       this.$router.push('/');
     }
 

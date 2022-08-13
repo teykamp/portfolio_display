@@ -1,6 +1,6 @@
 const express = require('express');
-const offlineAPI = require('../offlineAPI')
 const router = express.Router();
+const offlineAPI = require('../offlineAPI')
 const PortfolioItem = require('../models/portfolioItem');
 
 router.get('/', async (req, res) => {

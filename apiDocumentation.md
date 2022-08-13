@@ -1,8 +1,8 @@
 # Complete REST API Documentation
 
-Our API is split into 2 different top level routes (/accounts & /portfolios).
+Our API is split into 2 different top level routes ([/accounts](#accounts) & [/portfolios](#portfolios)).
 
-## <span style="text-decoration: underline;">Accounts Interface<span>
+## <span id="accounts" style="text-decoration: underline;">Accounts Interface<span>
 
 #### <b><span style="background-color: #0d6efd; padding: 1px 5px 1px 5px;">GET</span><br>
 ###  All Accounts</b>
@@ -46,7 +46,7 @@ Our API is split into 2 different top level routes (/accounts & /portfolios).
 <br>
 <i>Note:</i> Every document in a MongoDB collection contains an "_id" property that is unique to that specific document.
 
-## <span style="text-decoration: underline;">Portfolios Interface<span>
+## <span id="portfolios" style="text-decoration: underline;">Portfolios Interface<span>
 
 #### <b><span style="background-color: #0d6efd; padding: 1px 5px 1px 5px;">GET</span><br>
 ###  All Portfolios</b>

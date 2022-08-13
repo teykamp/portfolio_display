@@ -2,20 +2,30 @@
   <div>
 
     <v-toolbar style="position: fixed; z-index: 2; width: 100vw;">
+
       <v-icon @click.stop="exitAction">mdi-chevron-left</v-icon>
-      <span style="font-weight: bold; font-size: 15pt;" class="ml-1">{{ title }}</span>
+
+      <span 
+        style="font-weight: bold; font-size: 15pt;" 
+        class="ml-1"
+      >{{ title }}</span>
       
       <v-spacer></v-spacer>
 
       <slot name="actions">
-        <v-btn v-show="!disableAddBtn" 
-        :color="addBtnColor" 
-        :dark="addBtnColor === 'red'" 
-        @click="onAdd" 
-        :disabled="listLength === disabledAt">
+        <v-btn 
+          v-if="!disableAddBtn" 
+          :color="addBtnColor" 
+          :dark="addBtnColor === 'red'" 
+          @click="onAdd" 
+          :disabled="listLength === disabledAt"
+        >
           <v-icon>mdi-plus</v-icon>
+
           <span class="d-none d-sm-flex">Add {{ title }} ({{ listLength }}/{{ disabledAt }})</span>
+
         </v-btn>
+        
       </slot>
 
     </v-toolbar>

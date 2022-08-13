@@ -177,8 +177,8 @@ export default {
       }
 
       // if yes
-      if (data?.portfolioItem) {
-        this.userData = data.portfolioItem;
+      if (data) {
+        this.userData = data;
       // if no
       } else {
         this.userData.header = new HeaderClass();

@@ -17,10 +17,10 @@ router.get('/', async (req, res) => {
 router.get('/:username', async (req, res) => {
 
   try {
-    const getPortfolio = await PortfolioItem.findOne({ username: req.params.username });
-    res.json(getPortfolio);
+    const getPortfolio = await PortfolioItem.findOne({ username: req.params.username }, '-_id portfolioItem');
+    res.json(getPortfolio.portfolioItem);
   } catch (error) {
-    res.json({ message: error });
+    res.json({ message: error }); 
   };
 
 });
@@ -69,10 +69,7 @@ router.delete('/:id', async (req, res) => {
 router.get('/offline/:username', async (req, res) => {
 
   try {
-    res.json({
-      username: req.params.username,
-      portfolioItem: offlineAPI(req.params.username)
-    });
+    res.json(offlineAPI(req.params.username));
   } catch (error) {
     res.json({ message: error });
   };

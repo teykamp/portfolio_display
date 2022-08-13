@@ -7,6 +7,7 @@
         :invalidComponents="invalidComponents"
         :loading="loading"
         :userData="userData"
+        :userDataOnStart="userDataOnStart"
       /> 
 
       <div v-if="loading">
@@ -184,12 +185,15 @@ export default {
       }
     }
     
+    this.userDataOnStart = JSON.stringify(this.userData);
     this.validatePortfolioComponents();
     this.initalizeComponentArraysOnLoad();
     this.loading = false;
   },
   data() {
     return {
+      // captures userData on mounted and compares it with the userData on exit
+      userDataOnStart: '',
 
       // true if component is in a loading state and data has not finished fetching
       loading: true,

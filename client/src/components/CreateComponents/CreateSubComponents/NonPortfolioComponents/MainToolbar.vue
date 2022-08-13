@@ -120,6 +120,7 @@ export default {
       if (userAlreadyHasPortfolio) {
         try {
           await DatabaseServices.updatePorfolio(this.username, this.userData);
+          this.$store.state.snackbarText = `${this.username}s portfolio has been successfully updated`;
         } catch (error) {
           console.error('Put request was unsuccessful!', error);
           return;
@@ -130,6 +131,7 @@ export default {
             username: this.username,
             portfolioItem: this.userData
           });
+          this.$store.state.snackbarText = `${this.username}s portfolio has been successfully created`;
         } catch (error) {
           console.error('Post request was unsuccessful!', error);
           return;

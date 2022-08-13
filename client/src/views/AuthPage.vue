@@ -2,15 +2,15 @@
   <div>
 
     <!-- User input forms -->
-      <center>
-        <transition name="slide">
-          <component 
-            style="position: fixed; top: 0" 
-            v-if="!formSubmitted" 
-            :is="formType ? 'register' : 'login'" 
-          />
-        </transition>
-      </center>
+    <div class="center">
+      <transition name="slide">
+        <component 
+          style="position: fixed; top: 0" 
+          v-if="!formSubmitted" 
+          :is="formType ? 'register' : 'login'" 
+        />
+      </transition>
+    </div>
    
     <!-- Loading Overlay -->
     <v-overlay :value="loadingOverlay">

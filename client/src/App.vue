@@ -61,7 +61,12 @@ export default Vue.extend({
   },
   methods: {
     restoreSession() {
-      this.$store.state.portfolioItem = JSON.parse(localStorage.unsavedSessionData);
+      try {
+        this.$store.state.portfolioItem = JSON.parse(localStorage.unsavedSessionData);
+      } catch {
+        this.$store.state.snackbarText = 'Unfortunately, the previously saved version was corrupted and could not be loaded in :(';
+        return;
+      }
       this.$router.push({ name: 'Build' });
     },
     dialogClosed() {

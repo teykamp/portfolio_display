@@ -15,8 +15,8 @@
         />
       </transition>
       <v-btn
-        v-if="!formSubmitted"
         style="position: absolute; top: 1%"
+        v-if="!formSubmitted"
         color="error"
         rounded
         @click.stop="$router.push('/')"

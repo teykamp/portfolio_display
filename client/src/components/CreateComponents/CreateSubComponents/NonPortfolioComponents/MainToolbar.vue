@@ -115,13 +115,21 @@ export default {
     async savePortfolioRemote() {
 
       // makes get to see if user already has a portfolio
-      const userAlreadyHasPortfolio = await DatabaseServices.getPortfolioByUsername(this.username);
+      let userAlreadyHasPortfolio
+      try {
+        userAlreadyHasPortfolio = await DatabaseServices.getPortfolioByUsername(this.username);
+      } catch (error) {
+        this.$store.state.snackbarText = 'There has been an issue making contact with our servers, your work has not been saved';
+        console.error('Get request was unsuccessful!', error);
+        return;
+      }
 
       if (userAlreadyHasPortfolio) {
         try {
           await DatabaseServices.updatePorfolio(this.username, this.userData);
-          this.$store.state.snackbarText = `${this.username}s portfolio has been successfully updated`;
+          this.$store.state.snackbarText = 'Your portfolio has been successfully updated!';
         } catch (error) {
+          this.$store.state.snackbarText = 'There has been an issue making contact with our servers, your work has not been saved';
           console.error('Put request was unsuccessful!', error);
           return;
         }
@@ -131,8 +139,9 @@ export default {
             username: this.username,
             portfolioItem: this.userData
           });
-          this.$store.state.snackbarText = `${this.username}s portfolio has been successfully created`;
+          this.$store.state.snackbarText = 'Your portfolio has been successfully created';
         } catch (error) {
+          this.$store.state.snackbarText = 'There has been an issue making contact with our servers, your work has not been saved';
           console.error('Post request was unsuccessful!', error);
           return;
         }

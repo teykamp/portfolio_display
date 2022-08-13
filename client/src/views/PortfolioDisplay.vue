@@ -81,9 +81,9 @@ export default {
     if (!response) return this.error = 'user not found';
 
     // This portfolio has been marked as private, contact ${this.user.name} to gain access!
-    if (!response.portfolioItem.visibility) return this.error = 'account set private';
+    if (!response.visibility) return this.error = 'account set private';
 
-    this.formatDataForDisplay(response.portfolioItem);
+    this.formatDataForDisplay(response);
     
   },
   data: () => {

@@ -153,39 +153,41 @@ export default {
   },
   async mounted() {
 
+    const sessionUser = localStorage.getItem('username');
+
     // checks if user is logged in
-    if (!localStorage.getItem('username')) {
+    if (!sessionUser) {
       this.$router.push({ name: 'Auth', query: { type: 'login' } });
     }
 
+    // askes the database for the logged in users portfolio
+    let data;
+    try {
+      data = await DatabaseServices.getPortfolioByUsername(sessionUser);
+    } catch {
+      this.$store.state.snackbarText = 'There was an issue connecting to our servers';
+      this.$router.push('/');
+    }
+
+    // stores the portfolio obtained from the database to see if changes were made on exit
+    this.userDataOnStart = JSON.stringify(data);
+
     // checks if unresolved session is saved in state, 
     // this could be because user exited previously or is returning from a preview
-    else if (this.$store.state.portfolioItem) {
+    if (this.$store.state.portfolioItem) {
       this.userData = this.$store.state.portfolioItem;
     } 
 
+    // checks if user has a portfolio on file
+    else if (data) {
+      this.userData = data;
+    } 
+
+    // if no porfolio is on file, it starts user off with some boilerplate
     else {
+      this.userData.header = new HeaderClass();
+    } 
 
-      // send get to see if user already has portfolio
-      const sessionUser = localStorage.getItem('username');
-      let data;
-      try {
-        data = await DatabaseServices.getPortfolioByUsername(sessionUser);
-      } catch {
-        this.$store.state.snackbarText = 'There was an issue connecting to our servers';
-        this.$router.push('/');
-      }
-
-      // if yes
-      if (data) {
-        this.userData = data;
-      // if no
-      } else {
-        this.userData.header = new HeaderClass();
-      }
-    }
-    
-    this.userDataOnStart = JSON.stringify(this.userData);
     this.validatePortfolioComponents();
     this.initalizeComponentArraysOnLoad();
     this.loading = false;

@@ -150,7 +150,7 @@ export default {
         return;
       }
 
-      await new Promise(resolve => setTimeout(() => resolve, 1000));
+      await new Promise(resolve => setTimeout(() => resolve(), 1000));
 
       // wait 1 before preforming one final sanity check to make sure the account 
       // was created and is accessible

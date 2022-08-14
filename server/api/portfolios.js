@@ -19,8 +19,9 @@ router.get('/:username', async (req, res) => {
   try {
     const getPortfolio = await PortfolioItem.findOne({ username: req.params.username }, '-_id portfolioItem');
     res.json(getPortfolio.portfolioItem);
-  } catch (error) {
-    res.json({ message: error }); 
+  } catch {
+    // sends null if porfolioItem doesn't exist in cluster
+    res.json(null); 
   };
 
 });
@@ -67,13 +68,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 router.get('/offline/:username', async (req, res) => {
-
-  try {
-    res.json(offlineAPI(req.params.username));
-  } catch (error) {
-    res.json({ message: error });
-  };
-
+  res.json(offlineAPI(req.params.username));
 });
 
 module.exports = router;

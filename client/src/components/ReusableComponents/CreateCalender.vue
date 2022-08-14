@@ -22,7 +22,8 @@ export default {
   props: {
     providedDate: {
       required: true,
-      default: ''
+      default: '',
+      type: String
     }
   },
   data() {

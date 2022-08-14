@@ -101,8 +101,7 @@
 
     </div>
     
-    <component 
-      v-else 
+    <component v-else 
       :is="componentBeingEdited" 
       :userData="userData" 
       @update-component-data="updateComponentData($event)"

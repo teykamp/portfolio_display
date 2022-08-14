@@ -9,6 +9,7 @@
         :title="'Restore Previous Session?'"
         :description="'We have detected that you previously worked on a portfolio and did not finish making changes, would you like to restore your session?'"
         :mainBtnText="'Restore'"
+        :mainBtnColor="'success'"
         :secondaryBtnText="'Discard'"
         @confirmed="restoreSession"
         @close="dialogClosed"
@@ -19,17 +20,6 @@
         :multi-line="true"
       >
         {{ $store.state.snackbarText }}
-
-        <template v-slot:action="{ attrs }">
-          <v-btn
-            color="red"
-            text
-            v-bind="attrs"
-            @click.stop="showSnackbar = false"
-          >
-            Close
-          </v-btn>
-        </template>
       </v-snackbar>
     </v-app>
   </div>

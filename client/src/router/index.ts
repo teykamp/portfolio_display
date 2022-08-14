@@ -7,17 +7,17 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: 'Home',
     component: HomeView
   },
   {
     path: '/display/:user',
-    name: 'PortfolioDisplay',
+    name: 'Display',
     component: () => import('../views/PortfolioDisplay.vue')
   },
   {
     path: '/display/preview',
-    name: 'PortfolioDisplayPreview',
+    name: 'Preview',
     component: () => import('../views/PortfolioDisplay.vue')
   },
   {
@@ -32,7 +32,7 @@ const routes = [
   },
   {
     path: '*',
-    name: '404Error',
+    name: '404',
     component: () => import('../views/404.vue')
   },
 ]
@@ -43,6 +43,7 @@ const router = new VueRouter({
   routes,
   mode: 'history',
   scrollBehavior (to, from, savedPosition) {
+    document.title = `${to.name} - Portfolio`
     return { x: 0, y: 0 }
   }
 })

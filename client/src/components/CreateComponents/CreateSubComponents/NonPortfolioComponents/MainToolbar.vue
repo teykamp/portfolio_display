@@ -111,7 +111,7 @@ export default {
     },
     sendUserToPreview() {
       this.$parent.saveSessionLocally();
-      this.$router.push({ name: 'PortfolioDisplayPreview' });
+      this.$router.push({ name: 'Preview' });
     },
     intendToExit() {
       this.hasDataChanged() ? this.showExitDialog = true : this.$router.push('/');

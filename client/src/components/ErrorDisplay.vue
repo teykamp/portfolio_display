@@ -30,12 +30,12 @@
             >
               <v-col class="grow">
                 <div class="errorPadding">
-                  <h5>User Not Found</h5>
-                  Please search for another user.
+                  <h5>Portfolio Not Found</h5>
+                  Please search for another portfolio.
                 </div>
               </v-col>
               <v-col class="shrink">
-                <v-btn href="/">
+                <v-btn @click.stop="$router.push('/')">
                   Search Again
                 </v-btn>
               </v-col>

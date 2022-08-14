@@ -71,7 +71,7 @@
               </v-autocomplete>
 
               <v-text-field 
-                v-if="education[index].degreeType != 'High School' && education[index].degreeType"
+                v-if="displayDegreeField(index)"
                 label="Degree Field"
                 v-model="education[index].degreeField"
                 :rules="[required]"
@@ -85,6 +85,7 @@
                 maxlength="3000"
                 v-model="education[index].description"
               ></v-textarea>
+
               <Calender
                 :providedDate="education[index].date"
                 @date-updated="education[index].date = $event"
@@ -126,6 +127,12 @@ export default {
     }
   },
   methods: {
+    displayDegreeField(i) {
+      // resets degreeField if user selects high school
+      if (this.education[i].degreeType == 'High School') this.education[i].degreeField = '';
+      // returns conditional based on whether degreeField is required
+      return this.education[i].degreeType != 'High School' && this.education[i].degreeType;
+    },
     removeInstitution(index) {
       this.education.splice(index, 1);
     },

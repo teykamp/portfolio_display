@@ -44,7 +44,7 @@
 
           <v-btn
             color="primary"
-            @click="e1 = 2"
+            @click.stop="e1 = 2"
           >
             Next
           </v-btn>
@@ -67,7 +67,7 @@
 
           <v-btn
             color="primary"
-            @click="e1 = 3"
+            @click.stop="e1 = 3"
           >
             Next
           </v-btn>

@@ -5,10 +5,10 @@
 
       <v-icon @click.stop="exitAction">mdi-chevron-left</v-icon>
 
-      <span 
-        style="font-weight: bold; font-size: 15pt;" 
+      <v-toolbar-title
+        style="font-weight: bold;" 
         class="ml-1"
-      >{{ title }}</span>
+      >{{ title }}</v-toolbar-title>
       
       <v-spacer></v-spacer>
 

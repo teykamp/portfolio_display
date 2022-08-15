@@ -24,7 +24,7 @@ Our API is split into 2 different top level routes ([/accounts](#accounts) & [/p
 
 #### <b><span style="background-color: #0d6efd; padding: 1px 5px 1px 5px;">GET</span><br>
 ###  All Account IDs With The Same Username</b>
-<i>Response:</i> Array containing all account objects
+<i>Response:</i> Array containing the string ids of all accounts for the username
 <br>
 <i>Full Route:</i> ```/api/accounts/all/{username}```
 <br>

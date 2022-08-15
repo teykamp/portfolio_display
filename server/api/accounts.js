@@ -16,10 +16,23 @@ router.get('/', async (req, res) => {
 router.get('/:username', async (req, res) => {
 
   try {
-    const account = await Account.findOne({ username: req.params.username });
+    const account = await Account.findOne({ username: req.params.username }, '-userIP');
     res.json(account);
   } catch (error) {
     res.json({ message: error });
+  };
+
+});
+
+// MAY BE REMOVED LATER
+router.get('/:username/ip', async (req, res) => {
+
+  try {
+    const ipAddress = await Account.findOne({ username: req.params.username }, 'userIP -_id');
+    if (!ipAddress?.userIP) throw 'User Has No IP Address On File';
+    res.json(ipAddress?.userIP);
+  } catch (error) {
+    res.json({ error });
   };
 
 });
@@ -51,7 +64,8 @@ router.post('/', async (req, res) => {
 
   const createdUser = new Account({
     username: req.body.username,
-    password: req.body.password
+    password: req.body.password,
+    userIP: req.body.userIP
   });
 
   try {

@@ -15,6 +15,10 @@ const AccountSchema = mongoose.Schema({
     type: Date,
     required: true,
     default: Date.now()
+  },
+  userIP: {
+    type: String,
+    required: false
   }
 
 });

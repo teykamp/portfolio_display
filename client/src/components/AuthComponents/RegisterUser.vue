@@ -60,6 +60,7 @@
 import DatabaseServices from '../../DatabaseServices'
 import AuthMixin from './AuthMixin'
 import { hashSync } from 'bcryptjs'
+import axios from 'axios'
 
 export default {
   mixins: [
@@ -115,11 +116,21 @@ export default {
       // hashes password for security
       this.password = hashSync(this.password);
 
+      // fetch client ip address
+      let userIP;
+      try {
+        userIP = await axios.get('http://api.ipify.org/');
+      } catch (error) {
+        console.warn(error);
+        userIP = '';
+      }
+
       // make post request
       try {
         await DatabaseServices.postAccount({
           username: this.username,
-          password: this.password
+          password: this.password,
+          userIP: userIP.data
         });
       } catch {
         this.catchStatement();

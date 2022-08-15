@@ -76,7 +76,6 @@
       right
     >
       <div class="center mt-3">
-
         <v-btn 
           :disabled="invalidComponents.length != 0" 
           :loading="loading"
@@ -113,6 +112,20 @@
           <span class="ml-2">Help</span>
         </v-btn>
 
+        <v-spacer></v-spacer>
+
+        <v-btn 
+          color="gray" 
+          text
+          :loading="loading"
+          @click.stop=""
+          style="width: 90%;"
+          class="my-1"
+        >
+          <v-icon class="mr-2">mdi-cog-outline</v-icon>
+          Privacy Settings
+        </v-btn>
+
       </div>
     </v-navigation-drawer>
 
@@ -138,7 +151,6 @@ export default {
       preventLeave: false,
       // navMenu true when hamburger icon is clicked and mobile navigation is active
       navMenu: false,
-      group: null
     }
   },
   props: {
@@ -224,6 +236,11 @@ export default {
       localStorage.removeItem('unsavedSessionData');
 
       this.$router.push('/');
+    }
+  },
+  watch: {
+    showStepsDialog(v) {
+      this.navMenu = !v;
     }
   }
 }

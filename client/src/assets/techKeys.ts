@@ -13,6 +13,7 @@ const techKeys = {
   'Kotlin': 'kotlin.png',
   'Laravel': 'laravel.png',
   'Lua': 'lua.png',
+  'MatLab': 'matlab.png',
   'MongoDB': 'mongodb.png',
   'MySQL': 'mysql.png',
   'NodeJS': 'node.png',

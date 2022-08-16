@@ -70,7 +70,9 @@
             <draggable 
               v-model="addedPortfolioComponents" 
               :group="{ name: 'cards', pull: false }"
+              :disabled="!canComponentsDrag"
               :empty-insert-threshold="300"
+              @end="dragEnded"
             >
               <TransitionGroup name="list"> 
                 <div 
@@ -82,18 +84,23 @@
                     :onClick="() => { toggleEditView(item.name) }"
                     :invalid="invalidComponents.includes(item.name)"
                     @remove="targetedComponentIndex = index; deleteConfirmationDialog = true;" 
+                    @update-drag="canComponentsDrag = $event"
                   />
                 </div>
               </TransitionGroup>
             </draggable>
 
-            <!-- FOOTER CARD -->
-            <!-- <ComponentCard 
-              :draggable="false" 
-              :removable="false"
-              :item="{ name: 'footer', color: 'teal', desc: 'Footer currently uneditable' }" 
-              :editable="false"
-            /> -->
+            <div 
+              v-if="showDragSwitch" 
+              class="center" 
+              style="flex-direction: row;"
+            >
+              <span>{{ dragToggleMsg }}</span>
+              <v-switch
+                class="ml-4"
+                v-model="canComponentsDrag"
+              ></v-switch>
+            </div>
 
           </v-col>
         </v-row> 
@@ -221,10 +228,24 @@ export default {
       invalidComponents: [],
 
       // userData object is the portfolioItem that is being edited by the user
-      userData: { visibility: true }
+      userData: { visibility: true },
+
+      // if true, components are allowed to be dragged
+      canComponentsDrag: false
+    }
+  },
+  computed: {
+    dragToggleMsg() {
+      return `Dragging is ${this.canComponentsDrag ? '':'in'}active`;
+    },
+    showDragSwitch() {
+      return !this.$vuetify.breakpoint.mdAndUp;
     }
   },
   methods: {
+    dragEnded() {
+      if (!this.showDragSwitch) this.canComponentsDrag = false;
+    },
     initalizeComponentArraysOnLoad() {
 
       /* all components that we offer to users */
@@ -311,6 +332,9 @@ export default {
         }
         this.userData[this.addedPortfolioComponents[i].name].pageRank = i;
       }
+    },
+    canComponentsDrag(v) {
+      console.log(v)
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <v-card 
     :color="item.color"  
-    @click.stop="onClick"               
+    @click.stop="onClick"
   >
     <v-row
       no-gutters
@@ -76,21 +76,15 @@
 
       <!-- Draggable -->
       <v-col 
-        v-show="draggable" 
+        v-if="draggable" 
         cols="1" 
         :class="$vuetify.breakpoint.smAndUp ? '' : 'mr-2'"
+        @mouseover="$emit('update-drag', true)"
+        @mouseleave="$emit('update-drag', false)"
       >
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on, attrs }">
-            <v-icon
-              v-bind="attrs"
-              v-on="on"
-            >
-              mdi-drag-horizontal-variant
-            </v-icon>
-          </template>
-          <span>This component is draggable</span>
-        </v-tooltip>     
+        <v-icon>
+          mdi-drag-horizontal-variant
+        </v-icon>
       </v-col>
 
       <!-- Editable / Help -->

@@ -24,7 +24,7 @@
             @click.stop="showStepsDialog = true"
           >
             <v-icon>mdi-help-circle-outline</v-icon>
-            <span class="d-none d-sm-flex ml-2">Help</span>
+            <span class="ml-2">Help</span>
           </v-btn>
 
           <v-btn 
@@ -75,7 +75,7 @@
       temporary
       right
     >
-      <div class="center mt-3">
+      <div class="mt-3 ml-3" style="position: fixed; top: 0">
         <v-btn 
           :disabled="invalidComponents.length != 0" 
           :loading="loading"
@@ -111,8 +111,6 @@
           <v-icon>mdi-help-circle-outline</v-icon>
           <span class="ml-2">Help</span>
         </v-btn>
-
-        <v-spacer></v-spacer>
 
         <v-btn 
           color="gray" 
@@ -150,7 +148,7 @@ export default {
       // tiggered if leave is prevented in exit dialog
       preventLeave: false,
       // navMenu true when hamburger icon is clicked and mobile navigation is active
-      navMenu: false,
+      navMenu: false
     }
   },
   props: {
@@ -240,6 +238,7 @@ export default {
   },
   watch: {
     showStepsDialog(v) {
+      if (this.$vuetify.breakpoint.smAndUp) return
       this.navMenu = !v;
     }
   }

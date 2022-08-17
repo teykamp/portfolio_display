@@ -55,26 +55,53 @@
       :visible="showPrivacySettingsDialog"
     >
       <template #actions>
-        <v-container pa-0 fluid fill-height>
-          <v-divider></v-divider>
-          <v-row class="mr-5">
-            <v-card-title>Toggle Portfolio Visibility</v-card-title>
+        <v-container pt-0 fill-height>
+
+          <v-row>
+            <v-divider></v-divider>
           </v-row>
-          <div 
-            class="center ml-1" 
-            style="flex-direction: row;"
-          >
+
+          <v-row>
+            <v-card-title class="pa-0" style="word-break: break-word">Toggle Portfolio Visibility</v-card-title>
+          </v-row>
+
+          <v-row align="center" justify="left">
             <v-switch
               class="mr-2"
-              v-model="$parent.userData.visibility"
+              v-model="$parent.userData.privacy.visibility"
             ></v-switch>
-            <v-icon class="mr-1">{{ $parent.userData.visibility ? 'mdi-lock-open' : 'mdi-lock' }}</v-icon>
-            <b>{{ $parent.userData.visibility ? 'Public' : 'Private' }}</b>
-          </div>
-          <v-btn
-            @click.stop="showPrivacySettingsDialog = false"
-            color="success"
-          >Save Preferences</v-btn>
+            <v-icon class="mr-1">{{ $parent.userData.privacy.visibility ? 'mdi-lock-open' : 'mdi-lock' }}</v-icon>
+            <b>{{ $parent.userData.privacy.visibility ? 'Public' : 'Private' }}</b>
+          </v-row>
+
+          <v-row align="center" justify="left" v-if="!$parent.userData.privacy.visibility">
+            <v-btn
+              v-if="!$parent.userData.privacy.accesskey"
+              small
+              @click.stop="generateLink"
+            >Generate Link For Sharing</v-btn>
+
+            <v-row class="ml-1" v-else>
+              <p 
+                style="user-select: all; background-color: rgb(240, 240, 240); width: 80%; border-radius: 5px"
+                class="py-1 px-2"
+              >http://portfolio-display-app.herokuapp.com/display/{{ username }}?accesskey={{ $parent.userData.privacy.accesskey }}</p>
+              <v-icon 
+                color="error" 
+                class="mb-4 ml-2" 
+                click.stop="$parent.userData.privacy.accesskey = null; $store.state.snackbarText = `Link deleted.`"
+              >mdi-delete</v-icon>
+            </v-row>
+          </v-row>
+          
+          <v-row class="mt-6">
+            <v-btn
+              text
+              block
+              @click.stop="showPrivacySettingsDialog = false; savePortfolioRemote(false);"
+              color="success"
+            >Save Preferences</v-btn>
+          </v-row>
         </v-container>
       </template>
     </DialogBox>
@@ -159,7 +186,16 @@ export default {
     DialogBox,
     Buttons  
   },
+  computed: {
+    generateLinkButton() {
+      return !this.$parent.userData.privacy.visibility
+    }
+  },
   methods: {
+    generateLink() {
+      this.$store.state.snackbarText = "New link generated!";
+      this.$parent.userData.privacy.accesskey = Math.random().toString().substring(2, 9);
+    },
     hasDataChanged() {
       return this.userDataOnStart != JSON.stringify(this.userData);
     },
@@ -176,9 +212,9 @@ export default {
       this.$parent.saveSessionLocally();
       this.$router.push('/');
     },
-    async savePortfolioRemote() {
+    async savePortfolioRemote(pushToHome = true) {
       // checks if user has done anything before using bandwidth to send a bunch of requests
-      if (!this.hasDataChanged()) {
+      if (!this.hasDataChanged() && pushToHome) {
         return this.$store.state.snackbarText = 'There is nothing to save!';
       }
 
@@ -187,7 +223,7 @@ export default {
       try {
         userAlreadyHasPortfolio = await DatabaseServices.getPortfolioByUsername(this.username);
       } catch (error) {
-        this.$store.state.snackbarText = 'Connection error! Work not saved';
+        this.$store.state.snackbarText = 'Connection error! Changes not saved';
         console.error('Get request was unsuccessful!', error);
         return;
       }
@@ -207,7 +243,7 @@ export default {
             username: this.username,
             portfolioItem: this.userData
           });
-          this.$store.state.snackbarText = 'Your portfolio has been successfully created';
+          if (pushToHome) this.$store.state.snackbarText = 'Your portfolio has been successfully created';
         } catch (error) {
           this.$store.state.snackbarText = 'There has been an issue making contact with our servers, your work has not been saved';
           console.error('Post request was unsuccessful!', error);
@@ -218,7 +254,7 @@ export default {
       this.$store.state.portfolioItem = undefined;
       localStorage.removeItem('unsavedSessionData');
 
-      this.$router.push('/');
+      if (pushToHome) this.$router.push('/');
     }
   },
   watch: {

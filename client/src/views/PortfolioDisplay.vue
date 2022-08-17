@@ -81,7 +81,12 @@ export default {
     if (!response) return this.error = 'user not found';
 
     // This portfolio has been marked as private, contact ${this.user.name} to gain access!
-    if (!response.visibility) return this.error = 'account set private';
+    if (!response.privacy.visibility) {
+      // no accesskey should always return null, while no query param should always return undefined
+      if (response.privacy.accesskey !== this.$route.query.accesskey) {
+        return this.error = 'account set private';
+      }
+    }
 
     this.formatDataForDisplay(response);
     

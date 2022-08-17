@@ -89,7 +89,7 @@
               <v-icon 
                 color="error" 
                 class="mb-4 ml-2" 
-                click.stop="$parent.userData.privacy.accesskey = null; $store.state.snackbarText = `Link deleted.`"
+                @click.stop="$parent.userData.privacy.accesskey = null; $store.state.snackbarText = `Link deleted.`"
               >mdi-delete</v-icon>
             </v-row>
           </v-row>

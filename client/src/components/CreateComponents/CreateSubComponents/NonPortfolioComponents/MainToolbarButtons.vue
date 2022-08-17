@@ -40,7 +40,7 @@
     color="gray" 
     text
     :loading="loading"
-    @click.stop=""
+    @click.stop="actions[3]"
     :style="styles"
     :class="classes"
   >

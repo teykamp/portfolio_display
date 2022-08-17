@@ -5,6 +5,7 @@
       :exitAction="intendToExit"
     >
       <template #actions>
+
         <div v-if="$vuetify.breakpoint.smAndUp">
           <Buttons 
             :classes="'ml-2'"
@@ -19,10 +20,12 @@
       </template>
     </Toolbar>
 
+    <!-- Temporary Username Display -->
     <div class="mx-3">
       Logged in as {{ username }}
     </div>
 
+    <!-- Dialog That Contains The Help Steps -->
     <Steps
       :visible="showStepsDialog" 
       @close-dialog="showStepsDialog = false" 
@@ -40,6 +43,34 @@
       @confirmed="preventLeave = true"
       @close="leaveCreateRoute()"
     />
+
+    <!-- Privacy Settings Dialog -->
+    <DialogBox
+      :title="'Privacy Settings'" 
+      :description="`The portfolio privacy settings tool, 
+      allows you to hide your portfolio so that only you 
+      can view/work on it. You may also generate 
+      a private link that allows you to share your 
+      portfolio only with people that have the link`"
+      :visible="showPrivacySettingsDialog"
+    >
+      <template #actions>
+        <div 
+          class="center" 
+          style="flex-direction: row;"
+        >
+          <span>visibility</span>
+          <v-switch
+            class="ml-4"
+          ></v-switch>
+        </div>
+        <br>
+        <v-btn
+          @click.stop="showPrivacySettingsDialog = false"
+          color="success"
+        >Save Preferences</v-btn>
+      </template>
+    </DialogBox>
 
     <!-- Sidebar for mobile devices -->
     <v-navigation-drawer
@@ -63,11 +94,15 @@
 </template>
 
 <script>
+// UI Components
 import Buttons from './MainToolbarButtons.vue'
-import DatabaseServices from '../../../../DatabaseServices'
-import Steps from './StepByStep.vue'
 import Toolbar from '../../../ReusableComponents/CreateToolbar.vue'
+
+// Dialogs
+import Steps from './StepByStep.vue'
 import DialogBox from '../../../ReusableComponents/DialogBox.vue'
+
+import DatabaseServices from '../../../../DatabaseServices'
 
 export default {
   data() {
@@ -78,6 +113,8 @@ export default {
       showStepsDialog: false,
       // true when exit dialog is being displayed
       showExitDialog: false,
+      // true when user is editing privacy settings via the privacy dialog
+      showPrivacySettingsDialog: false,
       // tiggered if leave is prevented in exit dialog
       preventLeave: false,
       // navMenu true when hamburger icon is clicked and mobile navigation is active
@@ -86,7 +123,8 @@ export default {
       actions: [
         this.savePortfolioRemote, 
         this.sendUserToPreview, 
-        () => this.showStepsDialog = true
+        () => this.showStepsDialog = true,
+        () => this.showPrivacySettingsDialog = true
       ]
     }
   },

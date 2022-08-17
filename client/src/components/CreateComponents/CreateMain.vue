@@ -8,7 +8,7 @@
         :loading="loading"
         :userData="userData"
         :userDataOnStart="userDataOnStart"
-      /> 
+      />
 
       <div v-if="loading">
         <div v-for="i in 6" :key="i">
@@ -332,9 +332,6 @@ export default {
         }
         this.userData[this.addedPortfolioComponents[i].name].pageRank = i;
       }
-    },
-    canComponentsDrag(v) {
-      console.log(v)
     }
   }
 }

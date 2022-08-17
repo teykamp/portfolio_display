@@ -62,6 +62,7 @@
           <span>visibility</span>
           <v-switch
             class="ml-4"
+            v-model="$parent.userData.visibility"
           ></v-switch>
         </div>
         <br>

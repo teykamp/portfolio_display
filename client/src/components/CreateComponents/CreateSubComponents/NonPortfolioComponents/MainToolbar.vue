@@ -55,21 +55,27 @@
       :visible="showPrivacySettingsDialog"
     >
       <template #actions>
-        <div 
-          class="center" 
-          style="flex-direction: row;"
-        >
-          <span>visibility</span>
-          <v-switch
-            class="ml-4"
-            v-model="$parent.userData.visibility"
-          ></v-switch>
-        </div>
-        <br>
-        <v-btn
-          @click.stop="showPrivacySettingsDialog = false"
-          color="success"
-        >Save Preferences</v-btn>
+        <v-container pa-0 fluid fill-height>
+          <v-divider></v-divider>
+          <v-row class="mr-5">
+            <v-card-title>Toggle Portfolio Visibility</v-card-title>
+          </v-row>
+          <div 
+            class="center ml-1" 
+            style="flex-direction: row;"
+          >
+            <v-switch
+              class="mr-2"
+              v-model="$parent.userData.visibility"
+            ></v-switch>
+            <v-icon class="mr-1">{{ $parent.userData.visibility ? 'mdi-lock-open' : 'mdi-lock' }}</v-icon>
+            <b>{{ $parent.userData.visibility ? 'Public' : 'Private' }}</b>
+          </div>
+          <v-btn
+            @click.stop="showPrivacySettingsDialog = false"
+            color="success"
+          >Save Preferences</v-btn>
+        </v-container>
       </template>
     </DialogBox>
 
@@ -125,7 +131,7 @@ export default {
         this.savePortfolioRemote, 
         this.sendUserToPreview, 
         () => this.showStepsDialog = true,
-        () => this.showPrivacySettingsDialog = true
+        () => { this.showPrivacySettingsDialog = true; this.navMenu = false }
       ]
     }
   },
@@ -217,6 +223,10 @@ export default {
   },
   watch: {
     showStepsDialog(v) {
+      if (this.$vuetify.breakpoint.smAndUp) return
+      this.navMenu = !v;
+    },
+    showPrivacySettingsDialog(v) {
       if (this.$vuetify.breakpoint.smAndUp) return
       this.navMenu = !v;
     }

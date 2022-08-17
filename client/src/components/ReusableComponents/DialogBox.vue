@@ -8,7 +8,7 @@
       <v-card-title style="word-break: break-word" class="text-h5">
         {{ title }}
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="py-0">
         {{ description }}
       </v-card-text>
       <v-card-actions>

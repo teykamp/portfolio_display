@@ -228,7 +228,11 @@ export default {
       invalidComponents: [],
 
       // userData object is the portfolioItem that is being edited by the user
-      userData: { visibility: true },
+      userData: { privacy: {
+          visibility: true,
+          accesskey: null
+        } 
+      },
 
       // if true, components are allowed to be dragged
       canComponentsDrag: false

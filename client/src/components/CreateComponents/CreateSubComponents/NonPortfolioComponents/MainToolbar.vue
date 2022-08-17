@@ -5,57 +5,33 @@
       :exitAction="intendToExit"
     >
       <template #actions>
+
         <div v-if="$vuetify.breakpoint.smAndUp">
-          <v-btn 
-            :disabled="invalidComponents.length != 0" 
-            class="mr-2" 
-            color="primary" 
+          <Buttons 
+            :classes="'ml-2'"
+            :invalidComponents="invalidComponents"
             :loading="loading"
-            @click.stop="sendUserToPreview()"
-          >
-            <v-icon class="mr-2">mdi-file-eye-outline</v-icon>
-            Preview
-          </v-btn>
-
-          <v-btn
-            color="cyan darken-1"
-            dark
-            :loading="loading"
-            @click.stop="showStepsDialog = true"
-          >
-            <v-icon>mdi-help-circle-outline</v-icon>
-            <span class="d-none d-sm-flex ml-2">Help</span>
-          </v-btn>
-
-          <v-btn 
-            :disabled="invalidComponents.length != 0" 
-            :loading="loading"
-            :dark="invalidComponents.length == 0"
-            class="ml-2" 
-            color="orange darken-1" 
-            @click.stop="savePortfolioRemote()"
-          >
-            Save
-          </v-btn>
+            :actions="actions"
+          />
         </div>
 
-        <v-app-bar-nav-icon 
-          v-else
-          @click.stop="navMenu = true" 
-        />
+        <v-app-bar-nav-icon v-else @click.stop="navMenu = true" />
 
       </template>
     </Toolbar>
 
+    <!-- Temporary Username Display -->
     <div class="mx-3">
       Logged in as {{ username }}
     </div>
 
+    <!-- Dialog That Contains The Help Steps -->
     <Steps
       :visible="showStepsDialog" 
       @close-dialog="showStepsDialog = false" 
     />
 
+    <!-- Exit Warning Dialog -->
     <DialogBox
       :title="'Hold Up!'" 
       :description="'You are about to leave. Exiting now will only save the changes you have made locally, which puts them at risk!'"
@@ -68,64 +44,49 @@
       @close="leaveCreateRoute()"
     />
 
+    <!-- Privacy Settings Dialog -->
+    <DialogBox
+      :title="'Privacy Settings'" 
+      :description="`The portfolio privacy settings tool, 
+      allows you to hide your portfolio so that only you 
+      can view/work on it. You may also generate 
+      a private link that allows you to share your 
+      portfolio only with people that have the link`"
+      :visible="showPrivacySettingsDialog"
+    >
+      <template #actions>
+        <div 
+          class="center" 
+          style="flex-direction: row;"
+        >
+          <span>visibility</span>
+          <v-switch
+            class="ml-4"
+          ></v-switch>
+        </div>
+        <br>
+        <v-btn
+          @click.stop="showPrivacySettingsDialog = false"
+          color="success"
+        >Save Preferences</v-btn>
+      </template>
+    </DialogBox>
+
     <!-- Sidebar for mobile devices -->
     <v-navigation-drawer
       v-model="navMenu"
-      absolute
+      style="position: fixed"
       temporary
       right
     >
-      <div class="center mt-3">
-        <v-btn 
-          :disabled="invalidComponents.length != 0" 
+      <div class="mt-3 ml-3">
+        <Buttons 
+          :styles="'width: 90%'"
+          :classes="'my-1'"
+          :invalidComponents="invalidComponents"
           :loading="loading"
-          :dark="invalidComponents.length == 0"
-          color="orange darken-1" 
-          @click.stop="savePortfolioRemote()"
-          style="width: 90%"
-          class="my-1"
-        >
-          Save
-        </v-btn>
-      
-        <v-btn 
-          :disabled="invalidComponents.length != 0" 
-          color="primary" 
-          :loading="loading"
-          @click.stop="sendUserToPreview()"
-          style="width: 90%"
-          class="my-1"
-        >
-          <v-icon class="mr-2">mdi-file-eye-outline</v-icon>
-          Preview
-        </v-btn>
-
-        <v-btn
-          color="cyan darken-1"
-          dark
-          :loading="loading"
-          @click.stop="showStepsDialog = true"
-          style="width: 90%"
-          class="my-1"
-        >
-          <v-icon>mdi-help-circle-outline</v-icon>
-          <span class="ml-2">Help</span>
-        </v-btn>
-
-        <v-spacer></v-spacer>
-
-        <v-btn 
-          color="gray" 
-          text
-          :loading="loading"
-          @click.stop=""
-          style="width: 90%;"
-          class="my-1"
-        >
-          <v-icon class="mr-2">mdi-cog-outline</v-icon>
-          Privacy Settings
-        </v-btn>
-
+          :actions="actions"
+        />
       </div>
     </v-navigation-drawer>
 
@@ -133,10 +94,15 @@
 </template>
 
 <script>
-import DatabaseServices from '../../../../DatabaseServices'
-import Steps from './StepByStep.vue'
+// UI Components
+import Buttons from './MainToolbarButtons.vue'
 import Toolbar from '../../../ReusableComponents/CreateToolbar.vue'
+
+// Dialogs
+import Steps from './StepByStep.vue'
 import DialogBox from '../../../ReusableComponents/DialogBox.vue'
+
+import DatabaseServices from '../../../../DatabaseServices'
 
 export default {
   data() {
@@ -147,10 +113,19 @@ export default {
       showStepsDialog: false,
       // true when exit dialog is being displayed
       showExitDialog: false,
+      // true when user is editing privacy settings via the privacy dialog
+      showPrivacySettingsDialog: false,
       // tiggered if leave is prevented in exit dialog
       preventLeave: false,
       // navMenu true when hamburger icon is clicked and mobile navigation is active
       navMenu: false,
+      // actions are functions that are executed when a user clicks a button inside Buttons
+      actions: [
+        this.savePortfolioRemote, 
+        this.sendUserToPreview, 
+        () => this.showStepsDialog = true,
+        () => this.showPrivacySettingsDialog = true
+      ]
     }
   },
   props: {
@@ -174,7 +149,8 @@ export default {
   components: {
     Steps,
     Toolbar,
-    DialogBox
+    DialogBox,
+    Buttons  
   },
   methods: {
     hasDataChanged() {
@@ -240,6 +216,7 @@ export default {
   },
   watch: {
     showStepsDialog(v) {
+      if (this.$vuetify.breakpoint.smAndUp) return
       this.navMenu = !v;
     }
   }

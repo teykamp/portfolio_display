@@ -6,43 +6,15 @@
     >
       <template #actions>
         <div v-if="$vuetify.breakpoint.smAndUp">
-          <v-btn 
-            :disabled="invalidComponents.length != 0" 
-            class="mr-2" 
-            color="primary" 
+          <Buttons 
+            :classes="'ml-2'"
+            :invalidComponents="invalidComponents"
             :loading="loading"
-            @click.stop="sendUserToPreview()"
-          >
-            <v-icon class="mr-2">mdi-file-eye-outline</v-icon>
-            Preview
-          </v-btn>
-
-          <v-btn
-            color="cyan darken-1"
-            dark
-            :loading="loading"
-            @click.stop="showStepsDialog = true"
-          >
-            <v-icon>mdi-help-circle-outline</v-icon>
-            <span class="ml-2">Help</span>
-          </v-btn>
-
-          <v-btn 
-            :disabled="invalidComponents.length != 0" 
-            :loading="loading"
-            :dark="invalidComponents.length == 0"
-            class="ml-2" 
-            color="orange darken-1" 
-            @click.stop="savePortfolioRemote()"
-          >
-            Save
-          </v-btn>
+            :actions="actions"
+          />
         </div>
 
-        <v-app-bar-nav-icon 
-          v-else
-          @click.stop="navMenu = true" 
-        />
+        <v-app-bar-nav-icon v-else @click.stop="navMenu = true" />
 
       </template>
     </Toolbar>
@@ -56,6 +28,7 @@
       @close-dialog="showStepsDialog = false" 
     />
 
+    <!-- Exit Warning Dialog -->
     <DialogBox
       :title="'Hold Up!'" 
       :description="'You are about to leave. Exiting now will only save the changes you have made locally, which puts them at risk!'"
@@ -71,59 +44,18 @@
     <!-- Sidebar for mobile devices -->
     <v-navigation-drawer
       v-model="navMenu"
-      absolute
+      style="position: fixed"
       temporary
       right
     >
-      <div class="mt-3 ml-3" style="position: fixed; top: 0">
-        <v-btn 
-          :disabled="invalidComponents.length != 0" 
+      <div class="mt-3 ml-3">
+        <Buttons 
+          :styles="'width: 90%'"
+          :classes="'my-1'"
+          :invalidComponents="invalidComponents"
           :loading="loading"
-          :dark="invalidComponents.length == 0"
-          color="orange darken-1" 
-          @click.stop="savePortfolioRemote()"
-          style="width: 90%"
-          class="my-1"
-        >
-          Save
-        </v-btn>
-      
-        <v-btn 
-          :disabled="invalidComponents.length != 0" 
-          color="primary" 
-          :loading="loading"
-          @click.stop="sendUserToPreview()"
-          style="width: 90%"
-          class="my-1"
-        >
-          <v-icon class="mr-2">mdi-file-eye-outline</v-icon>
-          Preview
-        </v-btn>
-
-        <v-btn
-          color="cyan darken-1"
-          dark
-          :loading="loading"
-          @click.stop="showStepsDialog = true"
-          style="width: 90%"
-          class="my-1"
-        >
-          <v-icon>mdi-help-circle-outline</v-icon>
-          <span class="ml-2">Help</span>
-        </v-btn>
-
-        <v-btn 
-          color="gray" 
-          text
-          :loading="loading"
-          @click.stop=""
-          style="width: 90%;"
-          class="my-1"
-        >
-          <v-icon class="mr-2">mdi-cog-outline</v-icon>
-          Privacy Settings
-        </v-btn>
-
+          :actions="actions"
+        />
       </div>
     </v-navigation-drawer>
 
@@ -131,6 +63,7 @@
 </template>
 
 <script>
+import Buttons from './MainToolbarButtons.vue'
 import DatabaseServices from '../../../../DatabaseServices'
 import Steps from './StepByStep.vue'
 import Toolbar from '../../../ReusableComponents/CreateToolbar.vue'
@@ -148,7 +81,13 @@ export default {
       // tiggered if leave is prevented in exit dialog
       preventLeave: false,
       // navMenu true when hamburger icon is clicked and mobile navigation is active
-      navMenu: false
+      navMenu: false,
+      // actions are functions that are executed when a user clicks a button inside Buttons
+      actions: [
+        this.savePortfolioRemote, 
+        this.sendUserToPreview, 
+        () => this.showStepsDialog = true
+      ]
     }
   },
   props: {
@@ -172,7 +111,8 @@ export default {
   components: {
     Steps,
     Toolbar,
-    DialogBox
+    DialogBox,
+    Buttons  
   },
   methods: {
     hasDataChanged() {

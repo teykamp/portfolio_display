@@ -70,6 +70,13 @@ The things you need before cloning the repository.
     visibility: Public (true) || Private (false): Boolean
 }
 ```
+
+---
+
+## Documentation
+
+Please see the documentation section of the project under the [Documentation](https://github.com/teykamp/portfolio_display/tree/master/documentation) folder.
+
 <!-- for when the readme gets too long -->
 <p align="right"><a href="#top">Back to Top</a></p>
 

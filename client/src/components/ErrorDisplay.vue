@@ -55,6 +55,11 @@
                   This portfolio has been marked as private, contact {{ username }} to gain access!
                 </div>
               </v-col>
+              <v-col class="shrink">
+                <v-btn @click.stop="$router.push('/')">
+                  Home
+                </v-btn>
+              </v-col>
             </v-row>
           </v-alert>
         </div>

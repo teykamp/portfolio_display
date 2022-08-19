@@ -86,11 +86,22 @@
                 style="user-select: all; background-color: rgb(240, 240, 240); width: 80%; border-radius: 5px"
                 class="py-1 px-2"
               >http://portfolio-display-app.herokuapp.com/display/{{ username }}?accesskey={{ $parent.userData.privacy.accesskey }}</p>
-              <v-icon 
-                color="error" 
-                class="mb-4 ml-2" 
-                @click.stop="$parent.userData.privacy.accesskey = null; $store.state.snackbarText = `Link deleted.`"
-              >mdi-delete</v-icon>
+              <v-col align-self="center">
+                <v-row dense>
+                  <v-icon 
+                    color="error"
+                    class="mb-4 ml-2"
+                    @click.stop="$parent.userData.privacy.accesskey = null; $store.state.snackbarText = `Link deleted.`"
+                  >mdi-delete-outline</v-icon>
+                </v-row>
+                <v-row dense>
+                  <v-icon
+                    color="info"
+                    class="mb-4 ml-2"
+                    @click.stop="copyLinkToClipboard"
+                  >{{ clipboardIcon }}</v-icon>
+                </v-row>
+              </v-col>
             </v-row>
           </v-row>
           
@@ -141,6 +152,8 @@ import DatabaseServices from '../../../../DatabaseServices'
 export default {
   data() {
     return {
+      // true if link has been successfully copied to clipboard
+      clipboardSuccess: false,
       // username of logged in account
       username: localStorage.username,
       // true when steps dialog is being displayed
@@ -189,9 +202,23 @@ export default {
   computed: {
     generateLinkButton() {
       return !this.$parent.userData.privacy.visibility
+    },
+    clipboardIcon() {
+      return this.clipboardSuccess ? 'mdi-check-underline' : 'mdi-clipboard-multiple-outline';
     }
   },
   methods: {
+    async copyLinkToClipboard() {
+      try {
+        await navigator.clipboard.writeText(
+          `http://portfolio-display-app.herokuapp.com/display/${this.username}?accesskey=${this.$parent.userData.privacy.accesskey}`
+        );
+        this.clipboardSuccess = true;
+        this.$store.state.snackbarText = 'Link copied to clipboard!';
+      } catch {
+        this.$store.state.snackbarText = 'Failed to copy to clipboard :(';
+      }
+    },
     generateLink() {
       this.$store.state.snackbarText = "New link generated!";
       this.$parent.userData.privacy.accesskey = Math.random().toString().substring(2, 9);
@@ -265,6 +292,13 @@ export default {
     showPrivacySettingsDialog(v) {
       if (this.$vuetify.breakpoint.smAndUp) return
       this.navMenu = !v;
+    },
+    clipboardSuccess(v) {
+      if (v) {
+        setTimeout(() => {
+          this.clipboardSuccess = false;
+        }, 2000);
+      }
     }
   }
 }

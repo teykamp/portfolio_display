@@ -184,12 +184,12 @@ export default {
       this.userData = this.$store.state.portfolioItem;
     } 
 
-    // checks if user has a portfolio on file
-    else if (data) {
+    // checks if user has a portfolio on file w/o errors
+    else if (!data?.error) {
       this.userData = data;
-    } 
+    }
 
-    // if no porfolio is on file, it starts user off with some boilerplate
+    // if no valid porfolio is on file, it starts user off with some boilerplate
     else {
       this.userData.header = new HeaderClass();
     } 
@@ -228,11 +228,7 @@ export default {
       invalidComponents: [],
 
       // userData object is the portfolioItem that is being edited by the user
-      userData: { privacy: {
-          visibility: true,
-          accesskey: null
-        } 
-      },
+      userData: {},
 
       // if true, components are allowed to be dragged
       canComponentsDrag: false

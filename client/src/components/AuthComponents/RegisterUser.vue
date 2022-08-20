@@ -125,13 +125,15 @@ export default {
         userIP = '';
       }
 
-      // make post request
+      // post account and portfolio that links to the account
       try {
+
         await DatabaseServices.postAccount({
           username: this.username,
           password: this.password,
           userIP: userIP.data
         });
+
       } catch {
         this.catchStatement();
         return;
@@ -176,6 +178,18 @@ export default {
             () => { this.sendUserToRegisterForm() }
           );
           return;
+        } else {
+          // when the final sanity check passes and everything checks out,
+          // a post is made to set up the basics of the users portfolio
+          await DatabaseServices.postPortfolio({
+            username: this.username,
+            portfolioItem: { error: `${this.username} has not created a portfolio yet.` },
+            // sets default privacy settings
+            privacySettings: {
+              visibility: true,
+              accesskey: null
+            }
+          });
         }
       } catch {
         this.catchStatement();

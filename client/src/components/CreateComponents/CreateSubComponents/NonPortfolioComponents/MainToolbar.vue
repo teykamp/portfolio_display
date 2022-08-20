@@ -152,6 +152,11 @@ import DatabaseServices from '../../../../DatabaseServices'
 export default {
   data() {
     return {
+      // default privacy settings, overwritten via updatePrivacySettings event
+      privacySettings: {
+        visibility: true,
+        accesskey: null
+      },
       // true if link has been successfully copied to clipboard
       clipboardSuccess: false,
       // username of logged in account
@@ -239,49 +244,25 @@ export default {
       this.$parent.saveSessionLocally();
       this.$router.push('/');
     },
-    async savePortfolioRemote(pushToHome = true) {
+    async savePortfolioRemote() {
       // checks if user has done anything before using bandwidth to send a bunch of requests
-      if (!this.hasDataChanged() && pushToHome) {
+      if (!this.hasDataChanged()) {
         return this.$store.state.snackbarText = 'There is nothing to save!';
       }
 
-      // makes get to see if user already has a portfolio
-      let userAlreadyHasPortfolio;
       try {
-        userAlreadyHasPortfolio = await DatabaseServices.getPortfolioByUsername(this.username);
+        await DatabaseServices.updatePorfolio(this.username, this.userData);
+        this.$store.state.snackbarText = 'Your portfolio has been successfully updated!';
       } catch (error) {
-        this.$store.state.snackbarText = 'Connection error! Changes not saved';
-        console.error('Get request was unsuccessful!', error);
+        this.$store.state.snackbarText = 'There has been an issue making contact with our servers, your work has not been saved';
+        console.error('Put request was unsuccessful!', error);
         return;
-      }
-
-      if (userAlreadyHasPortfolio) {
-        try {
-          await DatabaseServices.updatePorfolio(this.username, this.userData);
-          this.$store.state.snackbarText = 'Your portfolio has been successfully updated!';
-        } catch (error) {
-          this.$store.state.snackbarText = 'There has been an issue making contact with our servers, your work has not been saved';
-          console.error('Put request was unsuccessful!', error);
-          return;
-        }
-      } else {
-        try {
-          await DatabaseServices.postPortfolio({
-            username: this.username,
-            portfolioItem: this.userData
-          });
-          if (pushToHome) this.$store.state.snackbarText = 'Your portfolio has been successfully created';
-        } catch (error) {
-          this.$store.state.snackbarText = 'There has been an issue making contact with our servers, your work has not been saved';
-          console.error('Post request was unsuccessful!', error);
-          return;
-        }
       }
       
       this.$store.state.portfolioItem = undefined;
       localStorage.removeItem('unsavedSessionData');
 
-      if (pushToHome) this.$router.push('/');
+      this.$router.push('/');
     }
   },
   watch: {

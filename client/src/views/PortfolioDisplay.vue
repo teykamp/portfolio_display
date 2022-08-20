@@ -5,7 +5,7 @@
     <div v-if="error">
       <Error 
         :errorType="error"
-        :username="'Add Username Here'" 
+        :username="$route.params.user" 
       />
     </div>
 
@@ -35,7 +35,10 @@
       </div>
 
       <div v-for="component in componentArray" :key="component.id">
-        <component-display-factory :relevantInfo="component.content" :componentType="component.category" />
+        <component-display-factory 
+          :relevantInfo="component.content" 
+          :componentType="component.category" 
+        />
       </div>
 
       <div>
@@ -64,6 +67,7 @@ export default {
   },
   async created() {
 
+    // HANDLES PREVIEW MODE
     // if true, loads preview mode
     if (this.$route.fullPath.includes('preview') && this.$store.state.portfolioItem) {
       this.previewMode = true;
@@ -74,21 +78,37 @@ export default {
       this.$router.push('/');
     }
 
-    const response = await DatabaseServices.getPortfolioByUsername(this.$route.params.user);
-
-    // There has been an issue connecting with our servers, this may be an internet connectivity issue.
-    // this may also be triggered if the user does not exist in this version
-    if (!response) return this.error = 'user not found';
-
-    // This portfolio has been marked as private, contact ${this.user.name} to gain access!
-    if (!response.privacy.visibility) {
-      // no accesskey should always return null, while no query param should always return undefined
-      if (response.privacy.accesskey !== this.$route.query.accesskey) {
-        return this.error = 'account set private';
-      }
+    // CHECKS IF A USER EXISTS
+    try {
+      const isTaken = await DatabaseServices.isUsernameTaken(this.$route.params.user);
+      if (!isTaken) return this.error = 'user not found';
+    } catch (err) {
+      return this.catchClause(err);
     }
 
-    this.formatDataForDisplay(response);
+    // CHECKS THE PRIVACY SETTINGS OF THAT USER
+    try {
+      const privacySettings = await DatabaseServices.getPortfolioPrivacyByUsername(this.$route.params.user);
+      // This portfolio has been marked as private, contact ${this.user.name} to gain access!
+      if (!privacySettings.visibility) {
+        // no accesskey should always return null, while no query param should always return undefined
+        if (privacySettings.accesskey !== this.$route.query.accesskey) {
+          return this.error = 'account set private';
+        }
+      }
+    } catch (err) {
+      return this.catchClause(err);
+    }
+
+    // PULLS DOWN ACTUAL PORTFOLIO DATA ONCE PRIVACY SCREENING HAS PASSED
+    try {
+      const portfolioItem = await DatabaseServices.getPortfolioByUsername(this.$route.params.user);
+      if (portfolioItem?.error) this.error = portfolioItem.error
+      this.formatDataForDisplay(portfolioItem);
+    } catch (err) {
+      return this.catchClause(err);
+    }
+
     
   },
   data: () => {
@@ -109,6 +129,11 @@ export default {
   methods: {
     back() {
       history.back();
+    },
+    catchClause(error) {
+      this.$store.state.snackbarText = 'Cannot connect to server';
+      this.error = 'no server conection';
+      console.warn(error);
     },
     formatDataForDisplay(userData) {
 

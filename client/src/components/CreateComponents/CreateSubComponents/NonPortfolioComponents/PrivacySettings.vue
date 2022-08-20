@@ -37,7 +37,10 @@
         </v-row>
 
         <v-row>
-          <v-card-title class="pa-0" style="word-break: break-word">
+          <v-card-title 
+            class="pa-0" 
+            style="word-break: break-word"
+          >
             Toggle Portfolio Visibility
           </v-card-title>
         </v-row>
@@ -47,8 +50,8 @@
             class="mr-2"
             v-model="privacySettings.visibility"
           ></v-switch>
-          <v-icon class="mr-1">{{ privacySettings.visibility ? 'mdi-lock-open' : 'mdi-lock' }}</v-icon>
-          <b>{{ privacySettings.visibility ? 'Public' : 'Private' }}</b>
+          <v-icon class="mr-1">{{ lockIcon }}</v-icon>
+          <b>{{ visibilityInText }}</b>
         </v-row>
 
         <v-row align="center" v-if="!privacySettings.visibility">
@@ -61,7 +64,7 @@
           <v-row class="ml-1" v-else>
             <p class="py-1 px-2 link-container"
             >{{ link }}</p>
-            <v-col align-self="center">
+            <v-col>
               <v-row dense>
                 <v-icon 
                   color="error"
@@ -80,7 +83,7 @@
           </v-row>
         </v-row>
         
-        <v-row class="mt-6">
+        <v-row class="mt-7">
           <v-btn
             text
             block
@@ -126,6 +129,12 @@ export default {
     }
   },
   computed: {
+    lockIcon() {
+      return this.privacySettings.visibility ? 'mdi-lock-open' : 'mdi-lock';
+    },
+    visibilityInText() {
+      return this.privacySettings.visibility ? 'Public' : 'Private';
+    },
     generateLinkButton() {
       return !this.privacySettings.visibility;
     },
@@ -156,9 +165,8 @@ export default {
       this.$store.state.snackbarText = 'Link deleted.';
     },
     async savePrivacySettings() {
-
-      this.loading = true;
-
+      this.$emit('close');
+      
       // to prevent wasting unnecessary bandwidth
       if (JSON.stringify(this.privacySettings) != this.privacySettingsOnStart) {
         try {
@@ -169,8 +177,6 @@ export default {
           console.error(error, 'Put request failed');
         }
       }
-
-      this.$emit('close');
     }
   },
   watch: {

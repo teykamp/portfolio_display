@@ -9,7 +9,28 @@
     :visible="showPrivacySettingsDialog"
   >
     <template #actions>
-      <v-container pt-0 fill-height>
+
+      <!-- Loading UI State -->
+      <v-container v-if="loading" fill-height>
+        <v-skeleton-loader
+          width="100%"
+          type="paragraph"
+        ></v-skeleton-loader>
+         
+        <v-row 
+          align="center" 
+          justify="center" 
+          class="mt-7"
+        >
+          <v-skeleton-loader
+            width="60%"
+            height="50"
+            type="image"
+          ></v-skeleton-loader>
+        </v-row>
+      </v-container>
+
+      <v-container v-else pt-0 fill-height>
 
         <v-row>
           <v-divider></v-divider>
@@ -68,6 +89,7 @@
           >Save Preferences</v-btn>
         </v-row>
       </v-container>
+
     </template>
   </DialogBox>
 </template>
@@ -103,19 +125,6 @@ export default {
       username: localStorage.getItem('username')
     }
   },
-  async created() {
-    this.loading = true;
-
-    try {
-      this.privacySettings = await DatabaseServices.getPortfolioPrivacyByUsername(this.username);
-      this.privacySettingsOnStart = JSON.stringify(this.privacySettings);
-    } catch {
-      this.$store.state.snackbarText = 'Failed to load privacy settings.';
-      this.$emit('close');
-    }
-
-    this.loading = false;
-  },
   computed: {
     generateLinkButton() {
       return !this.privacySettings.visibility;
@@ -149,7 +158,7 @@ export default {
     async savePrivacySettings() {
 
       this.loading = true;
-      
+
       // to prevent wasting unnecessary bandwidth
       if (JSON.stringify(this.privacySettings) != this.privacySettingsOnStart) {
         try {
@@ -170,6 +179,21 @@ export default {
         setTimeout(() => {
           this.clipboardSuccess = false;
         }, 2000);
+      }
+    },
+    // runs like a mounted lifecycle hook
+    async showPrivacySettingsDialog(v) {
+      if (v) {
+        this.loading = true;
+        try {
+          this.privacySettings = await DatabaseServices.getPortfolioPrivacyByUsername(this.username);
+          this.privacySettingsOnStart = JSON.stringify(this.privacySettings);
+        } catch {
+          this.$store.state.snackbarText = 'Failed to load privacy settings.';
+          this.$emit('close');
+        }
+
+        this.loading = false;
       }
     }
   }

@@ -30,9 +30,9 @@ router.get('/:username/privacy', async (req, res) => {
 
   try {
     const getPortfolio = await PortfolioItem.findOne({ username: req.params.username }, '-_id privacySettings');
-    res.json(getPortfolio.portfolioItem);
+    res.json(getPortfolio.privacySettings);
   } catch {
-    // sends null if porfolioItem doesn't exist in cluster
+    // sends null if privacySettings don't exist in cluster
     res.json(null); 
   };
 
@@ -72,11 +72,11 @@ router.put('/:username', async (req, res) => {
 router.put('/:username/privacy', async (req, res) => {
 
   try {
-    const updatedPortfolioItem = await PortfolioItem.updateOne(
+    const updatedPrivacySettings = await PortfolioItem.updateOne(
       { username: req.params.username }, 
       { $set: { privacySettings: req.body.privacySettings } }
     );
-    res.json(updatedPortfolioItem);
+    res.json(updatedPrivacySettings);
   } catch (error) {
     res.json({ error });
   }

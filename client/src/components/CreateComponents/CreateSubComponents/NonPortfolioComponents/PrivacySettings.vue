@@ -95,6 +95,8 @@ export default {
         visibility: true,
         accesskey: null
       },
+      // makes a copy of privacySettings after get req for comparing on save
+      privacySettingsOnStart: undefined,
       // true when loading state is active
       loading: true,
       // get name of logged in user
@@ -102,12 +104,17 @@ export default {
     }
   },
   async created() {
+    this.loading = true;
+
     try {
-      await DatabaseServices.getPortfolioPrivacyByUsername(this.username);
+      this.privacySettings = await DatabaseServices.getPortfolioPrivacyByUsername(this.username);
+      this.privacySettingsOnStart = JSON.stringify(this.privacySettings);
     } catch {
       this.$store.state.snackbarText = 'Failed to load privacy settings.';
       this.$emit('close');
     }
+
+    this.loading = false;
   },
   computed: {
     generateLinkButton() {
@@ -140,6 +147,20 @@ export default {
       this.$store.state.snackbarText = 'Link deleted.';
     },
     async savePrivacySettings() {
+
+      this.loading = true;
+      
+      // to prevent wasting unnecessary bandwidth
+      if (JSON.stringify(this.privacySettings) != this.privacySettingsOnStart) {
+        try {
+          await DatabaseServices.updatePorfolioPrivacy(this.username, this.privacySettings);
+          this.$store.state.snackbarText = 'New privacy settings now in effect!';
+        } catch (error) {
+          this.$store.state.snackbarText = 'Issue encountered whilst saving privacy settings.';
+          console.error(error, 'Put request failed');
+        }
+      }
+
       this.$emit('close');
     }
   },

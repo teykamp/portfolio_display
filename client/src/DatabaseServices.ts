@@ -82,6 +82,20 @@ export default class DatabaseServices {
     }
   }
 
+  static async updatePorfolioPrivacy(username: string, privacySettings: object): Promise<object> {
+    try {
+      const put = await axios.put(`${portfolioURL}${username}/privacy`, {
+        privacySettings
+      }, {
+        timeout
+      });
+      return put;
+    } catch (error) {
+      console.log(error);
+      return Promise.reject(error);
+    }
+  }
+
   static async deletePortfolioByID(id: string): Promise<object> {
     try {
       const remove = await axios({

@@ -64,6 +64,31 @@
           </v-alert>
         </div>
 
+        <!-- User not found -->
+        <div v-else-if="errorType">
+          <v-alert
+            prominent
+            type="info"
+          >
+            <v-row 
+              align="center"
+              justify="center"
+            >
+              <v-col class="grow">
+                <div class="errorPadding">
+                  <h5>Oops!</h5>
+                  {{ errorType }}
+                </div>
+              </v-col>
+              <v-col class="shrink">
+                <v-btn @click.stop="$router.push('/')">
+                  Home
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-alert>  
+        </div>
+
         <!-- Fallback -->
         <div v-else>
           <v-alert

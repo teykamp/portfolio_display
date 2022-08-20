@@ -1,0 +1,165 @@
+<template>
+  <DialogBox
+    :title="'Privacy Settings'" 
+    :description="`The portfolio privacy settings tool, 
+    allows you to hide your portfolio so that only you 
+    can view/work on it. You may also generate 
+    a private link that allows you to share your 
+    portfolio only with people that have the link`"
+    :visible="showPrivacySettingsDialog"
+  >
+    <template #actions>
+      <v-container pt-0 fill-height>
+
+        <v-row>
+          <v-divider></v-divider>
+        </v-row>
+
+        <v-row>
+          <v-card-title class="pa-0" style="word-break: break-word">
+            Toggle Portfolio Visibility
+          </v-card-title>
+        </v-row>
+
+        <v-row align="center">
+          <v-switch
+            class="mr-2"
+            v-model="privacySettings.visibility"
+          ></v-switch>
+          <v-icon class="mr-1">{{ privacySettings.visibility ? 'mdi-lock-open' : 'mdi-lock' }}</v-icon>
+          <b>{{ privacySettings.visibility ? 'Public' : 'Private' }}</b>
+        </v-row>
+
+        <v-row align="center" v-if="!privacySettings.visibility">
+          <v-btn
+            v-if="!privacySettings.accesskey"
+            small
+            @click.stop="generateLink"
+          >Generate Link For Sharing</v-btn>
+
+          <v-row class="ml-1" v-else>
+            <p class="py-1 px-2 link-container"
+            >{{ link }}</p>
+            <v-col align-self="center">
+              <v-row dense>
+                <v-icon 
+                  color="error"
+                  class="mb-4 ml-2"
+                  @click.stop="deleteLink"
+                >mdi-delete-outline</v-icon>
+              </v-row>
+              <v-row dense>
+                <v-icon
+                  color="info"
+                  class="mb-4 ml-2"
+                  @click.stop="copyLinkToClipboard"
+                >{{ clipboardIcon }}</v-icon>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-row>
+        
+        <v-row class="mt-6">
+          <v-btn
+            text
+            block
+            @click.stop="savePrivacySettings"
+            color="success"
+          >Save Preferences</v-btn>
+        </v-row>
+      </v-container>
+    </template>
+  </DialogBox>
+</template>
+
+<script>
+import DialogBox from '../../../ReusableComponents/DialogBox.vue'
+import DatabaseServices from '../../../../DatabaseServices'
+
+export default {
+  components: {
+    DialogBox
+  },
+  props: {
+    showPrivacySettingsDialog: {
+      required: true,
+      type: Boolean
+    }
+  },
+  data() {
+    return {
+      // true if link has been successfully copied to clipboard
+      clipboardSuccess: false,
+      // populated with privacySettings object once get request executes
+      privacySettings: {
+        visibility: true,
+        accesskey: null
+      },
+      // true when loading state is active
+      loading: true,
+      // get name of logged in user
+      username: localStorage.getItem('username')
+    }
+  },
+  async created() {
+    try {
+      await DatabaseServices.getPortfolioPrivacyByUsername(this.username);
+    } catch {
+      this.$store.state.snackbarText = 'Failed to load privacy settings.';
+      this.$emit('close');
+    }
+  },
+  computed: {
+    generateLinkButton() {
+      return !this.privacySettings.visibility;
+    },
+    clipboardIcon() {
+      return this.clipboardSuccess ? 'mdi-check-underline' : 'mdi-clipboard-multiple-outline';
+    },
+    link() {
+      return `http://portfolio-display-app.herokuapp.com/display/${this.username}
+      ?accesskey=${this.privacySettings.accesskey}`;
+    }
+  },
+  methods: {
+    async copyLinkToClipboard() {
+      try {
+        await navigator.clipboard.writeText(this.link);
+        this.clipboardSuccess = true;
+        this.$store.state.snackbarText = 'Link copied to clipboard!';
+      } catch {
+        this.$store.state.snackbarText = 'Failed to copy to clipboard :(';
+      }
+    },
+    generateLink() {
+      this.$store.state.snackbarText = "New link generated!";
+      this.privacySettings.accesskey = Math.random().toString().substring(2, 9);
+    },
+    deleteLink() {
+      this.privacySettings.accesskey = null; 
+      this.$store.state.snackbarText = 'Link deleted.';
+    },
+    async savePrivacySettings() {
+      this.$emit('close');
+    }
+  },
+  watch: {
+    clipboardSuccess(v) {
+      if (v) {
+        setTimeout(() => {
+          this.clipboardSuccess = false;
+        }, 2000);
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+  .link-container {
+    user-select: all; 
+    background-color: rgb(240, 240, 240); 
+    width: 80%; 
+    border-radius: 5px;
+  }
+</style>

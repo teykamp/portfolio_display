@@ -132,7 +132,7 @@ export default {
     },
     catchClause(error) {
       this.$store.state.snackbarText = 'Cannot connect to server';
-      this.$router.push('/');
+      this.error = 'no server conection';
       console.warn(error);
     },
     formatDataForDisplay(userData) {

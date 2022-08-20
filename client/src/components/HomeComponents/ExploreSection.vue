@@ -15,36 +15,46 @@
       </div>
       <div>
         <v-btn
-          :fab="showSearch ? false : true"
+          :fab="!showSearch"
           color="white"
-          @click="showSearch = true"
+          @click.stop="showSearch = true"
           style="transition: 250ms"
-          :width="showSearch ? '80vw' : ''"
-          :height="showSearch ? '10vh' : ''"
+          class="pa-0 ma-0"
+          :width="showSearch ? searchBarWidth : ''"
+          :height="showSearch ? '70px' : ''"
         >
+
           <v-icon dark v-if="!showSearch">
             mdi-magnify
           </v-icon>
-          <v-row v-else>
-            <v-icon 
-              dark 
-              @click.stop="showSearch = false"
-              class="mx-2"
-            >mdi-chevron-left</v-icon>
+
+          <div class="button-container" v-else>
+
+            <div style="flex-basis: 1">
+              <v-icon 
+                dark 
+                @click.stop="showSearch = false"
+                class="mx-2"
+              >mdi-chevron-left</v-icon>
+            </div>
+
             <!-- Form is there to make mobile keyboards know to turn 'return' into 'go/search' -->
-            <form 
-              action
-              @submit="(ev) => ev.preventDefault()"
-            >
-              <v-text-field 
-                class="mt-3 pr-10"
-                v-model="searchQuery"
-                label="Search Portfolios"
-                type="search"
-                @keyup.enter="search()"
-              />
-            </form>
-          </v-row>
+            <div style="flex-basis: 10; width: 100%;">
+              <form 
+                action
+                @submit="(ev) => ev.preventDefault()"
+              >
+                <v-text-field 
+                  class="mt-3 pr-10"
+                  v-model="searchQuery"
+                  label="Search Portfolios"
+                  type="search"
+                  @keyup.enter="search()"
+                />
+              </form>
+            </div>
+
+          </div>
           
         </v-btn>
       </div>
@@ -60,12 +70,27 @@ export default {
       searchQuery: ''
     }
   },
+  computed: {
+    searchBarWidth() {
+      return this.$vuetify.breakpoint.smAndUp ? '400px' : '80vw';
+    }
+  },
   methods: {
     search() {
-      if (this.searchQuery.trim()) {
-        this.$router.push(`/display/${this.searchQuery.trim()}`);
+      this.searchQuery = this.searchQuery.trim();
+      if (this.searchQuery) {
+        this.$router.push(`/display/${this.searchQuery}`);
       }
     }
   }
 }
 </script>
+
+<style scoped>
+  .button-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+  }
+</style>

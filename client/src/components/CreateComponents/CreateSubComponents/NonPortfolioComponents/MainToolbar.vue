@@ -45,77 +45,10 @@
     />
 
     <!-- Privacy Settings Dialog -->
-    <DialogBox
-      :title="'Privacy Settings'" 
-      :description="`The portfolio privacy settings tool, 
-      allows you to hide your portfolio so that only you 
-      can view/work on it. You may also generate 
-      a private link that allows you to share your 
-      portfolio only with people that have the link`"
-      :visible="showPrivacySettingsDialog"
-    >
-      <template #actions>
-        <v-container pt-0 fill-height>
-
-          <v-row>
-            <v-divider></v-divider>
-          </v-row>
-
-          <v-row>
-            <v-card-title class="pa-0" style="word-break: break-word">Toggle Portfolio Visibility</v-card-title>
-          </v-row>
-
-          <v-row align="center" justify="left">
-            <v-switch
-              class="mr-2"
-              v-model="$parent.userData.privacy.visibility"
-            ></v-switch>
-            <v-icon class="mr-1">{{ $parent.userData.privacy.visibility ? 'mdi-lock-open' : 'mdi-lock' }}</v-icon>
-            <b>{{ $parent.userData.privacy.visibility ? 'Public' : 'Private' }}</b>
-          </v-row>
-
-          <v-row align="center" justify="left" v-if="!$parent.userData.privacy.visibility">
-            <v-btn
-              v-if="!$parent.userData.privacy.accesskey"
-              small
-              @click.stop="generateLink"
-            >Generate Link For Sharing</v-btn>
-
-            <v-row class="ml-1" v-else>
-              <p 
-                style="user-select: all; background-color: rgb(240, 240, 240); width: 80%; border-radius: 5px"
-                class="py-1 px-2"
-              >http://portfolio-display-app.herokuapp.com/display/{{ username }}?accesskey={{ $parent.userData.privacy.accesskey }}</p>
-              <v-col align-self="center">
-                <v-row dense>
-                  <v-icon 
-                    color="error"
-                    class="mb-4 ml-2"
-                    @click.stop="$parent.userData.privacy.accesskey = null; $store.state.snackbarText = `Link deleted.`"
-                  >mdi-delete-outline</v-icon>
-                </v-row>
-                <v-row dense>
-                  <v-icon
-                    color="info"
-                    class="mb-4 ml-2"
-                    @click.stop="copyLinkToClipboard"
-                  >{{ clipboardIcon }}</v-icon>
-                </v-row>
-              </v-col>
-            </v-row>
-          </v-row>
-          
-          <v-row class="mt-6">
-            <v-btn
-              text
-              block
-              @click.stop="showPrivacySettingsDialog = false; savePortfolioRemote(false);"
-              color="success"
-            >Save Preferences</v-btn>
-          </v-row>
-        </v-container>
-      </template>
-    </DialogBox>
+    <PrivacySettingsDialog 
+      :showPrivacySettingsDialog="showPrivacySettingsDialog" 
+      @close="showPrivacySettingsDialog = false"
+    />
 
     <!-- Sidebar for mobile devices -->
     <v-navigation-drawer
@@ -146,26 +79,31 @@ import Toolbar from '../../../ReusableComponents/CreateToolbar.vue'
 // Dialogs
 import Steps from './StepByStep.vue'
 import DialogBox from '../../../ReusableComponents/DialogBox.vue'
+import PrivacySettingsDialog from './PrivacySettings.vue'
 
 import DatabaseServices from '../../../../DatabaseServices'
 
 export default {
   data() {
     return {
-      // true if link has been successfully copied to clipboard
-      clipboardSuccess: false,
       // username of logged in account
       username: localStorage.username,
+
       // true when steps dialog is being displayed
       showStepsDialog: false,
+
       // true when exit dialog is being displayed
       showExitDialog: false,
+
       // true when user is editing privacy settings via the privacy dialog
       showPrivacySettingsDialog: false,
+
       // tiggered if leave is prevented in exit dialog
       preventLeave: false,
+
       // navMenu true when hamburger icon is clicked and mobile navigation is active
       navMenu: false,
+
       // actions are functions that are executed when a user clicks a button inside Buttons
       actions: [
         this.savePortfolioRemote, 
@@ -197,32 +135,10 @@ export default {
     Steps,
     Toolbar,
     DialogBox,
-    Buttons  
-  },
-  computed: {
-    generateLinkButton() {
-      return !this.$parent.userData.privacy.visibility
-    },
-    clipboardIcon() {
-      return this.clipboardSuccess ? 'mdi-check-underline' : 'mdi-clipboard-multiple-outline';
-    }
+    Buttons,
+    PrivacySettingsDialog
   },
   methods: {
-    async copyLinkToClipboard() {
-      try {
-        await navigator.clipboard.writeText(
-          `http://portfolio-display-app.herokuapp.com/display/${this.username}?accesskey=${this.$parent.userData.privacy.accesskey}`
-        );
-        this.clipboardSuccess = true;
-        this.$store.state.snackbarText = 'Link copied to clipboard!';
-      } catch {
-        this.$store.state.snackbarText = 'Failed to copy to clipboard :(';
-      }
-    },
-    generateLink() {
-      this.$store.state.snackbarText = "New link generated!";
-      this.$parent.userData.privacy.accesskey = Math.random().toString().substring(2, 9);
-    },
     hasDataChanged() {
       return this.userDataOnStart != JSON.stringify(this.userData);
     },
@@ -239,49 +155,25 @@ export default {
       this.$parent.saveSessionLocally();
       this.$router.push('/');
     },
-    async savePortfolioRemote(pushToHome = true) {
+    async savePortfolioRemote() {
       // checks if user has done anything before using bandwidth to send a bunch of requests
-      if (!this.hasDataChanged() && pushToHome) {
+      if (!this.hasDataChanged()) {
         return this.$store.state.snackbarText = 'There is nothing to save!';
       }
 
-      // makes get to see if user already has a portfolio
-      let userAlreadyHasPortfolio;
       try {
-        userAlreadyHasPortfolio = await DatabaseServices.getPortfolioByUsername(this.username);
+        await DatabaseServices.updatePorfolio(this.username, this.userData);
+        this.$store.state.snackbarText = 'Your portfolio has been successfully updated!';
       } catch (error) {
-        this.$store.state.snackbarText = 'Connection error! Changes not saved';
-        console.error('Get request was unsuccessful!', error);
+        this.$store.state.snackbarText = 'There has been an issue making contact with our servers, your work has not been saved';
+        console.error('Put request was unsuccessful!', error);
         return;
-      }
-
-      if (userAlreadyHasPortfolio) {
-        try {
-          await DatabaseServices.updatePorfolio(this.username, this.userData);
-          this.$store.state.snackbarText = 'Your portfolio has been successfully updated!';
-        } catch (error) {
-          this.$store.state.snackbarText = 'There has been an issue making contact with our servers, your work has not been saved';
-          console.error('Put request was unsuccessful!', error);
-          return;
-        }
-      } else {
-        try {
-          await DatabaseServices.postPortfolio({
-            username: this.username,
-            portfolioItem: this.userData
-          });
-          if (pushToHome) this.$store.state.snackbarText = 'Your portfolio has been successfully created';
-        } catch (error) {
-          this.$store.state.snackbarText = 'There has been an issue making contact with our servers, your work has not been saved';
-          console.error('Post request was unsuccessful!', error);
-          return;
-        }
       }
       
       this.$store.state.portfolioItem = undefined;
       localStorage.removeItem('unsavedSessionData');
 
-      if (pushToHome) this.$router.push('/');
+      this.$router.push('/');
     }
   },
   watch: {
@@ -292,13 +184,6 @@ export default {
     showPrivacySettingsDialog(v) {
       if (this.$vuetify.breakpoint.smAndUp) return
       this.navMenu = !v;
-    },
-    clipboardSuccess(v) {
-      if (v) {
-        setTimeout(() => {
-          this.clipboardSuccess = false;
-        }, 2000);
-      }
     }
   }
 }

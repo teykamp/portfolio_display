@@ -39,7 +39,22 @@ export default class DatabaseServices {
       console.log(error);
       return Promise.reject(error);
     }
-  }  
+  }
+  
+  static async getPortfolioPrivacyByUsername(username: string): Promise<object> {
+    try {
+      const res = await axios({
+        method: 'get',
+        url: `${portfolioURL}${username}/privacy`,
+        timeout
+      });
+      const data = res.data;
+      return data;
+    } catch (error) {
+      console.log(error);
+      return Promise.reject(error);
+    }
+  }
 
   static async postPortfolio(portfolio: object): Promise<object> {
     try {
@@ -57,6 +72,20 @@ export default class DatabaseServices {
     try {
       const put = await axios.put(`${portfolioURL}${username}`, {
         portfolioItem 
+      }, {
+        timeout
+      });
+      return put;
+    } catch (error) {
+      console.log(error);
+      return Promise.reject(error);
+    }
+  }
+
+  static async updatePorfolioPrivacy(username: string, privacySettings: object): Promise<object> {
+    try {
+      const put = await axios.put(`${portfolioURL}${username}/privacy`, {
+        privacySettings
       }, {
         timeout
       });

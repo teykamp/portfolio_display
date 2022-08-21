@@ -115,15 +115,19 @@ export default {
     return {
       // true if link has been successfully copied to clipboard
       clipboardSuccess: false,
+
       // populated with privacySettings object once get request executes
       privacySettings: {
         visibility: true,
         accesskey: null
       },
+
       // makes a copy of privacySettings after get req for comparing on save
       privacySettingsOnStart: undefined,
+
       // true when loading state is active
       loading: true,
+      
       // get name of logged in user
       username: localStorage.getItem('username')
     }

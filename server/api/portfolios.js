@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const offlineAPI = require('../offlineAPI')
 const PortfolioItem = require('../models/portfolioItem');
+const { verifyToken } = require('../config')
 
-router.get('/', async (req, res) => {
+router.get('/', verifyToken, async (req, res) => {
 
   try {
     const portfolios = await PortfolioItem.find();

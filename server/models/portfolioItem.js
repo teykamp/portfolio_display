@@ -6,5 +6,4 @@ const PortfolioItem = mongoose.Schema({
   privacySettings: Object
 })
 
-
 module.exports = mongoose.model('PortfolioItem', PortfolioItem)

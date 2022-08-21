@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Account = require('../models/accounts');
+const { verifyToken } = require('../config')
 
 router.get('/', async (req, res) => {
 

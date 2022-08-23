@@ -20,8 +20,8 @@
     />
     <v-text-field 
       label="Password"
-      :type="showPassword ? 'text' : 'password'"
-      :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+      :type="passwordType"
+      :append-icon="eyeIcon"
       prepend-icon="mdi-lock"
       @click:append="showPassword = !showPassword"
       v-model="password"
@@ -29,7 +29,7 @@
     />
     <v-text-field 
       label="Confirm Password"
-      :type="showPassword ? 'text' : 'password'"
+      :type="passwordType"
       prepend-icon="mdi-redo-variant"
       v-model="rePassword"
       :rules="[rules.matchingPasswords]"

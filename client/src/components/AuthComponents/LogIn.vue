@@ -19,8 +19,8 @@
     />
     <v-text-field 
       label="Password"
-      :type="showPassword ? 'text' : 'password'"
-      :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+      :type="passwordType"
+      :append-icon="eyeIcon"
       prepend-icon="mdi-lock"
       @click:append="showPassword = !showPassword"
       v-model="password"

@@ -9,6 +9,14 @@ export default {
       showPassword: false
     }
   },
+  computed: {
+    eyeIcon() {
+      return this.showPassword ? 'mdi-eye' : 'mdi-eye-off';
+    },
+    passwordType() {
+      return this.showPassword ? 'text' : 'password';
+    }
+  },
   methods: {
     catchStatement() {
       this.exitProcess(

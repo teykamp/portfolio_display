@@ -3,13 +3,13 @@ const router = express.Router();
 const Account = require('../models/accounts');
 const { verifyToken } = require('../config')
 
-router.get('/', async (req, res) => {
+router.get('/', verifyToken, async (req, res) => {
 
   try {
     const accounts = await Account.find();
     res.json(accounts);
   } catch (error) {
-    res.json({ message: error });
+    res.json({ error });
   };
 
 });
@@ -20,13 +20,13 @@ router.get('/:username', async (req, res) => {
     const account = await Account.findOne({ username: req.params.username }, '-userIP');
     res.json(account);
   } catch (error) {
-    res.json({ message: error });
+    res.json({ error });
   };
 
 });
 
 // MAY BE REMOVED LATER
-router.get('/:username/ip', async (req, res) => {
+router.get('/:username/ip', verifyToken, async (req, res) => {
 
   try {
     const ipAddress = await Account.findOne({ username: req.params.username }, 'userIP -_id');
@@ -51,7 +51,7 @@ router.get('/:username/istaken?', async (req, res) => {
     const account = await Account.findOne({ username: req.params.username }, 'username -_id');
     res.json(!!account);
   } catch (error) {
-    res.json({ message: error });
+    res.json({ error });
   };
 
 });
@@ -73,7 +73,7 @@ router.post('/', async (req, res) => {
     const postUser = await createdUser.save();
     res.json(postUser);
   } catch (error) {
-    res.json({ message: error });
+    res.json({ error });
   };
 
 });
@@ -84,7 +84,7 @@ router.delete('/:id', async (req, res) => {
     const deletedAccount = await Account.deleteOne({ _id: req.params.id });
     res.json(deletedAccount);
   } catch (error) {
-    res.json({ message: error });
+    res.json({ error });
   };
 
 });

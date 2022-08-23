@@ -26,11 +26,11 @@ export default class DatabaseServices {
     }
   }
 
-  static async getPortfolioByUsername(username: string): Promise<object> {
+  static async getPortfolioContentByUsername(username: string): Promise<object> {
     try {
       const res = await axios({
         method: 'get',
-        url: `${portfolioURL}${username}`,
+        url: `${portfolioURL}${username}/content`,
         timeout
       });
       const data = res.data;

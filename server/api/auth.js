@@ -1,16 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 router.get('/:user', async (req, res) => {
-  const timeIssued = Date.now();
+
+  const user = {
+    username: req.params.user
+  }
+
   try {
-    jwt.sign(req.params.user, 'secretkey', (err, token) => {
-      if (err) throw err;
-      res.json({ token, timeIssued, user: req.params.user, numOfInteractions: 0 });
+    jwt.sign({ user }, process.env.JWT_SECRET_KEY, { expiresIn: '10s' }, (err, token) => {
+      if (err) console.log(err)
+      res.json({ token });
     })
   } catch (error) {
-    res.json({ message: error });
+    res.json({ error });
   }
 })
 

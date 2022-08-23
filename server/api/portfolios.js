@@ -15,7 +15,7 @@ router.get('/', verifyToken, async (req, res) => {
 
 });
 
-router.get('/:username', async (req, res) => {
+router.get('/:username/content', verifyToken, async (req, res) => {
 
   try {
     const getPortfolio = await PortfolioItem.findOne({ username: req.params.username }, '-_id portfolioItem');
@@ -27,7 +27,7 @@ router.get('/:username', async (req, res) => {
 
 });
 
-router.get('/:username/privacy', async (req, res) => {
+router.get('/:username/privacy', verifyToken, async (req, res) => {
 
   try {
     const getPortfolio = await PortfolioItem.findOne({ username: req.params.username }, '-_id privacySettings');
@@ -56,7 +56,7 @@ router.post('/', async (req, res) => {
 
 });
 
-router.put('/:username', async (req, res) => {
+router.put('/:username', verifyToken, async (req, res) => {
 
   try {
     const updatedPortfolioItem = await PortfolioItem.updateOne(
@@ -70,7 +70,7 @@ router.put('/:username', async (req, res) => {
 
 });
 
-router.put('/:username/privacy', async (req, res) => {
+router.put('/:username/privacy', verifyToken, async (req, res) => {
 
   try {
     const updatedPrivacySettings = await PortfolioItem.updateOne(

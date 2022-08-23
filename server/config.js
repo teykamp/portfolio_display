@@ -4,7 +4,9 @@ exports.CORS_ORIGINS = ["http://localhost:3000"];
 exports.verifyToken = (req, res, next) => {
   const bearerHeader = req.headers['authorization'];
   if (typeof bearerHeader !== 'undefined') {
-
+    const bearerToken = bearerHeader.split(' ')[1];
+    req.token = bearerToken;
+    next();
   } else {
     res.json({ error: 'Forbidden! Client Access Token Not Valid', status: 403 });
     res.sendStatus(403);

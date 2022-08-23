@@ -5,53 +5,56 @@ import axios from 'axios'
 const portfolioURL = '/api/portfolios/';
 const accountsURL = '/api/accounts/';
 
+// stores the current jwt of the client
+const token = localStorage.getItem('token') ?? '';
+
 // defines request timeout in milliseconds
 const timeout = 3000;
+
+interface AxiosRequestObject {
+  method: string,
+  url: string,
+  timeout: number,
+  headers: any
+}
+
+function axiosObj(method: string, url: string): AxiosRequestObject {
+  return {
+    method,
+    url,
+    timeout,
+    headers: {
+      'Authorization': token
+    }
+  };
+}
 
 export default class DatabaseServices {
 
   // Portfolio API
   static async getAllPortfolios(): Promise<Array<string>> {
     try {
-      const res = await axios({
-        method: 'get',
-        url: portfolioURL,
-        timeout
-      });
-      const data = res.data;
-      return data;
+      const res = await axios(axiosObj('get', portfolioURL));
+      return res.data;
     } catch (error) {
-      console.log(error);
       return Promise.reject(error);
     }
   }
 
   static async getPortfolioContentByUsername(username: string): Promise<object> {
     try {
-      const res = await axios({
-        method: 'get',
-        url: `${portfolioURL}${username}/content`,
-        timeout
-      });
-      const data = res.data;
-      return data;
+      const res = await axios(axiosObj('get', `${portfolioURL}${username}/content`));
+      return res.data;
     } catch (error) {
-      console.log(error);
       return Promise.reject(error);
     }
   }
   
   static async getPortfolioPrivacyByUsername(username: string): Promise<object> {
     try {
-      const res = await axios({
-        method: 'get',
-        url: `${portfolioURL}${username}/privacy`,
-        timeout
-      });
-      const data = res.data;
-      return data;
+      const res = await axios(axiosObj('get', `${portfolioURL}${username}/privacy`));
+      return res.data;
     } catch (error) {
-      console.log(error);
       return Promise.reject(error);
     }
   }
@@ -63,7 +66,6 @@ export default class DatabaseServices {
       });
       return post;
     } catch (error) {
-      console.log(error);
       return Promise.reject(error);
     }    
   }
@@ -77,7 +79,6 @@ export default class DatabaseServices {
       });
       return put;
     } catch (error) {
-      console.log(error);
       return Promise.reject(error);
     }
   }
@@ -91,21 +92,15 @@ export default class DatabaseServices {
       });
       return put;
     } catch (error) {
-      console.log(error);
       return Promise.reject(error);
     }
   }
 
   static async deletePortfolioByID(id: string): Promise<object> {
     try {
-      const remove = await axios({
-        method: 'delete',
-        url: `${portfolioURL}${id}`,
-        timeout
-      });
+      const remove = await axios(axiosObj('delete', `${portfolioURL}${id}`));
       return remove;
     } catch (error) {
-      console.log(error);
       return Promise.reject(error);
     }
   }
@@ -113,45 +108,27 @@ export default class DatabaseServices {
   // Accounts API
   static async getAllAccounts(): Promise<Array<string>> {
     try {
-      const res = await axios({
-        method: 'get',
-        url: accountsURL,
-        timeout
-      });
-      const data = res.data;
-      return data;
+      const res = await axios(axiosObj('get', accountsURL));
+      return res.data;
     } catch (error) {
-      console.log(error);
       return Promise.reject(error);
     }
   }
 
   static async getAccountByUsername(username: string): Promise<object> {
     try {
-      const res = await axios({
-        method: 'get',
-        url: `${accountsURL}${username}`,
-        timeout
-      });
-      const data = res.data;
-      return data;
+      const res = await axios(axiosObj('get', `${accountsURL}${username}`));
+      return res.data;
     } catch (error) {
-      console.log(error);
       return Promise.reject(error);
     }
   }  
 
   static async isUsernameTaken(username: string): Promise<boolean> {
     try {
-      const res = await axios({
-        method: 'get',
-        url: `${accountsURL}${username}/istaken?`,
-        timeout
-      });
-      const data = res.data;
-      return data;
+      const res = await axios(axiosObj('get', `${accountsURL}${username}/istaken?`));
+      return res.data;
     } catch (error) {
-      console.log(error);
       return Promise.reject(error);
     }
   }
@@ -160,14 +137,9 @@ export default class DatabaseServices {
   // return array of _id strings
   static async getAllUsersWithUsername(username: string): Promise<Array<string>> {
     try {
-      const res = await axios({
-        method: 'get',
-        url: `${accountsURL}/all/${username}`,
-        timeout
-      });
+      const res = await axios(axiosObj('get', `${accountsURL}/all/${username}`));
       return res.data;
     } catch (error) {
-      console.log(error);
       return Promise.reject(error);
     }
   }
@@ -177,23 +149,16 @@ export default class DatabaseServices {
       const post = await axios.post(accountsURL, account, { timeout });
       return post;
     } catch (error) {
-      console.log(error);
       return Promise.reject(error);
     }
   }
 
   static async deleteAccountByID(accountID: string): Promise<object> {
     try {
-      const remove = await axios({
-        method: 'delete',
-        url: `${accountsURL}${accountID}`,
-        timeout
-      });   
+      const remove = await axios(axiosObj('delete', `${accountsURL}${accountID}`));   
       return remove;
     } catch (error) {
-      console.log(error);
       return Promise.reject(error);
     }
   }
 }
-

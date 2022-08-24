@@ -49,7 +49,6 @@
 <script>
 import DatabaseServices from '../../DatabaseServices'
 import AuthMixin from './AuthMixin'
-import { compareSync } from 'bcryptjs'
  
 export default {
   mixins: [ 
@@ -75,21 +74,7 @@ export default {
         return;
       }
 
-      // if user is not found
-      if (!user) {
-        this.exitProcess(
-          'Incorrect Username or Password',
-          'The username or password that was entered do not match our records',
-          'Try again',
-          false,
-          () => { this.sendUserToLoginForm() }
-        );
-
-        return;
-      }
-
       // if password is correct by comparing what is on the db with the hashed password
-      const passwordCorrect = compareSync(this.password, user.password);
 
       if (!passwordCorrect) {
         this.exitProcess(

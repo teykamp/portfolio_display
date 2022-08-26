@@ -102,7 +102,7 @@ export default {
 
     // PULLS DOWN ACTUAL PORTFOLIO DATA ONCE PRIVACY SCREENING HAS PASSED
     try {
-      const portfolioItem = await DatabaseServices.getPortfolioByUsername(this.$route.params.user);
+      const portfolioItem = await DatabaseServices.getPortfolioContentByUsername(this.$route.params.user);
       if (portfolioItem?.error) this.error = portfolioItem.error
       this.formatDataForDisplay(portfolioItem);
     } catch (err) {

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const conn = mongoose.createConnection('mongodb+srv://nodebackend:portfolio@cluster0.qcf3a.mongodb.net/?retryWrites=true&w=majority');
 
 const AccountSchema = mongoose.Schema({
 
@@ -23,4 +22,4 @@ const AccountSchema = mongoose.Schema({
 
 });
 
-module.exports = conn.model('Account', AccountSchema);
+module.exports = mongoose.model('Account', AccountSchema);

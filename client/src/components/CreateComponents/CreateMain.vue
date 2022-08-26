@@ -55,7 +55,11 @@
 
         <v-row align="center" justify="center">
 
-          <v-col cols="12" sm="10" md="8">
+          <v-col 
+            cols="12" 
+            sm="10" 
+            md="8"
+          >
 
             <!-- HEADER CARD -->
             <ComponentCard 
@@ -166,10 +170,10 @@ export default {
       this.$router.push({ name: 'Auth', query: { type: 'login' } });
     }
 
-    // askes the database for the logged in users portfolio
+    // askes the database for the logged in users portfolio content
     let data;
     try {
-      data = await DatabaseServices.getPortfolioByUsername(sessionUser);
+      data = await DatabaseServices.getPortfolioContentByUsername(sessionUser);
     } catch {
       this.$store.state.snackbarText = 'There was an issue connecting to our servers';
       this.$router.push('/');

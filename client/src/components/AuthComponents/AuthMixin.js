@@ -4,9 +4,17 @@ export default {
       // modeled after what the user inputs inside username field
       username: '',
       // modeled after what the user inputs inside password field
-      password: '',
+      password: '',    
       // toggles password visibility
       showPassword: false
+    }
+  },
+  computed: {
+    eyeIcon() {
+      return this.showPassword ? 'mdi-eye' : 'mdi-eye-off';
+    },
+    passwordType() {
+      return this.showPassword ? 'text' : 'password';
     }
   },
   methods: {

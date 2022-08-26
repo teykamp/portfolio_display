@@ -49,6 +49,7 @@
 <script>
 import DatabaseServices from '../../DatabaseServices'
 import AuthMixin from './AuthMixin'
+import { hashSync } from 'bcryptjs'
  
 export default {
   mixins: [ 
@@ -59,37 +60,37 @@ export default {
 
       this.$parent.formSubmitted = true;
 
-      let user;
+      const loginAttempt = {
+        username: this.username,
+        password: hashSync(this.password)
+      };
+
+      let authStatus;
       try {
-        user = await DatabaseServices.getAccountByUsername(this.username);
+        authStatus = await DatabaseServices.authorizeLogin(loginAttempt);
       } catch {
-        this.exitProcess(
+        return this.exitProcess(
           'There has been an issue with a request made to our servers',
           'This could be an issue with connectivity on your end, or a server problem on ours.',
           'Try one more time',
           false,
           () => { this.sendUserToLoginForm() }
         );
-
-        return;
       }
 
-      // if password is correct by comparing what is on the db with the hashed password
-
-      if (!passwordCorrect) {
-        this.exitProcess(
+      if (!authStatus.isAuthorized) {
+        return this.exitProcess(
           'Incorrect Username or Password',
           'The username or password that was entered do not match our records',
           'Try again',
           false,
           () => { this.sendUserToLoginForm() }
         );
-
-        return;
       }
       
       // if everything is successful
       localStorage.setItem('username', this.username);
+      localStorage.setItem('sessionToken', authStatus.token)
 
       this.exitProcess(
         'Login Successful',

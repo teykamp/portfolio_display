@@ -115,6 +115,15 @@ export default class DatabaseServices {
     }
   }
 
+  static async authorizeLogin(loginAttempt: object): Promise<object> {
+    try {
+      const authDetails = await axios.post('/api/auth/', loginAttempt, { timeout });
+      return authDetails;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
   static async getAccountByUsername(username: string): Promise<object> {
     try {
       const res = await axios(axiosObj('get', `${accountsURL}${username}`));

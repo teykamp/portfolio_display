@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
-// const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const Account = require('../models/accounts');
-// const { compareSync } = require('bcryptjs')
+const { compareSync } = require('bcryptjs')
 
 function generateAccessToken(username) {
-  // return jwt.sign({ username }, process.env.JWT_SECRET)
-  return username + 123
+  return jwt.sign({ username }, process.env.JWT_SECRET);
 }
 
 router.post('/', async (req, res) => {
@@ -26,8 +25,7 @@ router.post('/', async (req, res) => {
     return res.json({ isAuthorized: false, authToken })
   }
 
-  // const isAuthorized = compareSync(req.body.password, account.password);
-  const isAuthorized = true
+  const isAuthorized = compareSync(req.body.password, account.password);
 
   if (isAuthorized) authToken = generateAccessToken(req.body.username);
   

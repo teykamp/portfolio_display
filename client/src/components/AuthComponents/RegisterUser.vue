@@ -1,6 +1,6 @@
 <template>
   <v-card 
-    :min-width="$vuetify.breakpoint.smAndUp ? '400px' : '70vw'" 
+    :min-width="$vuetify.breakpoint.smAndUp ? '400px' : '80vw'" 
     class="pa-5 ma-4"
   >
     <v-row 
@@ -199,7 +199,10 @@ export default {
       // if everything checks out and we can confirm our changes to the db, we send this exit msg
       this.exitProcess(
         'Hooray!',
-        'Your account has been successfully created, to complete the account creation process and begin building, we must ask you to log in with your newly created credentials.',
+        `Your account has been successfully created, 
+        to complete the account creation process 
+        and begin building, we must first ask you to log in with 
+        your newly created credentials.`,
         'login',
         true,
         () => { this.sendUserToLoginForm() }

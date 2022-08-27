@@ -15,10 +15,12 @@
         :color="currentSection !== 'build' ? '' : 'error'"
         @click.stop="$router.push({ name: 'Build' })"
       >Build</v-btn>
-      <v-btn 
-        :text="currentSection !== 'explore'"
-        :color="currentSection !== 'explore' ? '' : 'success'"
-      >Explore</v-btn>
+      <a href="#explore">
+        <v-btn
+          :text="currentSection !== 'explore'"
+          :color="currentSection !== 'explore' ? '' : 'success'"
+        >Explore</v-btn>
+      </a>
     </div>
 
     <article id="invigorate">

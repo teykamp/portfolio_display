@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 const portfolios = require('./api/portfolios');
 const auth = require('./api/auth');
 const account = require('./api/accounts');
-const { default: mongoose } = require('mongoose');
+const mongoose = require('mongoose');
 require('dotenv').config();
 
 app.use('/api/portfolios', portfolios);

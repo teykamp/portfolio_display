@@ -1,6 +1,6 @@
 <template>
   <v-card
-    :min-width="$vuetify.breakpoint.smAndUp ? '400px' : '70vw'" 
+    :min-width="$vuetify.breakpoint.smAndUp ? '400px' : '80vw'" 
     class="pa-5 ma-4"
   >
     <v-row 
@@ -49,7 +49,6 @@
 <script>
 import DatabaseServices from '../../DatabaseServices'
 import AuthMixin from './AuthMixin'
-import { hashSync } from 'bcryptjs'
  
 export default {
   mixins: [ 
@@ -62,7 +61,7 @@ export default {
 
       const loginAttempt = {
         username: this.username,
-        password: hashSync(this.password)
+        password: this.password
       };
 
       let authStatus;
@@ -78,6 +77,7 @@ export default {
         );
       }
 
+      console.log(authStatus)
       if (!authStatus.isAuthorized) {
         return this.exitProcess(
           'Incorrect Username or Password',

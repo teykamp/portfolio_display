@@ -17,7 +17,7 @@
         <v-btn 
           color="white" 
           class="mr-2"
-          @click.stop="goToCreate"
+          @click.stop="$router.push({ name: 'Build' })"
         >
           <v-icon class="mr-2">mdi-clipboard-edit</v-icon>
           Get started
@@ -29,11 +29,6 @@
 
 <script>
 export default {
-  methods: {
-    goToCreate() {
-      window.scrollTo(0, 0);
-      this.$router.push('/create');
-    }
-  }
+  
 }
 </script>

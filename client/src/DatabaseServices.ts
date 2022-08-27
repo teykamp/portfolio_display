@@ -118,7 +118,7 @@ export default class DatabaseServices {
   static async authorizeLogin(loginAttempt: object): Promise<object> {
     try {
       const authDetails = await axios.post('/api/auth/', loginAttempt, { timeout });
-      return authDetails;
+      return authDetails.data;
     } catch (error) {
       return Promise.reject(error);
     }

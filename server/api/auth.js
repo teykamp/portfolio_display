@@ -5,15 +5,13 @@ require('dotenv').config();
 const Account = require('../models/accounts');
 const { compareSync } = require('bcryptjs')
 
+function generateAccessToken(username) {
+  return jwt.sign({ username }, process.env.JWT_SECRET)
+}
+
 router.post('/', async (req, res) => {
 
-  const authToken = '';
-
-  console.log(authToken)
-
-  const user = {
-    username: req.body.username
-  }
+  let authToken = '';
 
   let account;
   try {
@@ -26,22 +24,11 @@ router.post('/', async (req, res) => {
     // username not in database
     return res.json({ isAuthorized: false, authToken })
   }
-  // compareSync(req.body.password, account.password);
-  const isAuthorized = true
 
-  if (isAuthorized) {
-    try {
-      jwt.sign({ user }, process.env.JWT_SECRET_KEY, { expiresIn: '10s' }, (err, token) => {
-        if (err) console.log(err)
-        authToken = token
-        console.log('diff')
-      })
-    } catch (error) {
-      console.log('sometihn')
-      res.json({ error });
-    }
-  }
+  const isAuthorized = compareSync(req.body.password, account.password);
 
+  if (isAuthorized) authToken = generateAccessToken(req.body.username);
+  
   res.json({
     isAuthorized,
     authToken

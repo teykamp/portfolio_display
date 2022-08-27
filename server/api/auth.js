@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 require('dotenv').config();
 const Account = require('../models/accounts');
-const jwt = require('JsonWebToken');
+const jwt = require('jsonwebtoken');
 const { compareSync } = require('bcryptjs');
 
 function generateAccessToken(username) {

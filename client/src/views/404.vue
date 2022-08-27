@@ -48,8 +48,13 @@
 
 <script>
 export default {
-    name: '404Error',
-
+  name: '404Error',
+  created() {
+    // to prevent mobile devices being auto routed to 404 through manifest
+    if (!this.$vuetify.breakpoint.mdAndUp) {
+      this.$router.push('/');
+    }
+  }
 }
 </script>
 

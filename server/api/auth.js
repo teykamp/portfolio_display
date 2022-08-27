@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const Account = require('../models/accounts');
-const { compareSync } = require('bcryptjs')
+const jwt = require('jsonwebtoken');
+const { compareSync } = require('bcryptjs');
 
 function generateAccessToken(username) {
   return jwt.sign({ username }, process.env.JWT_SECRET);

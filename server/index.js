@@ -1,5 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+
+const jwt = require('jsonwebtoken');
+const { compareSync } = require('bcryptjs');
+
 // const cors = require('cors');
 
 const app = express();

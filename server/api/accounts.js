@@ -3,7 +3,7 @@ const router = express.Router();
 const Account = require('../models/accounts');
 const { verifyToken } = require('../config')
 
-router.get('/', verifyToken, async (req, res) => {
+router.get('/', async (req, res) => {
 
   try {
     const accounts = await Account.find();

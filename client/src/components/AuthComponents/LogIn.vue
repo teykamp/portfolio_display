@@ -1,6 +1,6 @@
 <template>
   <v-card
-    :min-width="$vuetify.breakpoint.smAndUp ? '400px' : '70vw'" 
+    :min-width="$vuetify.breakpoint.smAndUp ? '400px' : '80vw'" 
     class="pa-5 ma-4"
   >
     <v-row 
@@ -77,6 +77,7 @@ export default {
         );
       }
 
+      console.log(authStatus)
       if (!authStatus.isAuthorized) {
         return this.exitProcess(
           'Incorrect Username or Password',

@@ -49,7 +49,6 @@
 <script>
 import DatabaseServices from '../../DatabaseServices'
 import AuthMixin from './AuthMixin'
-import { hashSync } from 'bcryptjs'
  
 export default {
   mixins: [ 
@@ -62,7 +61,7 @@ export default {
 
       const loginAttempt = {
         username: this.username,
-        password: hashSync(this.password)
+        password: this.password
       };
 
       let authStatus;

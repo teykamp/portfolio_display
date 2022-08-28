@@ -1,5 +1,4 @@
-// const jwt = require("jsonwebtoken");
-// require('dotenv').config();
+const jwt = require("jsonwebtoken");
 
 exports.CORS_ORIGINS = ["http://localhost:3000"];
 
@@ -18,14 +17,23 @@ exports.verifyToken = (req, res, next) => {
   }
 }
 
-// exports.verifyTokenHolder = (username, token) => {
-//   jwt.verify(token, process.env.JWT_SECRET, (err, authData,) => {
-//     console.log(authData, username)
-//     if (err) {
-//       throw res.json({ 
-//         error: 'Forbidden! Client Access Token Not Valid', 
-//         status: 403
-//       })
-//     }
-//   })
-// }
+exports.authorizeTokenForUse = (token, username = false) => {
+  return jwt.verify(token, process.env.JWT_SECRET, (err, tokenData) => {
+    switch (true) {
+      case !!err:
+        return {
+          error: 'Access Denied! Bearer Token Invalid',
+          status: 403
+        };
+      case tokenData.username !== username && typeof username !== "boolean": 
+        return {
+          error: 'Access Denied! Username Defined On Token Payload Does Not Match That of The Request Issuer',
+          status: 403
+        };
+      default:
+        return {
+          success: 'Token Use Successfully Authorized!'
+        };
+    }
+  })
+}

@@ -1,43 +1,31 @@
 const express = require('express');
 const router = express.Router();
 const Account = require('../models/accounts');
-const jwt = require('jsonwebtoken')
-const { verifyToken, verifyTokenHolder } = require('../config');
+const { verifyToken, authorizeTokenForUse } = require('../config');
 
-function tokenHandler(token, username) {
-  return jwt.verify(token, process.env.JWT_SECRET, (err, tokenData) => {
-    switch (true) {
-      case !!err:
-        return {msg: 'ok then :('};
-      case tokenData.username !== username: 
-        return {msg: 'user req no no!!'}
-      default:
-        return {msg: 'yay then :)'};
-    }
-  })
-}
+// function tokenHandler(token, username) {
+//   return jwt.verify(token, process.env.JWT_SECRET, (err, tokenData) => {
+//     switch (true) {
+//       case !!err:
+//         return {msg: 'ok then :('};
+//       case tokenData.username !== username: 
+//         return {msg: 'user req no no!!'}
+//       default:
+//         return {msg: 'yay then :)'};
+//     }
+//   })
+// }
 
 router.get('/', verifyToken, async (req, res) => {
-  /*
-  jwt.verify(req.token, process.env.JWT_SECRET, async (err, tokenData) => {
-    if (err) {
-      res.json({
-        error: 'There has been an issue verifying client access token.',
-        status: 403
-      }) 
-    } else {
-      console.log(tokenData)
-      try {
-        const accounts = await Account.find();
-        res.json(accounts);
-      } catch (error) {
-        res.json({ error });
-      };
-    }
-  })
-  */
 
-  res.json(tokenHandler(req.token, 'yona'))
+  // try {
+  //   const accounts = await Account.find();
+  //   res.json(accounts);
+  // } catch (error) {
+  //   res.json({ error });
+  // };
+
+  res.json(authorizeTokenForUse(req.token, 'yona'))
 
 });
 

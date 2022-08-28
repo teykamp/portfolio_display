@@ -4,15 +4,27 @@ const Account = require('../models/accounts');
 const jwt = require('jsonwebtoken')
 const { verifyToken, verifyTokenHolder } = require('../config');
 
-router.get('/', verifyToken, async (req, res) => {
+function tokenHandler(token, username) {
+  return jwt.verify(token, process.env.JWT_SECRET, (err, tokenData) => {
+    switch (true) {
+      case !!err:
+        return {msg: 'ok then :('};
+      case tokenData.username !== username: 
+        return {msg: 'user req no no!!'}
+      default:
+        return {msg: 'yay then :)'};
+    }
+  })
+}
 
+router.get('/', verifyToken, async (req, res) => {
+  /*
   jwt.verify(req.token, process.env.JWT_SECRET, async (err, tokenData) => {
     if (err) {
       res.json({
         error: 'There has been an issue verifying client access token.',
         status: 403
       }) 
-      // console.log(err)
     } else {
       console.log(tokenData)
       try {
@@ -23,6 +35,9 @@ router.get('/', verifyToken, async (req, res) => {
       };
     }
   })
+  */
+
+  res.json(tokenHandler(req.token, 'yona'))
 
 });
 

@@ -16,7 +16,7 @@
       label="Username"
       v-model="username"
       prepend-icon="mdi-account-circle"
-      :rules="[rules.containsSpaces]"
+      :rules="[rules.containsSpaces, rules.containsSlashes]"
     />
     <v-text-field 
       label="Password"
@@ -72,7 +72,8 @@ export default {
       rules: {
         matchingPasswords: value => (value === this.password) || 'Passwords do not match',
         passwordLength: value => (value.length > 5) || 'Password is to short',
-        containsSpaces: value => !(/\s/.test(value)) || 'Cannot contain spaces'
+        containsSpaces: value => !(/\s/.test(value)) || 'Cannot contain spaces',
+        containsSlashes: value => !(/\//.test(value)) || 'Cannot contain slashes'
       }
     }
   },

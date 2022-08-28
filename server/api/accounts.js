@@ -1,16 +1,28 @@
 const express = require('express');
 const router = express.Router();
 const Account = require('../models/accounts');
-const { verifyToken } = require('../config')
+const jwt = require('jsonwebtoken')
+const { verifyToken, verifyTokenHolder } = require('../config');
 
-router.get('/', async (req, res) => {
+router.get('/', verifyToken, async (req, res) => {
 
-  try {
-    const accounts = await Account.find();
-    res.json(accounts);
-  } catch (error) {
-    res.json({ error });
-  };
+  jwt.verify(req.token, process.env.JWT_SECRET, async (err, tokenData) => {
+    if (err) {
+      res.json({
+        error: 'There has been an issue verifying client access token.',
+        status: 403
+      }) 
+      // console.log(err)
+    } else {
+      console.log(tokenData)
+      try {
+        const accounts = await Account.find();
+        res.json(accounts);
+      } catch (error) {
+        res.json({ error });
+      };
+    }
+  })
 
 });
 

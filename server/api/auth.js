@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const { compareSync } = require('bcryptjs');
 
 function generateAccessToken(username) {
-  return jwt.sign({ username }, process.env.JWT_SECRET);
+  return jwt.sign({ username }, process.env.JWT_SECRET, {expiresIn: '30d'});
 }
 
 router.post('/', async (req, res) => {

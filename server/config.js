@@ -12,7 +12,8 @@ exports.verifyToken = (req, res, next) => {
   } else {
     throw res.json({ 
       error: 'Access Denied! Request Does Not Contain Bearer Token', 
-      status: 403
+      status: 403,
+      isAuthorized: false
     })
   }
 }
@@ -23,16 +24,19 @@ exports.authorizeTokenForUse = (token, username = false) => {
       case !!err:
         return {
           error: 'Access Denied! Bearer Token Invalid',
-          status: 403
+          status: 403,
+          isAuthorized: false
         };
       case tokenData.username !== username && typeof username !== "boolean": 
         return {
           error: 'Access Denied! Username Defined On Token Payload Does Not Match That of The Request Issuer',
-          status: 403
+          status: 403,
+          isAuthorized: false
         };
       default:
         return {
-          success: 'Token Use Successfully Authorized!'
+          success: 'Token Use Successfully Authorized. Request May Proceed!',
+          isAuthorized: true
         };
     }
   })

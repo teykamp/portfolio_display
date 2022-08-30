@@ -1,6 +1,6 @@
 <br/>
 
-***Current Version 0.1.0***
+***Current Version 0.9.1***
 
 ---
 
@@ -18,8 +18,6 @@ The things you need before cloning the repository.
 
 * [Vue](https://cli.vuejs.org/guide/installation.html)
 ```npm install -g @vue/cli```
-* [SASS](https://sass-lang.com/install)
-```npm install -g sass```
 * [Typescript](https://www.typescriptlang.org/id/download)
 ```npm install typescript --save-dev```
 * [Vuetify](https://vuetifyjs.com/en/getting-started/installation/)

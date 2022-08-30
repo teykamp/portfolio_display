@@ -90,7 +90,7 @@ export default {
       
       // if everything is successful
       localStorage.setItem('username', this.username);
-      localStorage.setItem('sessionToken', authStatus.token)
+      localStorage.setItem('sessionToken', authStatus.authToken)
 
       this.exitProcess(
         'Login Successful',

@@ -1,4 +1,6 @@
 import axios from 'axios'
+import router from './router/index'
+import { store } from './store/index'
 
 // switch between online and offline mode by adding and 
 // removing 'offline/' on requests to the portfolio API
@@ -6,7 +8,7 @@ const portfolioURL = '/api/portfolios/';
 const accountsURL = '/api/accounts/';
 
 // stores the current jwt of the client
-const token = localStorage.getItem('token') ?? '';
+const token = localStorage.getItem('sessionToken') ?? '';
 
 // defines request timeout in milliseconds
 const timeout = 3000;
@@ -29,6 +31,15 @@ function axiosObj(method: string, url: string): AxiosRequestObject {
   };
 }
 
+function catchActions(error: any): Promise<any> {
+  if (error.data?.status == 403) {
+    store.state.snackbarText = 'Session Credentials Expired or Invalid';
+    router.push({ name: 'Auth' })
+  }
+
+  return Promise.reject(error)
+}
+
 export default class DatabaseServices {
 
   // Portfolio API
@@ -46,7 +57,7 @@ export default class DatabaseServices {
       const res = await axios(axiosObj('get', `${portfolioURL}${username}/content`));
       return res.data;
     } catch (error) {
-      return Promise.reject(error);
+      return catchActions(error);
     }
   }
   
@@ -79,20 +90,26 @@ export default class DatabaseServices {
       });
       return put;
     } catch (error) {
-      return Promise.reject(error);
+      return catchActions(error);
     }
   }
 
   static async updatePorfolioPrivacy(username: string, privacySettings: object): Promise<object> {
     try {
+      console.log('runnign try')
       const put = await axios.put(`${portfolioURL}${username}/privacy`, {
         privacySettings
       }, {
-        timeout
+        timeout,
+        headers: {
+          'Authorization': token
+        }
       });
+      console.log(put)
       return put;
     } catch (error) {
-      return Promise.reject(error);
+      
+      return catchActions(error);
     }
   }
 

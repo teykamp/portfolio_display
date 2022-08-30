@@ -2,15 +2,18 @@ const express = require('express');
 const router = express.Router();
 const offlineAPI = require('../offlineAPI')
 const PortfolioItem = require('../models/portfolioItem');
-const { verifyToken } = require('../config')
+const { verifyToken, authorizeTokenForUse } = require('../config')
 
 router.get('/', verifyToken, async (req, res) => {
 
   try {
-    const portfolios = await PortfolioItem.find();
-    res.json(portfolios);
+    const authorizeToken = authorizeTokenForUse(req.token);
+    if (authorizeToken.isAuthorized) {
+      const portfolios = await PortfolioItem.find();
+      res.json(portfolios);
+    } else throw authorizeToken;
   } catch (error) {
-    res.json({ error });
+    res.json(error);
   }
 
 });

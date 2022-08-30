@@ -3,29 +3,17 @@ const router = express.Router();
 const Account = require('../models/accounts');
 const { verifyToken, authorizeTokenForUse } = require('../config');
 
-// function tokenHandler(token, username) {
-//   return jwt.verify(token, process.env.JWT_SECRET, (err, tokenData) => {
-//     switch (true) {
-//       case !!err:
-//         return {msg: 'ok then :('};
-//       case tokenData.username !== username: 
-//         return {msg: 'user req no no!!'}
-//       default:
-//         return {msg: 'yay then :)'};
-//     }
-//   })
-// }
-
 router.get('/', verifyToken, async (req, res) => {
 
-  // try {
-  //   const accounts = await Account.find();
-  //   res.json(accounts);
-  // } catch (error) {
-  //   res.json({ error });
-  // };
-
-  res.json(authorizeTokenForUse(req.token, 'yona'))
+  try {
+    const authorizeToken = authorizeTokenForUse(req.token);
+    if (authorizeToken.isAuthorized) {
+      const accounts = await Account.find();
+      res.json(accounts);
+    } else throw authorizeToken;  
+  } catch (error) {
+    res.json(error);
+  };
 
 });
 

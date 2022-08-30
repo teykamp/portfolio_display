@@ -6,6 +6,6 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state: {
     portfolioItem: undefined,
-    snackbarText: undefined
+    snackbarText: ''
   }
 })

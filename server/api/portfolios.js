@@ -18,7 +18,7 @@ router.get('/', verifyToken, async (req, res) => {
 
 });
 
-router.get('/:username/content', verifyToken, async (req, res) => {
+router.get('/:username/content', async (req, res) => {
 
   try {
     const getPortfolio = await PortfolioItem.findOne({ username: req.params.username }, '-_id portfolioItem');
@@ -30,7 +30,7 @@ router.get('/:username/content', verifyToken, async (req, res) => {
 
 });
 
-router.get('/:username/privacy', verifyToken, async (req, res) => {
+router.get('/:username/privacy', async (req, res) => {
 
   try {
     const getPortfolio = await PortfolioItem.findOne({ username: req.params.username }, '-_id privacySettings');
@@ -59,43 +59,54 @@ router.post('/', async (req, res) => {
 
 });
 
+// updates portfolio content
 router.put('/:username', verifyToken, async (req, res) => {
 
   try {
-    const updatedPortfolioItem = await PortfolioItem.updateOne(
-      { username: req.params.username }, 
-      { $set: { portfolioItem: req.body.portfolioItem } }
-    );
-    res.json(updatedPortfolioItem);
+    const authorizeToken = authorizeTokenForUse(req.token);
+    if (authorizeToken.isAuthorized) {
+      const updatedPortfolioItem = await PortfolioItem.updateOne(
+        { username: req.params.username }, 
+        { $set: { portfolioItem: req.body.portfolioItem } }
+      );
+      res.json(updatedPortfolioItem);
+    } else throw authorizeToken;
   } catch (error) {
-    res.json({ error });
+    res.json(error);
   }
 
 });
 
+// updates privacy settings
 router.put('/:username/privacy', verifyToken, async (req, res) => {
-
+  console.log('ran')
   try {
-    const updatedPrivacySettings = await PortfolioItem.updateOne(
-      { username: req.params.username }, 
-      { $set: { privacySettings: req.body.privacySettings } }
-    );
-    res.json(updatedPrivacySettings);
+    const authorizeToken = authorizeTokenForUse(req.token);
+    if (authorizeToken.isAuthorized) {
+      const updatedPrivacySettings = await PortfolioItem.updateOne(
+        { username: req.params.username }, 
+        { $set: { privacySettings: req.body.privacySettings } }
+      );
+      res.json(updatedPrivacySettings);
+    } else throw authorizeToken;
   } catch (error) {
-    res.json({ error });
+    res.json(error);
   }
 
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', verifyToken, async (req, res) => {
 
   try {
-    const deletedPorfolio = await PortfolioItem.deleteOne({ _id: req.params.id });
-    res.json(deletedPorfolio);
+    const authorizeToken = authorizeTokenForUse(req.token);
+    if (authorizeToken.isAuthorized) {
+      const deletedPorfolio = await PortfolioItem.deleteOne({ _id: req.params.id });
+      res.json(deletedPorfolio);
+    } else throw authorizeToken;
   } catch (error) {
-    res.json({ error });
-  };
-
+    res.json(error);
+  }
+  
 });
 
 router.get('/offline/:username', async (req, res) => {

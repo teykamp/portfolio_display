@@ -77,7 +77,6 @@ export default {
         );
       }
 
-      console.log(authStatus)
       if (!authStatus.isAuthorized) {
         return this.exitProcess(
           'Incorrect Username or Password',

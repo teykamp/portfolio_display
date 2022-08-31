@@ -63,7 +63,7 @@ router.post('/', async (req, res) => {
 router.put('/:username', verifyToken, async (req, res) => {
 
   try {
-    const authorizeToken = authorizeTokenForUse(req.token);
+    const authorizeToken = authorizeTokenForUse(req.token, req.params.username);
     if (authorizeToken.isAuthorized) {
       const updatedPortfolioItem = await PortfolioItem.updateOne(
         { username: req.params.username }, 
@@ -79,9 +79,9 @@ router.put('/:username', verifyToken, async (req, res) => {
 
 // updates privacy settings
 router.put('/:username/privacy', verifyToken, async (req, res) => {
-  console.log('ran')
+
   try {
-    const authorizeToken = authorizeTokenForUse(req.token);
+    const authorizeToken = authorizeTokenForUse(req.token, req.params.username);
     if (authorizeToken.isAuthorized) {
       const updatedPrivacySettings = await PortfolioItem.updateOne(
         { username: req.params.username }, 

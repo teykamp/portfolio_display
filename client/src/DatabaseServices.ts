@@ -1,6 +1,5 @@
 import axios from 'axios'
 import router from './router/index'
-import { store } from './store/index'
 
 // switch between online and offline mode by adding and 
 // removing 'offline/' on requests to the portfolio API
@@ -8,7 +7,13 @@ const portfolioURL = '/api/portfolios/';
 const accountsURL = '/api/accounts/';
 
 // stores the current jwt of the client
-const token = localStorage.getItem('sessionToken') ?? '';
+function getToken(): string {
+  return localStorage.getItem('sessionToken') ?? '';
+}
+
+function getLoggedInUser(): string {
+  return localStorage.getItem('username') ?? 'undefined';
+}
 
 // defines request timeout in milliseconds
 const timeout = 3000;
@@ -26,18 +31,17 @@ function axiosObj(method: string, url: string): AxiosRequestObject {
     url,
     timeout,
     headers: {
-      'Authorization': token
+      'Authorization': getToken()
     }
   };
 }
 
-function catchActions(error: any): Promise<any> {
-  if (error.data?.status == 403) {
-    store.state.snackbarText = 'Session Credentials Expired or Invalid';
-    router.push({ name: 'Auth' })
+function verifyAttemptAuthenticity(response: any): void {
+  if (response.data?.status == 403) {
+    router.push({ name: 'Auth' });
+    localStorage.clear();
+    location.reload();
   }
-
-  return Promise.reject(error)
 }
 
 export default class DatabaseServices {
@@ -57,7 +61,7 @@ export default class DatabaseServices {
       const res = await axios(axiosObj('get', `${portfolioURL}${username}/content`));
       return res.data;
     } catch (error) {
-      return catchActions(error);
+      return Promise.reject(error);
     }
   }
   
@@ -72,8 +76,11 @@ export default class DatabaseServices {
 
   static async postPortfolio(portfolio: object): Promise<object> {
     try {
-      const post = await axios.post(portfolioURL, portfolio, { 
-        timeout 
+      const post = await axios.post(portfolioURL, portfolio, {
+        timeout,
+        headers: {
+          'Authorization': getToken()
+        }
       });
       return post;
     } catch (error) {
@@ -81,35 +88,38 @@ export default class DatabaseServices {
     }    
   }
 
-  static async updatePorfolio(username: string, portfolioItem: object): Promise<object> {
+  static async updatePortfolio(portfolioItem: object): Promise<object> {
     try {
-      const put = await axios.put(`${portfolioURL}${username}`, {
+      const put = await axios.put(`${portfolioURL}${getLoggedInUser()}`, {
         portfolioItem 
       }, {
-        timeout
+        timeout,
+        headers: {
+          'Authorization': getToken()
+        }
       });
+      verifyAttemptAuthenticity(put);
       return put;
     } catch (error) {
-      return catchActions(error);
+      return Promise.reject(error);
     }
   }
 
-  static async updatePorfolioPrivacy(username: string, privacySettings: object): Promise<object> {
+  static async updatePorfolioPrivacy(privacySettings: object): Promise<object> {
     try {
-      console.log('runnign try')
-      const put = await axios.put(`${portfolioURL}${username}/privacy`, {
+      const put = await axios.put(`${portfolioURL}${getLoggedInUser()}/privacy`, {
         privacySettings
       }, {
         timeout,
         headers: {
-          'Authorization': token
+          'Authorization': getToken()
         }
       });
-      console.log(put)
-      return put;
+
+      verifyAttemptAuthenticity(put)
+      return put.data;
     } catch (error) {
-      
-      return catchActions(error);
+      return Promise.reject(error);
     }
   }
 

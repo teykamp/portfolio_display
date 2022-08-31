@@ -162,7 +162,7 @@ export default {
       }
 
       try {
-        await DatabaseServices.updatePorfolio(this.username, this.userData);
+        await DatabaseServices.updatePortfolio(this.userData);
         this.$store.state.snackbarText = 'Your portfolio has been successfully updated!';
       } catch (error) {
         this.$store.state.snackbarText = 'There has been an issue making contact with our servers, your work has not been saved';

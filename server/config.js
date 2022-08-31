@@ -4,21 +4,18 @@ exports.CORS_ORIGINS = ["http://localhost:3000"];
 
 // jwt token verification middleware
 exports.verifyToken = (req, res, next) => {
-  const bearerHeader = req.headers['authorization'];
-  if (typeof bearerHeader !== 'undefined') {
-    const bearerToken = bearerHeader.split(' ')[1];
-    req.token = bearerToken;
-    next();
-  } else {
-    throw res.json({ 
-      error: 'Access Denied! Request Does Not Contain Bearer Token', 
-      status: 403,
-      isAuthorized: false
-    })
-  }
+  req.token = req.headers['authorization'] || undefined;
+  next()
 }
 
 exports.authorizeTokenForUse = (token, username = false) => {
+  // snuffs out undefined tokens and returns appropriate response
+  if (typeof token === 'undefined') return {
+    error: 'Access Denied! Bearer Token Not Present In Request',
+    status: 403,
+    isAuthorized: false
+  }
+
   return jwt.verify(token, process.env.JWT_SECRET, (err, tokenData) => {
     switch (true) {
       case !!err:

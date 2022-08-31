@@ -173,7 +173,7 @@ export default {
       // to prevent wasting unnecessary bandwidth
       if (JSON.stringify(this.privacySettings) != this.privacySettingsOnStart) {
         try {
-          await DatabaseServices.updatePorfolioPrivacy(this.username, this.privacySettings);
+          await DatabaseServices.updatePorfolioPrivacy(this.privacySettings);
           this.$store.state.snackbarText = 'New privacy settings now in effect!';
         } catch (error) {
           this.$store.state.snackbarText = 'Issue encountered whilst saving privacy settings.';

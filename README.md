@@ -6,7 +6,7 @@
 
 # Portfolio-Display
 
-A full stack web based application to dynamically display resume material in a professional manner.
+A full stack web-based application to dynamically display resumé material in a professional manner.
 
 ## Getting Started
 
@@ -14,7 +14,7 @@ The following dependencies and tools must be installed for the project to work p
 
 ### Prerequisites
 
-The things you need before cloning the repository.
+The following are what you need before cloning the repository.
 
 * [Vue](https://cli.vuejs.org/guide/installation.html)
 ```npm install -g @vue/cli```

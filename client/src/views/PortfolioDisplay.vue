@@ -127,15 +127,15 @@ export default {
       meta: [
         { 
           property: "og:url", 
-          content: `http://portfolio-display-app.herokuapp.com/${window.location.href.substring(window.location.href.indexOf('/display/') + 9)}` 
+          content: `http://portfolio-display-app.herokuapp.com/${this.$route.params.user}` 
         },
         { 
           property: "og:title", 
-          content: `${window.location.href.substring(window.location.href.indexOf('/display/') + 9)} | Take A Look At My Popout™ Portfolio`
+          content: `${this.$route.params.user} | Take A Look At My Popout™ Portfolio`
         },
         { 
           property: "og:description", 
-          content: `${window.location.href.substring(window.location.href.indexOf('/display/') + 9)} wants to share the portfolio they built on Popout™ Portfolio with you!` 
+          content: `${this.$route.params.user} wants to share the portfolio they built on Popout™ Portfolio with you!` 
         }
       ]
     }
@@ -169,7 +169,7 @@ export default {
       }
     },
     async getHeadshotImgForMetadata() {
-      const portfolioContent = await DatabaseServices.getPortfolioContentByUsername(window.location.href.substring(window.location.href.indexOf('/display/') + 9));
+      const portfolioContent = await DatabaseServices.getPortfolioContentByUsername(this.$route.params.user);
       return portfolioContent.header.headshotURL;
     }
   }

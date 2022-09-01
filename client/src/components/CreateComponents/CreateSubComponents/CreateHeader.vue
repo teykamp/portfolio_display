@@ -12,29 +12,33 @@
         label="Name"
         v-model="data.name"
         :rules="[rules.required]"
-        :append-icon="data.name ? '' : 'mdi-alert'"
+        :append-icon="fullNameAlertIcon"
       ></v-text-field>
+      
       <v-text-field
         label="Professional Title"
         v-model="data.professionalTitle"
         :rules="[rules.required]"
-        :append-icon="data.professionalTitle ? '' : 'mdi-alert'"
+        :append-icon="profTitleAlertIcon"
       ></v-text-field>
+
       <v-text-field
         label="Headshot URL"
         v-model="data.headshotURL"
       ></v-text-field>
+
       <v-text-field
         label="Email"
         v-model="data.email"
         :rules="[rules.email]"
-        :append-icon="validateEmail() ? '' : 'mdi-alert'"
+        :append-icon="emailAlertIcon"
       ></v-text-field>
+
       <v-text-field
         label="Phone Number"
         v-model="data.phone"
         :rules="[rules.phone]"
-        :append-icon="validatePhone() ? '' : 'mdi-alert'"
+        :append-icon="phoneAlertIcon"
       ></v-text-field>
 
       <v-divider></v-divider>
@@ -135,6 +139,20 @@ export default {
   },
   created() { 
     this.data = this.userData.header;
+  },
+  computed: {
+    emailAlertIcon() {
+      return this.validateEmail() ? '' : 'mdi-alert';
+    },
+    phoneAlertIcon() {
+      return this.validatePhone() ? '' : 'mdi-alert';
+    },
+    fullNameAlertIcon() {
+      return this.data.name ? '' : 'mdi-alert';
+    },
+    profTitleAlertIcon() {
+      return this.data.professionalTitle ? '' : 'mdi-alert';
+    }
   },
   methods: {
     emitData() {

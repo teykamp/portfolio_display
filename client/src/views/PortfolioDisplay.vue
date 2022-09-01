@@ -125,6 +125,10 @@ export default {
     return {
       title: `${this.$route.params.user}`,
       meta: [
+        {
+          property: "og:type",
+          content: "website"
+        },
         { 
           property: "og:url", 
           content: `http://portfolio-display-app.herokuapp.com/${this.$route.params.user}` 

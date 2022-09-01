@@ -111,7 +111,7 @@ export default {
 
     
   },
-  data: () => {
+  data() {
     return {
       componentArray: [],
       headerData: {},
@@ -120,6 +120,26 @@ export default {
       error: undefined,
       previewMode: false,
     }
+  },
+  metaInfo: {
+    meta: [
+      { 
+        property: "og:url", 
+        content: `http://portfolio-display-app.herokuapp.com/${window.location.href.substring(window.location.href.indexOf('/display/') + 9)}` 
+      },
+      { 
+        property: "og:title", 
+        content: `${window.location.href.substring(window.location.href.indexOf('/display/') + 9)} | Take A Look At My Popout™ Portfolio`
+      },
+      { 
+        property: "og:description", 
+        content: `${window.location.href.substring(window.location.href.indexOf('/display/') + 9)} wants to share the portfolio they built on Popout™ Portfolio with you!` 
+      },
+      { 
+        property: "og:image", 
+        content: `${this.getHeadshotImgForMetadata()}` 
+      }
+    ]
   },
   computed: {
     canEditPortfolio() {
@@ -148,6 +168,10 @@ export default {
         githubSource: 'https://github.com/teykamp/portfolio_display',
         logo: 'https://avatars.githubusercontent.com/u/46391052?s=120&v=4',
       }
+    },
+    async getHeadshotImgForMetadata() {
+      const portfolioContent = await DatabaseServices.getPortfolioContentByUsername(window.location.href.substring(window.location.href.indexOf('/display/') + 9));
+      return portfolioContent.header.headshotURL;
     }
   }
 }

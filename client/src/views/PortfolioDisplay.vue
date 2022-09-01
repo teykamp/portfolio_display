@@ -121,21 +121,24 @@ export default {
       previewMode: false,
     }
   },
-  metaInfo: {
-    meta: [
-      { 
-        property: "og:url", 
-        content: `http://portfolio-display-app.herokuapp.com/${window.location.href.substring(window.location.href.indexOf('/display/') + 9)}` 
-      },
-      { 
-        property: "og:title", 
-        content: `${window.location.href.substring(window.location.href.indexOf('/display/') + 9)} | Take A Look At My Popout™ Portfolio`
-      },
-      { 
-        property: "og:description", 
-        content: `${window.location.href.substring(window.location.href.indexOf('/display/') + 9)} wants to share the portfolio they built on Popout™ Portfolio with you!` 
-      }
-    ]
+  metaInfo() {
+    return {
+      title: `${this.$route.params.user}`,
+      meta: [
+        { 
+          property: "og:url", 
+          content: `http://portfolio-display-app.herokuapp.com/${window.location.href.substring(window.location.href.indexOf('/display/') + 9)}` 
+        },
+        { 
+          property: "og:title", 
+          content: `${window.location.href.substring(window.location.href.indexOf('/display/') + 9)} | Take A Look At My Popout™ Portfolio`
+        },
+        { 
+          property: "og:description", 
+          content: `${window.location.href.substring(window.location.href.indexOf('/display/') + 9)} wants to share the portfolio they built on Popout™ Portfolio with you!` 
+        }
+      ]
+    }
   },
   computed: {
     canEditPortfolio() {

@@ -121,25 +121,10 @@ export default {
       previewMode: false,
     }
   },
-  metaInfo: {
-    meta: [
-      { 
-        property: "og:url", 
-        content: `http://portfolio-display-app.herokuapp.com/${window.location.href.substring(window.location.href.indexOf('/display/') + 9)}` 
-      },
-      { 
-        property: "og:title", 
-        content: `${window.location.href.substring(window.location.href.indexOf('/display/') + 9)} | Take A Look At My Popout™ Portfolio`
-      },
-      { 
-        property: "og:description", 
-        content: `${window.location.href.substring(window.location.href.indexOf('/display/') + 9)} wants to share the portfolio they built on Popout™ Portfolio with you!` 
-      },
-      { 
-        property: "og:image", 
-        content: `${this.getHeadshotImgForMetadata()}` 
-      }
-    ]
+  metaInfo() {
+    return {
+      title: `${this.$route.params.user}`
+    }
   },
   computed: {
     canEditPortfolio() {
@@ -170,7 +155,7 @@ export default {
       }
     },
     async getHeadshotImgForMetadata() {
-      const portfolioContent = await DatabaseServices.getPortfolioContentByUsername(window.location.href.substring(window.location.href.indexOf('/display/') + 9));
+      const portfolioContent = await DatabaseServices.getPortfolioContentByUsername(this.$route.params.user);
       return portfolioContent.header.headshotURL;
     }
   }

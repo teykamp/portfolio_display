@@ -5,6 +5,7 @@ import './plugins/bootstrap-vue'
 import App from './App.vue'
 import router from './router'
 import vuetify from './plugins/vuetify'
+import Meta from 'vue-meta'
 import { store } from './store/index'
 // import GAuth from 'vue-google-oauth2'
 
@@ -16,6 +17,7 @@ import { store } from './store/index'
 
 // Vue.use(GAuth, gauthOption);
 Vue.config.productionTip = false;
+Vue.use(Meta)
 
 new Vue({
   store,

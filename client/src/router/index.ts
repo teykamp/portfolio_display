@@ -43,7 +43,7 @@ const router = new VueRouter({
   routes,
   mode: 'history',
   scrollBehavior (to, from, savedPosition) {
-    document.title = `${to.name} - Portfolio`
+    // document.title = `${to.name} - Portfolio`
     return { x: 0, y: 0 }
   }
 })

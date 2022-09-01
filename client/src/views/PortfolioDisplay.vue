@@ -123,25 +123,7 @@ export default {
   },
   metaInfo() {
     return {
-      title: `${this.$route.params.user}`,
-      meta: [
-        {
-          property: "og:type",
-          content: "website"
-        },
-        { 
-          property: "og:url", 
-          content: `http://portfolio-display-app.herokuapp.com/${this.$route.params.user}` 
-        },
-        { 
-          property: "og:title", 
-          content: `${this.$route.params.user} | Take A Look At My Popout™ Portfolio`
-        },
-        { 
-          property: "og:description", 
-          content: `${this.$route.params.user} wants to share the portfolio they built on Popout™ Portfolio with you!` 
-        }
-      ]
+      title: `${this.$route.params.user}`
     }
   },
   computed: {

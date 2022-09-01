@@ -1,7 +1,7 @@
 <template>
   <v-card 
-    :color="item.color"  
-    @click.stop="onClick"
+    :color="item.color" 
+    @click.once="onClick" 
   >
     <v-row
       no-gutters
@@ -35,6 +35,7 @@
         :retain-focus="false" 
         cols="1" 
         class="ml-3"
+        @click.stop="$emit('add')"
       >
         <v-row justify="center">                      
           <v-tooltip bottom>
@@ -46,7 +47,7 @@
                 mdi-plus
               </v-icon>
             </template>
-            <span>{{ item.name }} can be added</span>
+            <span>Click to add the {{ item.name }} component</span>
           </v-tooltip>     
         </v-row>         
       </v-col>
@@ -70,7 +71,7 @@
               mdi-alert
             </v-icon>
           </template>
-          <span>This component is missing critical information</span>
+          <span>{{ item.name }} is missing critical information</span>
         </v-tooltip>     
       </v-col>
 
@@ -88,7 +89,11 @@
       </v-col>
 
       <!-- Editable / Help -->
-      <v-col cols="1" v-if="$vuetify.breakpoint.mdAndUp">
+      <v-col 
+        v-if="$vuetify.breakpoint.mdAndUp"
+        cols="1"
+        @click.stop="$emit('edit')"
+      >
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-icon
@@ -98,14 +103,14 @@
               {{ editable ? 'mdi-pencil' : 'mdi-help-circle' }}
             </v-icon>
           </template>
-          <span>{{ editable ? `This component is editable` : `${item.desc}` }}</span>
+          <span>{{ editable ? `Edit ${item.name}` : `${item.desc}` }}</span>
         </v-tooltip>                
       </v-col>
       <v-col 
         v-else-if="!editable" 
         :style="$vuetify.breakpoint.smAndUp ? '' : 'font-size: 9pt'"
         :class="$vuetify.breakpoint.smAndUp ? 'mr-6 mt-4': 'mr-3 mt-5'">
-        <p>{{ item.desc  }}</p>
+        <p>{{ item.desc }}</p>
       </v-col>
     </v-row>
     

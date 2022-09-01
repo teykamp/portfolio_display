@@ -35,10 +35,9 @@
             sm="10" 
             md="8"
           >
-          <draggable v-model="portfolioComponents" :group="'cards'">
             <TransitionGroup name="list"> 
               <div 
-                v-for="item in portfolioComponents" 
+                v-for="item, index in portfolioComponents" 
                 :key="item.id"
               >
                 <ComponentCard 
@@ -46,10 +45,10 @@
                   :removable="false"
                   :draggable="false"
                   :editable="false"
+                  @add="addComponentWithClick(index)"
                 />
               </div>
             </TransitionGroup>
-          </draggable>
           </v-col>
         </v-row>
 
@@ -73,9 +72,8 @@
             <!-- BODY CARDS -->
             <draggable 
               v-model="addedPortfolioComponents" 
-              :group="{ name: 'cards', pull: false }"
+              :group="{ pull: false }"
               :disabled="!canComponentsDrag"
-              :empty-insert-threshold="300"
               @end="dragEnded"
             >
               <TransitionGroup name="list"> 
@@ -85,7 +83,8 @@
                 >
                   <ComponentCard 
                     :item="item" 
-                    :onClick="() => { toggleEditView(item.name) }"
+                    :onClick="showDragSwitch ? () => { toggleEditView(item.name) } : ''"
+                    @edit="toggleEditView(item.name)"
                     :invalid="invalidComponents.includes(item.name)"
                     @remove="targetedComponentIndex = index; deleteConfirmationDialog = true;" 
                     @update-drag="canComponentsDrag = $event"
@@ -95,8 +94,8 @@
             </draggable>
 
             <div 
-              v-if="showDragSwitch" 
-              class="center" 
+              v-if="showDragSwitch"
+              class="center"
               style="flex-direction: row;"
             >
               <span>{{ dragToggleMsg }}</span>
@@ -305,9 +304,10 @@ export default {
       // instanciates a new object with name of the component added & properties 'pageRank' & 'content' 
       this.userData[this.addedPortfolioComponents[index].name] = { pageRank: 0, content: [] }
       this.validatePortfolioComponents();
-
-      // this.addedPortfolioComponents.push(this.portfolioComponents[index]);
-      // this.portfolioComponents.splice(index, 1);
+    },
+    addComponentWithClick(index) {
+      this.addedPortfolioComponents.push(this.portfolioComponents[index]);
+      this.portfolioComponents.splice(index, 1);
     },
     removeComponent(index) {
       /* deletes all component data */

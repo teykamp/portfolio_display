@@ -123,7 +123,7 @@ export default {
   },
   metaInfo() {
     return {
-      title: `${this.$route.params.user}`
+      title: `${this.$route.params.user} - Portfolio`
     }
   },
   computed: {
@@ -153,10 +153,6 @@ export default {
         githubSource: 'https://github.com/teykamp/portfolio_display',
         logo: 'https://avatars.githubusercontent.com/u/46391052?s=120&v=4',
       }
-    },
-    async getHeadshotImgForMetadata() {
-      const portfolioContent = await DatabaseServices.getPortfolioContentByUsername(this.$route.params.user);
-      return portfolioContent.header.headshotURL;
     }
   }
 }

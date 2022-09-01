@@ -134,10 +134,6 @@ export default {
       { 
         property: "og:description", 
         content: `${window.location.href.substring(window.location.href.indexOf('/display/') + 9)} wants to share the portfolio they built on Popout™ Portfolio with you!` 
-      },
-      { 
-        property: "og:image", 
-        content: `${this.getHeadshotImgForMetadata()}` 
       }
     ]
   },

@@ -4,12 +4,13 @@
     :disabled="invalidComponents.length != 0" 
     :loading="loading"
     :dark="invalidComponents.length == 0"
-    color="orange darken-1" 
+    :color="saveBtnColor" 
     @click.stop="actions[0]"
     :style="styles"
     :class="classes"
   >
-    Save
+    <v-icon class="mr-2">{{ saveBtnIcon }}</v-icon>
+    {{ saveBtnText }}
   </v-btn>
 
   <v-btn 
@@ -74,6 +75,21 @@ export default {
     actions: {
       type: Array,
       required: true
+    },
+    saveState: {
+      type: Boolean,
+      required: true
+    }
+  },
+  computed: {
+    saveBtnColor() {
+      return this.saveState ? 'green' : 'orange darken-2';
+    },
+    saveBtnIcon() {
+      return this.saveState ? 'mdi-cloud-check-outline' : 'mdi-cloud-upload-outline';
+    },
+    saveBtnText() {
+      return this.saveState ? 'saved' : 'save';
     }
   }
 }

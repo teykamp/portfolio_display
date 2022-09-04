@@ -1,7 +1,7 @@
 <template>
   <v-card 
-    :color="item.color" 
-    @click.once="onClick" 
+    :color="item.color"
+    @click.stop="editOnMobile" 
   >
     <v-row
       no-gutters
@@ -140,11 +140,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
-    },
-    onClick: {
-      type: Function,
-      required: false,
-      default: () => { console.log('CardComponent: Card Not Clickable') }
+    }
+  },
+  methods: {
+    editOnMobile() {
+      if (!this.$vuetify.breakpoint.mdAndUp) this.$emit('edit')
     }
   }
 }

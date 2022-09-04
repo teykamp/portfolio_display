@@ -66,7 +66,7 @@
                 :draggable="false" 
                 :removable="false"
                 :invalid="invalidComponents.includes('header')"
-                :onClick="() => toggleEditView('Header')"
+                @edit="toggleEditView('Header')"
                 :item="{ name: 'header', color: 'pink' }"
               />
               
@@ -84,7 +84,6 @@
                   >
                     <ComponentCard 
                       :item="item" 
-                      :onClick="showDragSwitch ? () => { toggleEditView(item.name) } : ''"
                       @edit="toggleEditView(item.name)"
                       :invalid="invalidComponents.includes(item.name)"
                       @remove="targetedComponentIndex = index; deleteConfirmationDialog = true;" 
@@ -226,7 +225,9 @@ export default {
       // userData object is the portfolioItem that is being edited by the user
       userData: {},
       // if true, components are allowed to be dragged
-      canComponentsDrag: false
+      canComponentsDrag: false,
+      // the direction the component transitions slide in
+      transitionDirection: 'out'
     }
   },
   computed: {
@@ -331,6 +332,12 @@ export default {
     },
     editComponentView(v) {
       this.transitionDirection =  v ? 'out' : 'in';
+    },
+    userData: {
+      deep: true,
+      handler() {
+        console.log('changed')
+      }
     }
   }
 }

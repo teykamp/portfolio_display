@@ -6,7 +6,20 @@
     >
       <template #actions>
 
-        <div v-if="$vuetify.breakpoint.smAndUp">
+        <v-btn
+          fab
+          dark
+          color="green"
+          small
+          class="mr-2"
+          depressed
+        > 
+          <v-icon>
+            mdi-plus
+          </v-icon>
+        </v-btn>
+
+        <div v-if="$vuetify.breakpoint.mdAndUp">
           <Buttons 
             :classes="'ml-2'"
             :invalidComponents="invalidComponents"
@@ -19,11 +32,6 @@
 
       </template>
     </Toolbar>
-
-    <!-- Temporary Username Display -->
-    <div class="mx-3">
-      Logged in as {{ username }}
-    </div>
 
     <!-- Dialog That Contains The Help Steps -->
     <Steps
@@ -53,7 +61,7 @@
     <!-- Sidebar for mobile devices -->
     <v-navigation-drawer
       v-model="navMenu"
-      style="position: fixed"
+      style="position: fixed;"
       temporary
       right
     >
@@ -86,24 +94,17 @@ import DatabaseServices from '../../../../DatabaseServices'
 export default {
   data() {
     return {
-      // username of logged in account
-      username: localStorage.username,
 
       // true when steps dialog is being displayed
       showStepsDialog: false,
-
       // true when exit dialog is being displayed
       showExitDialog: false,
-
       // true when user is editing privacy settings via the privacy dialog
       showPrivacySettingsDialog: false,
-
       // tiggered if leave is prevented in exit dialog
       preventLeave: false,
-
       // navMenu true when hamburger icon is clicked and mobile navigation is active
       navMenu: false,
-
       // actions are functions that are executed when a user clicks a button inside Buttons
       actions: [
         this.savePortfolioRemote, 
@@ -172,8 +173,6 @@ export default {
       
       this.$store.state.portfolioItem = undefined;
       localStorage.removeItem('unsavedSessionData');
-
-      this.$router.push('/');
     }
   },
   watch: {

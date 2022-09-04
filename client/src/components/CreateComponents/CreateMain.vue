@@ -1,121 +1,123 @@
 <template>
   <div>
 
-    <div v-if="!editComponentView">
+    <transition :name="`slide-${transitionDirection}`">
+      <div v-if="!editComponentView">
 
-      <MainToolbar
-        :invalidComponents="invalidComponents"
-        :loading="loading"
-        :userData="userData"
-        :userDataOnStart="userDataOnStart"
-      />
+        <MainToolbar
+          :invalidComponents="invalidComponents"
+          :loading="loading"
+          :userData="userData"
+          :userDataOnStart="userDataOnStart"
+        />
 
-      <div v-if="loading">
-        <div v-for="i in 6" :key="i">
-          <v-skeleton-loader
-            class="mx-auto my-3"
-            height="75"
-            max-width="80vw"
-            type="image"
-          ></v-skeleton-loader>
+        <div v-if="loading">
+          <div v-for="i in 6" :key="i">
+            <v-skeleton-loader
+              class="mx-auto my-3"
+              height="75"
+              max-width="80vw"
+              type="image"
+            ></v-skeleton-loader>
+          </div>
         </div>
-      </div>
 
-      <v-container 
-        v-else
-        fluid 
-        fill-height
-      >  
-        <v-row 
-          align="center" 
-          justify="center"
-        >
-          <v-col 
-            cols="12" 
-            sm="10" 
-            md="8"
+        <v-container 
+          v-else
+          fluid 
+          fill-height
+        >  
+          <v-row 
+            align="center" 
+            justify="center"
           >
-            <TransitionGroup name="list"> 
-              <div 
-                v-for="item, index in portfolioComponents" 
-                :key="item.id"
-              >
-                <ComponentCard 
-                  :item="item"
-                  :removable="false"
-                  :draggable="false"
-                  :editable="false"
-                  @add="addComponentWithClick(index)"
-                />
-              </div>
-            </TransitionGroup>
-          </v-col>
-        </v-row>
-
-        <v-row align="center" justify="center">
-
-          <v-col 
-            cols="12" 
-            sm="10" 
-            md="8"
-          >
-
-            <!-- HEADER CARD -->
-            <ComponentCard 
-              :draggable="false" 
-              :removable="false"
-              :invalid="invalidComponents.includes('header')"
-              :onClick="() => toggleEditView('Header')"
-              :item="{ name: 'header', color: 'pink' }"
-            />
-            
-            <!-- BODY CARDS -->
-            <draggable 
-              v-model="addedPortfolioComponents" 
-              :group="{ pull: false }"
-              :disabled="!canComponentsDrag"
-              @end="dragEnded"
+            <v-col 
+              cols="12" 
+              sm="10" 
+              md="8"
             >
               <TransitionGroup name="list"> 
                 <div 
-                  v-for="(item, index) in addedPortfolioComponents" 
+                  v-for="item, index in portfolioComponents" 
                   :key="item.id"
                 >
                   <ComponentCard 
-                    :item="item" 
-                    :onClick="showDragSwitch ? () => { toggleEditView(item.name) } : ''"
-                    @edit="toggleEditView(item.name)"
-                    :invalid="invalidComponents.includes(item.name)"
-                    @remove="targetedComponentIndex = index; deleteConfirmationDialog = true;" 
-                    @update-drag="canComponentsDrag = $event"
+                    :item="item"
+                    :removable="false"
+                    :draggable="false"
+                    :editable="false"
+                    @add="addComponentWithClick(index)"
                   />
                 </div>
               </TransitionGroup>
-            </draggable>
+            </v-col>
+          </v-row>
 
-            <div 
-              v-if="showDragSwitch"
-              class="center"
-              style="flex-direction: row;"
+          <v-row align="center" justify="center">
+
+            <v-col 
+              cols="12" 
+              sm="10" 
+              md="8"
             >
-              <span>{{ dragToggleMsg }}</span>
-              <v-switch
-                class="ml-4"
-                v-model="canComponentsDrag"
-              ></v-switch>
-            </div>
 
-          </v-col>
-        </v-row> 
-      </v-container>      
+              <!-- HEADER CARD -->
+              <ComponentCard 
+                :draggable="false" 
+                :removable="false"
+                :invalid="invalidComponents.includes('header')"
+                :onClick="() => toggleEditView('Header')"
+                :item="{ name: 'header', color: 'pink' }"
+              />
+              
+              <!-- BODY CARDS -->
+              <draggable 
+                v-model="addedPortfolioComponents" 
+                :group="{ pull: false }"
+                :disabled="!canComponentsDrag"
+                @end="dragEnded"
+              >
+                <TransitionGroup name="list"> 
+                  <div 
+                    v-for="(item, index) in addedPortfolioComponents" 
+                    :key="item.id"
+                  >
+                    <ComponentCard 
+                      :item="item" 
+                      :onClick="showDragSwitch ? () => { toggleEditView(item.name) } : ''"
+                      @edit="toggleEditView(item.name)"
+                      :invalid="invalidComponents.includes(item.name)"
+                      @remove="targetedComponentIndex = index; deleteConfirmationDialog = true;" 
+                      @update-drag="canComponentsDrag = $event"
+                    />
+                  </div>
+                </TransitionGroup>
+              </draggable>
 
-    </div>
-    
-    <component v-else 
-      :is="componentBeingEdited" 
-      :userData="userData" 
-      @update-component-data="updateComponentData($event)"
-    />
+              <div 
+                v-if="showDragSwitch"
+                class="center"
+                style="flex-direction: row;"
+              >
+                <span>{{ dragToggleMsg }}</span>
+                <v-switch
+                  class="ml-4"
+                  v-model="canComponentsDrag"
+                ></v-switch>
+              </div>
+
+            </v-col>
+          </v-row> 
+        </v-container>      
+
+      </div>
+  
+      <component v-else 
+        :is="componentBeingEdited" 
+        :userData="userData" 
+        @update-component-data="updateComponentData($event)"
+      />
+    </transition>
 
     <DeleteDialog 
       :description="`Removing the ${addedPortfolioComponents[targetedComponentIndex] ? `${addedPortfolioComponents[targetedComponentIndex].name}` : `` } 
@@ -169,7 +171,7 @@ export default {
       this.$router.push({ name: 'Auth', query: { type: 'login' } });
     }
 
-    // askes the database for the logged in users portfolio content
+    // asks the database for the logged in users portfolio content
     let data;
     try {
       data = await DatabaseServices.getPortfolioContentByUsername(sessionUser);
@@ -205,34 +207,24 @@ export default {
     return {
       // captures userData on mounted and compares it with the userData on exit
       userDataOnStart: '',
-
       // true if component is in a loading state and data has not finished fetching
       loading: true,
-
       // unadded portfolio components
       portfolioComponents: [],
-
       // components added by user
       addedPortfolioComponents: [],
-
       // true when a component is being edited by user and main interface is hidden
       editComponentView: false,
-
       // name of the component that is being edited, empty when no component is being worked on
       componentBeingEdited: '',
-
       // an integer that stores the index of an item that the user wants to remove from addedComponents
       targetedComponentIndex: 0,
-
       // true when the dialog box is showing that asks for the user to confirm whether or they want a component deleted
       deleteConfirmationDialog: false,
-
       // array of all invalid component
       invalidComponents: [],
-
       // userData object is the portfolioItem that is being edited by the user
       userData: {},
-
       // if true, components are allowed to be dragged
       canComponentsDrag: false
     }
@@ -336,6 +328,9 @@ export default {
         }
         this.userData[this.addedPortfolioComponents[i].name].pageRank = i;
       }
+    },
+    editComponentView(v) {
+      this.transitionDirection =  v ? 'out' : 'in';
     }
   }
 }
@@ -344,5 +339,19 @@ export default {
 <style scoped>
 .list-move /* apply transition to moving elements */ {
   transition: all 0.5s ease;
+}
+
+.slide-in-enter, .slide-out-leave-to {
+  transform: translateX(-100vw);
+}
+.slide-in-enter-to, .slide-in-leave-from, .slide-out-enter-to, .slide-out-leave-from {
+  transform: translateX(0);
+}
+.slide-in-enter-active, .slide-in-leave-active, .slide-out-enter-active, .slide-out-leave-active {
+  transition: all 300ms;
+  position: fixed;
+}
+.slide-in-leave-to, .slide-out-enter {
+  transform: translateX(100vw);
 }
 </style>

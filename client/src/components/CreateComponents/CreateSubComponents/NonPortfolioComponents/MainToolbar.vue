@@ -21,6 +21,7 @@
 
         <div v-if="$vuetify.breakpoint.mdAndUp">
           <Buttons 
+            :saveState="saveState"
             :classes="'ml-2'"
             :invalidComponents="invalidComponents"
             :loading="loading"
@@ -42,7 +43,7 @@
     <!-- Exit Warning Dialog -->
     <DialogBox
       :title="'Hold Up!'" 
-      :description="'You are about to leave. Exiting now will only save the changes you have made locally, which puts them at risk!'"
+      :description="'You are about to leave. Exiting now discard all your unsaved changes. Press the save button to ensure that no work gets lost!'"
       :visible="showExitDialog"
       :mainBtnColor="'green'"
       :dark="true"
@@ -67,6 +68,7 @@
     >
       <div class="mt-3 ml-3">
         <Buttons 
+          :saveState="saveState"
           :styles="'width: 90%'"
           :classes="'my-1'"
           :invalidComponents="invalidComponents"
@@ -94,7 +96,8 @@ import DatabaseServices from '../../../../DatabaseServices'
 export default {
   data() {
     return {
-
+      // temporarily changes state of save button to show successful save
+      saveState: false,
       // true when steps dialog is being displayed
       showStepsDialog: false,
       // true when exit dialog is being displayed
@@ -153,7 +156,8 @@ export default {
     leaveCreateRoute() {
       this.showExitDialog = false;
       if (this.preventLeave) return this.preventLeave = false;
-      this.$parent.saveSessionLocally();
+      this.$store.state.portfolioItem = undefined;
+      localStorage.removeItem('unsavedSessionData');
       this.$router.push('/');
     },
     async savePortfolioRemote() {
@@ -164,6 +168,7 @@ export default {
 
       try {
         await DatabaseServices.updatePortfolio(this.userData);
+        this.saveState = true;
         this.$store.state.snackbarText = 'Your portfolio has been successfully updated!';
       } catch (error) {
         this.$store.state.snackbarText = 'There has been an issue making contact with our servers, your work has not been saved';
@@ -171,6 +176,7 @@ export default {
         return;
       }
       
+      this.$emit('refresh-userdata-onstart');
       this.$store.state.portfolioItem = undefined;
       localStorage.removeItem('unsavedSessionData');
     }
@@ -183,6 +189,13 @@ export default {
     showPrivacySettingsDialog(v) {
       if (this.$vuetify.breakpoint.smAndUp) return
       this.navMenu = !v;
+    },
+    saveState(v) {
+      if (v) {
+        setTimeout(() => {
+          this.saveState = false;
+        }, 4000);
+      }
     }
   }
 }

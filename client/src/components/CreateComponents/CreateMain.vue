@@ -9,6 +9,7 @@
           :loading="loading"
           :userData="userData"
           :userDataOnStart="userDataOnStart"
+          @refresh-userdata-onstart="userDataOnStart = JSON.stringify(userData);"
         />
 
         <div v-if="loading">
@@ -332,12 +333,6 @@ export default {
     },
     editComponentView(v) {
       this.transitionDirection =  v ? 'out' : 'in';
-    },
-    userData: {
-      deep: true,
-      handler() {
-        console.log('changed')
-      }
     }
   }
 }

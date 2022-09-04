@@ -7,7 +7,7 @@
       <DialogBox 
         :visible="showSessionRestorationDialog"
         :title="'Restore Previous Session?'"
-        :description="'We have detected that you previously worked on a portfolio and did not finish making changes, would you like to restore your session?'"
+        :description="'We have detected that you previously made changes to your portfolio that went unsaved, would you like to restore your session?'"
         :mainBtnText="'Restore'"
         :mainBtnColor="'success'"
         :secondaryBtnText="'Discard'"
@@ -54,7 +54,7 @@ export default Vue.extend({
       try {
         this.$store.state.portfolioItem = JSON.parse(localStorage.unsavedSessionData);
       } catch {
-        this.$store.state.snackbarText = 'Unfortunately, the previously saved version was corrupted and could not be loaded in :(';
+        this.$store.state.snackbarText = 'Previous version corrupted. Restoration Unsuccessful.';
         return;
       }
       this.$router.push({ name: 'Build' });

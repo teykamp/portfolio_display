@@ -90,6 +90,7 @@
         :is="componentBeingEdited" 
         :userData="userData" 
         :selectedComponents="activeComponents"
+        @update-active-components="activeComponents = $event"
         @update-component-data="updateComponentData($event)"
       />
     </transition>
@@ -219,7 +220,6 @@ export default {
       if (!this.showDragSwitch) this.canComponentsDrag = false;
     },
     initalizeOnLoad() {
-
       const componentsWithPageRank = [];
       const userDataKeys = Object.keys(this.userData);
       for (let i in userDataKeys) {

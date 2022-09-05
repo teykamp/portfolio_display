@@ -202,7 +202,7 @@ export default {
       // userData object is the portfolioItem that is being edited by the user
       userData: {},
       // if true, components are allowed to be dragged
-      canComponentsDrag: false,
+      canComponentsDrag: true,
       // the direction the component transitions slide in
       transitionDirection: 'out'
     }

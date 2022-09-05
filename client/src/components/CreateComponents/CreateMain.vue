@@ -90,7 +90,7 @@
         :is="componentBeingEdited" 
         :userData="userData" 
         :selectedComponents="activeComponents"
-        @update-active-components="activeComponents = $event"
+        @update-active-components="updateActiveComponents($event)"
         @update-component-data="updateComponentData($event)"
       />
     </transition>
@@ -259,10 +259,18 @@ export default {
       this.componentBeingEdited = componentName;
       this.editComponentView = !this.editComponentView;
     },
-    addComponentToActive(name) {
+    updateActiveComponents(updatedComponentsList) {
       // instanciates a new object with name of the component added & properties 'pageRank' & 'content' 
-      this.userData[name] = { pageRank: 0, content: [] }
-      this.activeComponents.push(name);
+      for (let i in updatedComponentsList) {
+        if (!this.userData[updatedComponentsList[i]]) {
+          this.userData[updatedComponentsList[i]] = { 
+            pageRank: 0, 
+            content: []
+          };
+        }
+      }
+      
+      this.activeComponents = updatedComponentsList;
       this.validatePortfolioComponents();
     },
     removeComponent(index) {

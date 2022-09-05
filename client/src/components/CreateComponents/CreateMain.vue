@@ -59,8 +59,8 @@
                   >
                     <ComponentCard
                       :item="item"
-                      @edit="toggleEditView(item)"
                       :invalid="invalidComponents.includes(item)"
+                      @edit="toggleEditView(item)"
                       @remove="targetedComponentIndex = index; deleteConfirmationDialog = true" 
                       @update-drag="canComponentsDrag = $event"
                     />
@@ -220,20 +220,20 @@ export default {
     },
     initalizeOnLoad() {
 
-      const supportedComponents = [
-        'projects', 
-        'education', 
-        'accomplishments', 
-        'experiences', 
-        'timeline'
-      ];
-
-      for (let i in supportedComponents) {
-        if (Object.keys(this.userData).includes(supportedComponents[i])) {
-          this.activeComponents.push(supportedComponents[i]);
+      const componentsWithPageRank = [];
+      const userDataKeys = Object.keys(this.userData);
+      for (let i in userDataKeys) {
+        if (this.userData[userDataKeys[i]]?.pageRank) {
+          componentsWithPageRank.push({ 
+            name: userDataKeys[i], 
+            pageRank: parseInt(this.userData[userDataKeys[i]].pageRank)
+          });
         }
       }
-      // Object.keys(this.userData)
+
+      this.activeComponents = componentsWithPageRank
+        .sort((a, b) => a.pageRank - b.pageRank)
+        .map(comp => comp.name)
     },
     updateComponentData({ componentType, content }) {
       this.userData[componentType].content = content;
@@ -281,14 +281,10 @@ export default {
     }
   },
   watch: {
-    addedPortfolioComponents() {
-      // Update Page Rankings
-      for (let i = 0; i < this.addedPortfolioComponents.length; i++) {
-        // calls addComponent if component is new to the list
-        if (this.userData[this.addedPortfolioComponents[i].name]?.pageRank === undefined) {
-          this.addComponent(i);
-        }
-        this.userData[this.addedPortfolioComponents[i].name].pageRank = i;
+    activeComponents() {
+      // Update page rankings
+      for (let i in this.activeComponents) {
+        this.userData[this.activeComponents[i]].pageRank = i;
       }
     },
     editComponentView(v) {

@@ -10,6 +10,7 @@
           :userData="userData"
           :userDataOnStart="userDataOnStart"
           @refresh-userdata-onstart="userDataOnStart = JSON.stringify(userData);"
+          @select-components="toggleEditView('SelectComponents')"
         />
 
         <div v-if="loading">
@@ -142,6 +143,7 @@ import Header from '../CreateComponents/CreateSubComponents/CreateHeader.vue'
 import Timeline from '../CreateComponents/CreateSubComponents/CreateTimeline.vue'
 import ComponentCard from './CreateSubComponents/NonPortfolioComponents/ComponentCard.vue'
 import MainToolbar from './CreateSubComponents/NonPortfolioComponents/MainToolbar.vue'
+import SelectComponents from './SelectComponents'
 
 // Logic
 import draggable from 'vuedraggable'
@@ -160,7 +162,8 @@ export default {
     DeleteDialog,
     Timeline,
     ComponentCard,
-    MainToolbar
+    MainToolbar,
+    SelectComponents
   },
   async mounted() {
 

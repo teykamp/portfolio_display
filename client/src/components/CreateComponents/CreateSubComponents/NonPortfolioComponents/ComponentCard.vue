@@ -1,6 +1,6 @@
 <template>
   <v-card 
-    :color="item.color"
+    color="blue lighten-3"
     @click.stop="editOnMobile" 
   >
     <v-row
@@ -25,43 +25,20 @@
                 mdi-close-circle
               </v-icon>
             </template>
-            <span>Remove {{ item.name }}</span>
-          </v-tooltip>     
-        </v-row>         
-      </v-col>
-
-      <v-col 
-        v-else-if="item.name != 'header'"
-        :retain-focus="false" 
-        cols="1" 
-        class="ml-3"
-        @click.stop="$emit('add')"
-      >
-        <v-row justify="center">                      
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <v-icon
-                v-bind="attrs"
-                v-on="on"
-              >
-                mdi-plus
-              </v-icon>
-            </template>
-            <span>Click to add the {{ item.name }} component</span>
+            <span>Remove {{ item }}</span>
           </v-tooltip>     
         </v-row>         
       </v-col>
 
       <!-- Title Text -->
       <v-col>
-        <v-card-title
-        :style="editable || $vuetify.breakpoint.smAndUp ? '' : 'font-size: 12pt' "
-        >{{ `${item.name[0].toUpperCase()}${item.name.substring(1)}` }}
+        <v-card-title style="font-size: 12pt">
+          {{ `${item[0].toUpperCase()}${item.substring(1)}` }}
         </v-card-title>
       </v-col>
 
       <!-- Missing Info -->
-      <v-col v-show="invalid && editable" cols="1" :class="$vuetify.breakpoint.smAndUp ? '' : 'mr-2'">
+      <v-col v-show="invalid" cols="1" :class="$vuetify.breakpoint.smAndUp ? '' : 'mr-2'">
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-icon
@@ -71,7 +48,7 @@
               mdi-alert
             </v-icon>
           </template>
-          <span>{{ item.name }} is missing critical information</span>
+          <span>{{ item }} is missing critical information</span>
         </v-tooltip>     
       </v-col>
 
@@ -88,8 +65,8 @@
         </v-icon>
       </v-col>
 
-      <!-- Editable / Help -->
-      <v-col 
+      <!-- Editable -->
+      <v-col
         v-if="$vuetify.breakpoint.mdAndUp"
         cols="1"
         @click.stop="$emit('edit')"
@@ -100,17 +77,11 @@
               v-bind="attrs"
               v-on="on"
             >
-              {{ editable ? 'mdi-pencil' : 'mdi-help-circle' }}
+              {{ 'mdi-pencil' }}
             </v-icon>
           </template>
-          <span>{{ editable ? `Edit ${item.name}` : `${item.desc}` }}</span>
+          <span>{{ `Edit ${item}` }}</span>
         </v-tooltip>                
-      </v-col>
-      <v-col 
-        v-else-if="!editable" 
-        :style="$vuetify.breakpoint.smAndUp ? '' : 'font-size: 9pt'"
-        :class="$vuetify.breakpoint.smAndUp ? 'mr-6 mt-4': 'mr-3 mt-5'">
-        <p>{{ item.desc }}</p>
       </v-col>
     </v-row>
     
@@ -120,18 +91,13 @@
 <script>
 export default {
   props: { 
-    item: Object,
+    item: String,
     draggable: {
       type: Boolean,
       required: false,
       default: true
     },
     removable: {
-      type: Boolean,
-      required: false,
-      default: true
-    },
-    editable: {
       type: Boolean,
       required: false,
       default: true

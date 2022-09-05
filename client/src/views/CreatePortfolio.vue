@@ -12,9 +12,13 @@ export default {
     Main
   },
   created() { 
+    /* prompts browser to warn user before closing tab */
     window.onbeforeunload = () => {
       return "Are you sure you want to leave? Changes may not have been saved."
     }
+  },
+  destroyed() {
+    window.onbeforeunload = null;
   }
 }
 </script>

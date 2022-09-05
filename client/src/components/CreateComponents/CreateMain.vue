@@ -10,6 +10,7 @@
           :userData="userData"
           :userDataOnStart="userDataOnStart"
           @refresh-userdata-onstart="userDataOnStart = JSON.stringify(userData);"
+          @select-components="toggleEditView('SelectComponents')"
         />
 
         <div v-if="loading">
@@ -27,33 +28,7 @@
           v-else
           fluid 
           fill-height
-        >  
-          <v-row 
-            align="center" 
-            justify="center"
-          >
-            <v-col 
-              cols="12" 
-              sm="10" 
-              md="8"
-            >
-              <TransitionGroup name="list"> 
-                <div 
-                  v-for="item, index in portfolioComponents" 
-                  :key="item.id"
-                >
-                  <ComponentCard 
-                    :item="item"
-                    :removable="false"
-                    :draggable="false"
-                    :editable="false"
-                    @add="addComponentWithClick(index)"
-                  />
-                </div>
-              </TransitionGroup>
-            </v-col>
-          </v-row>
-
+        >
           <v-row align="center" justify="center">
 
             <v-col 
@@ -61,33 +36,32 @@
               sm="10" 
               md="8"
             >
-
               <!-- HEADER CARD -->
               <ComponentCard 
                 :draggable="false" 
                 :removable="false"
                 :invalid="invalidComponents.includes('header')"
                 @edit="toggleEditView('Header')"
-                :item="{ name: 'header', color: 'pink' }"
+                item="header"
               />
               
               <!-- BODY CARDS -->
               <draggable 
-                v-model="addedPortfolioComponents" 
+                v-model="activeComponents" 
                 :group="{ pull: false }"
                 :disabled="!canComponentsDrag"
                 @end="dragEnded"
               >
                 <TransitionGroup name="list"> 
                   <div 
-                    v-for="(item, index) in addedPortfolioComponents" 
-                    :key="item.id"
+                    v-for="(item, index) in activeComponents" 
+                    :key="item"
                   >
-                    <ComponentCard 
-                      :item="item" 
-                      @edit="toggleEditView(item.name)"
-                      :invalid="invalidComponents.includes(item.name)"
-                      @remove="targetedComponentIndex = index; deleteConfirmationDialog = true;" 
+                    <ComponentCard
+                      :item="item"
+                      :invalid="invalidComponents.includes(item)"
+                      @edit="toggleEditView(item)"
+                      @remove="targetedComponentIndex = index; deleteConfirmationDialog = true" 
                       @update-drag="canComponentsDrag = $event"
                     />
                   </div>
@@ -115,14 +89,16 @@
       <component v-else 
         :is="componentBeingEdited" 
         :userData="userData" 
+        :selectedComponents="activeComponents"
+        @update-active-components="updateActiveComponents($event)"
         @update-component-data="updateComponentData($event)"
       />
     </transition>
 
     <DeleteDialog 
-      :description="`Removing the ${addedPortfolioComponents[targetedComponentIndex] ? `${addedPortfolioComponents[targetedComponentIndex].name}` : `` } 
+      :description="`Removing the ${activeComponents[targetedComponentIndex]} 
       component from your portfolio will delete all the data contained inside and cannot be undone!`" 
-      :title="`Delete ${addedPortfolioComponents[targetedComponentIndex] ? `${addedPortfolioComponents[targetedComponentIndex].name}` : `` }?`" 
+      :title="`Delete ${activeComponents[targetedComponentIndex]}?`" 
       :visible="deleteConfirmationDialog" 
       @close="deleteConfirmationDialog = false;"
       @confirmed="deleteConfirmationDialog = false; removeComponent(targetedComponentIndex);" 
@@ -142,6 +118,7 @@ import Header from '../CreateComponents/CreateSubComponents/CreateHeader.vue'
 import Timeline from '../CreateComponents/CreateSubComponents/CreateTimeline.vue'
 import ComponentCard from './CreateSubComponents/NonPortfolioComponents/ComponentCard.vue'
 import MainToolbar from './CreateSubComponents/NonPortfolioComponents/MainToolbar.vue'
+import SelectComponents from './SelectComponents'
 
 // Logic
 import draggable from 'vuedraggable'
@@ -160,7 +137,8 @@ export default {
     DeleteDialog,
     Timeline,
     ComponentCard,
-    MainToolbar
+    MainToolbar,
+    SelectComponents
   },
   async mounted() {
 
@@ -200,7 +178,7 @@ export default {
     } 
 
     this.validatePortfolioComponents();
-    this.initalizeComponentArraysOnLoad();
+    this.initalizeOnLoad();
     this.loading = false;
   },
   data() {
@@ -209,15 +187,13 @@ export default {
       userDataOnStart: '',
       // true if component is in a loading state and data has not finished fetching
       loading: true,
-      // unadded portfolio components
-      portfolioComponents: [],
-      // components added by user
-      addedPortfolioComponents: [],
+      // components that user has added
+      activeComponents: [],
       // true when a component is being edited by user and main interface is hidden
       editComponentView: false,
       // name of the component that is being edited, empty when no component is being worked on
       componentBeingEdited: '',
-      // an integer that stores the index of an item that the user wants to remove from addedComponents
+      // an integer that stores the index of an item that the user wants to remove from activeComponents
       targetedComponentIndex: 0,
       // true when the dialog box is showing that asks for the user to confirm whether or they want a component deleted
       deleteConfirmationDialog: false,
@@ -243,32 +219,21 @@ export default {
     dragEnded() {
       if (!this.showDragSwitch) this.canComponentsDrag = false;
     },
-    initalizeComponentArraysOnLoad() {
-
-      /* all components that we offer to users */
-      this.portfolioComponents = [
-        {id: 0, name: 'projects', color: 'blue lighten-4', desc: 'Flawlessly display software projects you have completed!'}, 
-        {id: 1, name: 'education', color: 'blue lighten-4', desc: 'Include your academic achievements and degrees earned!'}, 
-        {id: 2, name: 'accomplishments', color: 'blue lighten-4', desc: 'The perfect way to show your most valuable competitive accolades!'}, 
-        {id: 3, name: 'experiences', color: 'blue lighten-4', desc: 'Highlight professional internship or work experiences.'},
-        {id: 4, name: 'timeline', color: 'blue lighten-4', desc: 'Display a timeline that chronicals your personal development.'}
-      ];
-
-      /* loops through all components backwards and makes sure that the components 
-      that already have been edited by user are shown on the 'added' components tab */
-      for (let i = this.portfolioComponents.length - 1; i >= 0; i--) {
-        if (this.userData[this.portfolioComponents[i].name]) {
-          this.addedPortfolioComponents.push(this.portfolioComponents[i]);
-          this.portfolioComponents.splice(i, 1);
+    initalizeOnLoad() {
+      const componentsWithPageRank = [];
+      const userDataKeys = Object.keys(this.userData);
+      for (let i in userDataKeys) {
+        if (this.userData[userDataKeys[i]]?.pageRank) {
+          componentsWithPageRank.push({ 
+            name: userDataKeys[i], 
+            pageRank: parseInt(this.userData[userDataKeys[i]].pageRank)
+          });
         }
       }
 
-      /* adds the pageRank back to the added components based on the order previously determined by user */
-      for (let i = 0; i < this.addedPortfolioComponents.length; i++) {
-        this.addedPortfolioComponents[i].pageRank = this.userData[this.addedPortfolioComponents[i].name].pageRank;
-      }
-
-      this.addedPortfolioComponents.sort((a, b) => a.pageRank - b.pageRank);
+      this.activeComponents = componentsWithPageRank
+        .sort((a, b) => a.pageRank - b.pageRank)
+        .map(comp => comp.name)
     },
     updateComponentData({ componentType, content }) {
       this.userData[componentType].content = content;
@@ -294,41 +259,40 @@ export default {
       this.componentBeingEdited = componentName;
       this.editComponentView = !this.editComponentView;
     },
-    addComponent(index) {
+    updateActiveComponents(updatedComponentsList) {
       // instanciates a new object with name of the component added & properties 'pageRank' & 'content' 
-      this.userData[this.addedPortfolioComponents[index].name] = { pageRank: 0, content: [] }
+      for (let i in updatedComponentsList) {
+        if (!this.userData[updatedComponentsList[i]]) {
+          this.userData[updatedComponentsList[i]] = { 
+            pageRank: 0, 
+            content: []
+          };
+        }
+      }
+      
+      this.activeComponents = updatedComponentsList;
       this.validatePortfolioComponents();
-    },
-    addComponentWithClick(index) {
-      this.addedPortfolioComponents.push(this.portfolioComponents[index]);
-      this.portfolioComponents.splice(index, 1);
     },
     removeComponent(index) {
       /* deletes all component data */
-      delete this.userData[this.addedPortfolioComponents[index].name];
+      delete this.userData[this.activeComponents[index]];
 
       /* patches edge case were a component is removed but persists in timeline */
       if (this.userData?.timeline) {
-        if (this.userData.timeline.content.includes(this.addedPortfolioComponents[index].name)) {
-          this.userData.timeline.content.splice(this.userData.timeline.content.indexOf(this.addedPortfolioComponents[index].name), 1);
+        if (this.userData.timeline.content.includes(this.activeComponents[index])) {
+          this.userData.timeline.content.splice(this.userData.timeline.content.indexOf(this.activeComponents[index]), 1);
         }
       }
 
-      this.portfolioComponents.push(this.addedPortfolioComponents[index]);
-      this.addedPortfolioComponents.splice(index, 1); 
-
+      this.activeComponents.splice(index, 1); 
       this.validatePortfolioComponents();
     }
   },
   watch: {
-    addedPortfolioComponents() {
-      // Update Page Rankings
-      for (let i = 0; i < this.addedPortfolioComponents.length; i++) {
-        // calls addComponent if component is new to the list
-        if (this.userData[this.addedPortfolioComponents[i].name]?.pageRank === undefined) {
-          this.addComponent(i);
-        }
-        this.userData[this.addedPortfolioComponents[i].name].pageRank = i;
+    activeComponents() {
+      // Update page rankings
+      for (let i in this.activeComponents) {
+        this.userData[this.activeComponents[i]].pageRank = i;
       }
     },
     editComponentView(v) {

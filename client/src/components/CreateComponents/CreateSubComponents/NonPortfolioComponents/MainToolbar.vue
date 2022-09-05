@@ -11,8 +11,7 @@
           dark
           color="green"
           small
-          class="mr-2"
-          depressed
+          @click.stop="$emit('select-components')"
         > 
           <v-icon>
             mdi-plus

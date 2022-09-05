@@ -5,7 +5,7 @@
       :exitAction="() => $parent.editComponentView = false"
       :disableAddBtn="true"
     />
-    {{ userData }}
+    {{ selectedComponents }}
   </div>
 </template>
 
@@ -14,7 +14,7 @@ import Toolbar from '../ReusableComponents/CreateToolbar.vue'
 
 export default {
   props: [
-    'userData'
+    'selectedComponents'
   ],
   components: {
     Toolbar

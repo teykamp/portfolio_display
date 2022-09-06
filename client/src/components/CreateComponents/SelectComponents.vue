@@ -36,28 +36,23 @@ export default {
       components: [
         {
           name: 'accomplishments',
-          desc: 'The perfect way to show your most valuable competitive accolades!',
-          color: 'red'
+          desc: 'The perfect way to show your most valuable competitive accolades!'
         },
         {
           name: 'projects',
-          desc: 'Flawlessly display software projects you have completed!',
-          color: 'orange darken-2'
+          desc: 'Flawlessly display software projects you have completed!'
         },
         {
           name: 'education',
-          desc: 'Include your academic achievements and degrees earned!',
-          color: 'gray'
+          desc: 'Include your academic achievements and degrees earned!'
         },
         {
           name: 'experiences',
-          desc: 'Highlight professional internship or work experiences.',
-          color: 'green'
+          desc: 'Highlight professional internship or work experiences.'
         },
         {
           name: 'timeline',
-          desc: 'Display a timeline that chronicals your personal development.',
-          color: 'blue'
+          desc: 'Display a timeline that chronicals your personal development.'
         }
       ],
       rerenderKey: false

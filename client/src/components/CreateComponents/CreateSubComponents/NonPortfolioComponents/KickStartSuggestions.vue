@@ -1,17 +1,42 @@
 <template>
-  <div>
-    <v-btn @click.stop="showHelpDialog = true">
-      help
-    </v-btn>
-    <v-btn @click.stop="addAction">
-      <v-icon>mdi-plus</v-icon>
-    </v-btn>
+  <v-row 
+    align="center" 
+    justify="center"
+    class="mt-4"
+  >
+    <span>
+      <span class="mx-2">Add some components</span>
+      <v-btn
+        @click.stop="addAction"
+        color="green"
+        fab
+        x-small
+        dark
+      >
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </span>
+
+    <span>
+      <span class="mx-2">or find out how to get off the ground</span>
+      <v-btn
+        color="cyan darken-1"
+        dark
+        fab
+        x-small
+        @click.stop="showHelpDialog = true"
+      >
+        <v-icon>mdi-help-circle-outline</v-icon>
+      </v-btn>
+    </span>
+
 
     <StepByStep 
       :visible="showHelpDialog" 
       @close-dialog="showHelpDialog = false"
     />
-  </div>
+    
+  </v-row>
 </template>
 
 <script>
@@ -34,7 +59,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

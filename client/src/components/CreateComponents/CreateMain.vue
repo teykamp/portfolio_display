@@ -69,7 +69,7 @@
               </draggable>
 
               <KickStartSuggestions 
-                v-if="activeComponents.length === 0"
+                v-if="activeComponents.length === 0 && !loading"
                 :addAction="() => toggleEditView('SelectComponents')" 
               />
 

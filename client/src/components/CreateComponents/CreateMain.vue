@@ -68,6 +68,11 @@
                 </TransitionGroup>
               </draggable>
 
+              <KickStartSuggestions 
+                v-if="activeComponents.length === 0"
+                :addAction="() => toggleEditView('SelectComponents')" 
+              />
+
               <div 
                 v-if="showDragSwitch"
                 class="center"
@@ -86,13 +91,14 @@
 
       </div>
   
-      <component v-else 
+      <component v-else
         :is="componentBeingEdited" 
         :userData="userData"
         :selectedComponents="activeComponents"
         @update-active-components="updateActiveComponents($event)"
         @update-component-data="updateComponentData($event)"
       />
+
     </transition>
 
     <DeleteDialog 
@@ -119,6 +125,7 @@ import Timeline from '../CreateComponents/CreateSubComponents/CreateTimeline.vue
 import ComponentCard from './CreateSubComponents/NonPortfolioComponents/ComponentCard.vue'
 import MainToolbar from './CreateSubComponents/NonPortfolioComponents/MainToolbar.vue'
 import SelectComponents from './SelectComponents.vue'
+import KickStartSuggestions from './CreateSubComponents/NonPortfolioComponents/KickStartSuggestions.vue'
 
 // Logic
 import draggable from 'vuedraggable'
@@ -138,7 +145,8 @@ export default {
     Timeline,
     ComponentCard,
     MainToolbar,
-    SelectComponents
+    SelectComponents,
+    KickStartSuggestions
   },
   async mounted() {
 

@@ -178,7 +178,7 @@ export default {
     } 
 
     this.validatePortfolioComponents();
-    this.initalizeOnLoad();
+    this.orderComponentsByPageRank();
     this.loading = false;
   },
   data() {
@@ -219,11 +219,11 @@ export default {
     dragEnded() {
       if (!this.showDragSwitch) this.canComponentsDrag = false;
     },
-    initalizeOnLoad() {
+    orderComponentsByPageRank() {
       const componentsWithPageRank = [];
       const userDataKeys = Object.keys(this.userData);
       for (let i in userDataKeys) {
-        if (this.userData[userDataKeys[i]]?.pageRank) {
+        if (this.userData[userDataKeys[i]]?.pageRank !== undefined) {
           componentsWithPageRank.push({ 
             name: userDataKeys[i], 
             pageRank: parseInt(this.userData[userDataKeys[i]].pageRank)
@@ -264,13 +264,13 @@ export default {
       for (let i in updatedComponentsList) {
         if (!this.userData[updatedComponentsList[i]]) {
           this.userData[updatedComponentsList[i]] = { 
-            pageRank: 0, 
+            pageRank: -1, 
             content: []
           };
         }
       }
       
-      this.activeComponents = updatedComponentsList;
+      this.orderComponentsByPageRank();
       this.validatePortfolioComponents();
     },
     removeComponent(index) {

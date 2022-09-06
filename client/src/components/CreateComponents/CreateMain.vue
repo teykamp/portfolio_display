@@ -61,7 +61,7 @@
                       :item="item"
                       :invalid="invalidComponents.includes(item)"
                       @edit="toggleEditView(item)"
-                      @remove="targetedComponentIndex = index; deleteConfirmationDialog = true" 
+                      @remove="requestComponentRemoval(index)" 
                       @update-drag="canComponentsDrag = $event"
                     />
                   </div>
@@ -88,7 +88,7 @@
   
       <component v-else 
         :is="componentBeingEdited" 
-        :userData="userData" 
+        :userData="userData"
         :selectedComponents="activeComponents"
         @update-active-components="updateActiveComponents($event)"
         @update-component-data="updateComponentData($event)"
@@ -118,7 +118,7 @@ import Header from '../CreateComponents/CreateSubComponents/CreateHeader.vue'
 import Timeline from '../CreateComponents/CreateSubComponents/CreateTimeline.vue'
 import ComponentCard from './CreateSubComponents/NonPortfolioComponents/ComponentCard.vue'
 import MainToolbar from './CreateSubComponents/NonPortfolioComponents/MainToolbar.vue'
-import SelectComponents from './SelectComponents'
+import SelectComponents from './SelectComponents.vue'
 
 // Logic
 import draggable from 'vuedraggable'
@@ -219,6 +219,10 @@ export default {
     dragEnded() {
       if (!this.showDragSwitch) this.canComponentsDrag = false;
     },
+    requestComponentRemoval(index) {
+      this.targetedComponentIndex = index; 
+      this.deleteConfirmationDialog = true;
+    },
     orderComponentsByPageRank() {
       const componentsWithPageRank = [];
       const userDataKeys = Object.keys(this.userData);
@@ -284,7 +288,8 @@ export default {
         }
       }
 
-      this.activeComponents.splice(index, 1); 
+      this.$store.state.snackbarText = `${this.activeComponents[index]} has been removed`;
+      this.activeComponents.splice(index, 1);
       this.validatePortfolioComponents();
     }
   },

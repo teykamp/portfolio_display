@@ -9,19 +9,20 @@
       <div 
         v-for="(component, index) in components"
         :key="component.id"
-        class="center ma-2 pa-2"
-        :style="`background-color: ${component.added ? 'green':'red'}; color: white;`"
-        @click.stop="addComponent(index)"
       >
-        {{ capitalize(component.name) }}
-        <br>
+        <InfoCard
+          :item="component"
+          @toggle-added="toggleAdded(index)"
+        />
       </div>
     </div>
+    <br><br><br><br><br>
   </div>
 </template>
 
 <script>
 import Toolbar from '../ReusableComponents/CreateToolbar.vue'
+import InfoCard from './InfoCard.vue'
 
 export default {
   props: {
@@ -35,37 +36,39 @@ export default {
       components: [
         {
           name: 'accomplishments',
-          desc: 'you achieved stuff',
+          desc: 'The perfect way to show your most valuable competitive accolades!',
+          color: 'red'
         },
         {
           name: 'projects',
-          desc: 'stuff you have worked on'
+          desc: 'Flawlessly display software projects you have completed!',
+          color: 'orange darken-2'
         },
         {
           name: 'education',
-          desc: 'schooling you have done'
+          desc: 'Include your academic achievements and degrees earned!',
+          color: 'gray'
         },
         {
           name: 'experiences',
-          desc: 'work you have done'
+          desc: 'Highlight professional internship or work experiences.',
+          color: 'green'
         },
         {
           name: 'timeline',
-          desc: 'a visual representation of your path through life'
+          desc: 'Display a timeline that chronicals your personal development.',
+          color: 'blue'
         }
       ],
       rerenderKey: false
     }
   },
   components: {
-    Toolbar
+    Toolbar,
+    InfoCard
   },
   mounted() {
-    for (let i in this.components) {
-      this.components[i].added = this.selectedComponents.includes(this.components[i].name);
-    }
-
-    this.updateComponentDisplay();
+    this.configureSelectedComponents();
   },
   destroyed() {
     const newActiveComponents = this.components
@@ -74,11 +77,19 @@ export default {
     this.$emit('update-active-components', newActiveComponents);
   },
   methods: {
-    capitalize(s) {
-      return `${s[0].toUpperCase()}${s.substring(1)}`;
+    configureSelectedComponents() {
+      for (let i in this.components) {
+        this.components[i].added = this.selectedComponents.includes(this.components[i].name);
+      }
+
+      this.updateComponentDisplay();
     },
-    addComponent(index) {
-      this.components[index].added = !this.components[index].added;
+    toggleAdded(index) {
+      if (!this.components[index].added) {
+        this.components[index].added = true;
+        this.$store.state.snackbarText = `${this.components[index].name} has been added`;
+      }
+
       this.updateComponentDisplay();
     },
     updateComponentDisplay() {

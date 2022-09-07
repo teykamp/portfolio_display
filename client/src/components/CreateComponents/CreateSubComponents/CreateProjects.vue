@@ -24,10 +24,11 @@
           v-for="(project, index) in projects" :key="project.id">
             <v-card>
               
-              <div class="pa-4 pt-0">
+              <div class="pa-4">
                 
-                  <v-row>                    
-                    <div class="ml-3 mt-7" v-if="missingInfo(project)">
+                  <v-row>
+
+                    <div cols="1" class="mt-7 ml-4" v-if="missingInfo(project)">
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
                           <v-icon
@@ -40,21 +41,22 @@
                         <span>Missing required information</span>
                       </v-tooltip>     
                     </div>
-
-                    <v-col cols="9" sm="10">
+                    <v-col cols="8">
                       <v-text-field 
                         v-model="projects[index].name" 
-                        placeholder="Enter Proj. Name"
+                        placeholder="Project Name"
                         style="font-weight: bold; font-size: 18pt;"
                         outlined
                         clearable
                         color="blue"                
-                      >{{ projects[index].name }}</v-text-field>
+                      ></v-text-field>
                     </v-col>
                     <v-spacer></v-spacer>
-                    <v-hover v-slot="{ hover }">
-                      <v-icon large class="mb-7 mr-1" @click="removeProject(index)" color="error">{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
-                    </v-hover>
+                    <v-col cols="1" class="mt-3 mr-5">
+                      <v-hover v-slot="{ hover }">
+                        <v-icon large @click="removeProject(index)" color="error">{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
+                      </v-hover>
+                    </v-col>
                   </v-row>
 
                 <v-btn class="mb-2" block color="primary" dark @click="techView = true; projectSelected = project">
@@ -65,13 +67,13 @@
 
                 <v-text-field 
                   label="Deployment URL"
-                  v-model="projects[index].linkToDeploy">
-                </v-text-field>
+                  v-model="projects[index].linkToDeploy"
+                ></v-text-field>
                 <v-text-field 
                   color="orange"
                   label="Repository URL"
-                  v-model="projects[index].linkToRepo">
-                </v-text-field>
+                  v-model="projects[index].linkToRepo"
+                ></v-text-field>
                 <v-textarea
                   color="blue"
                   :label="`Add a Description (${projects[index].description.length}/5000)`"
@@ -97,7 +99,7 @@
     <div v-else>
       <Toolbar 
         :title="'Technology'"
-        :exitAction="() => techView = false"
+        :exitAction="() => leaveTechView()"
         :onAdd="() => projectSelected.technologies.push({ name: '', logo: '' })"
         :addBtnColor="'red'"
         :listLength="projectSelected.technologies.length"
@@ -110,7 +112,7 @@
           justify="center"
         >
           <div v-show="projectSelected.technologies.length === 0">
-            <span style="font-size: 16pt">Added Technologies {{ !projectSelected.name ? '' : ` For ${projectSelected.name}` }} Will Go Here!</span>
+            <span style="font-size: 16pt">Added Technologies {{ projectName }} Will Go Here!</span>
           </div>
 
           <v-col 
@@ -125,14 +127,15 @@
                   label="Name"
                   :items="techList"
                   v-model="projectSelected.technologies[index].name"
-                  :rules="[required]"         
+                  :rules="[required]" 
+                  autocomplete="do-not-autofill"        
                 ></v-autocomplete>
-                <img 
+                <img
                   v-if="projectSelected.technologies[index].name" 
                   :src="require(`../../../assets/techLogos/${getImg(index)}`)" 
                   style="width: 30%" 
                   :alt="projectSelected.technologies[index].name"
-                >
+                />
               </div>
               <div class="center pb-3">
                 <v-card-actions>
@@ -177,7 +180,21 @@ export default {
       techList: [],
     }
   },
+  computed: {
+    projectName() {
+      return !this.projectSelected.name ? '' : ` For ${this.projectSelected.name}`;
+    }
+  },
   methods: {
+    leaveTechView() {
+      for (let i in this.projectSelected.technologies) {
+        if (!this.projectSelected.technologies[i].name) {
+          return this.$store.state.snackbarText = 'Assign all tech before leaving';
+        }
+      }
+
+      this.techView = false;
+    },
     getImg(index) {
       return techKeys[this.projectSelected.technologies[index].name];
     },

@@ -1,5 +1,6 @@
 import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
 import Calender from '../../ReusableComponents/CreateCalender.vue'
+import CardTitle from './CreateCardTitle.vue'
 
 export default {
   data() {
@@ -12,7 +13,8 @@ export default {
   },
   components: {
     Toolbar,
-    Calender
+    Calender,
+    CardTitle
   },
   props: {
     userData: {

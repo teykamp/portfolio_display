@@ -20,44 +20,18 @@
       <v-container fill-height fluid>
         <v-row>
           <v-col 
-          class="col-sm-12 col-md-6"
-          v-for="(project, index) in projects" :key="project.id">
+            class="col-sm-12 col-md-6"
+            v-for="(project, index) in projects" :key="project.id">
             <v-card>
+
+              <CardTitle 
+                :missingInfo="missingInfo(project)"
+                :title="project.name"
+                @remove="removeProject(index)"
+                @update-title="project.name = $event"
+              />
               
               <div class="pa-4">
-                
-                  <v-row>
-
-                    <div cols="1" class="mt-7 ml-4" v-if="missingInfo(project)">
-                      <v-tooltip bottom>
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-icon
-                            v-bind="attrs"
-                            v-on="on"                  
-                          >
-                            mdi-alert
-                          </v-icon>
-                        </template>
-                        <span>Missing required information</span>
-                      </v-tooltip>     
-                    </div>
-                    <v-col cols="8">
-                      <v-text-field 
-                        v-model="projects[index].name" 
-                        placeholder="Project Name"
-                        style="font-weight: bold; font-size: 18pt;"
-                        outlined
-                        clearable
-                        color="blue"                
-                      ></v-text-field>
-                    </v-col>
-                    <v-spacer></v-spacer>
-                    <v-col cols="1" class="mt-3 mr-5">
-                      <v-hover v-slot="{ hover }">
-                        <v-icon large @click="removeProject(index)" color="error">{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
-                      </v-hover>
-                    </v-col>
-                  </v-row>
 
                 <v-btn class="mb-2" block color="primary" dark @click="techView = true; projectSelected = project">
                   <span>Add Technologies Used ({{ project.technologies.length }})</span>

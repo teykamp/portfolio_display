@@ -27,8 +27,8 @@
           <CardWrapper
             placeholder="Name of School"
             :missingInfo="missingInfo(institution)"
-            :title="institution.title"
-            @update-title="institution.title = $event"
+            :title="institution.institution"
+            @update-title="institution.institution = $event"
             @remove="removeInstitution(index)"
           >
             <template>  

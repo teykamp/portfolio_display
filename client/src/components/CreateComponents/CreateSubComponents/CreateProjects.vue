@@ -102,17 +102,17 @@
             <v-card>
               <div class="pa-3 center">
                 <v-autocomplete
-                  label="Name"
+                  v-model="tech.name"
+                  label="Technology Name"
                   :items="techList"
-                  v-model="projectSelected.technologies[index].name"
                   :rules="[required]" 
                   autocomplete="do-not-autofill"        
                 ></v-autocomplete>
                 <img
-                  v-if="projectSelected.technologies[index].name" 
+                  v-if="tech.name" 
                   :src="require(`../../../assets/techLogos/${getImg(index)}`)" 
                   style="width: 30%" 
-                  :alt="projectSelected.technologies[index].name"
+                  :alt="tech.name"
                 />
               </div>
               <div class="center pb-3">

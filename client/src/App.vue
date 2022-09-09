@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="app">
     <v-app>
 
       <router-view :key="showSessionRestorationDialog" />
@@ -74,4 +74,10 @@ export default Vue.extend({
 </script>
 
 <style>
+#app {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden
+}
 </style>

@@ -2,84 +2,55 @@
   <div>
 
     <Toolbar 
-    :title="'Accomplishments'" 
-    :exitAction="() => $parent.editComponentView = false"
-    :onAdd="() => addAccomplishment()"
-    :listLength="accomplishments.length"
-    :disabledAt="8"
+      title="Accomplishments" 
+      :exitAction="() => $parent.editComponentView = false"
+      :onAdd="() => addAccomplishment()"
+      :listLength="accomplishments.length"
+      :disabledAt="8"
     />
 
-    <div v-show="accomplishments.length === 0" style="display: flex; align-items: center; justify-content: center;">
+    <div 
+      v-show="accomplishments.length === 0" 
+      style="display: flex; align-items: center; justify-content: center;"
+    >
       <v-icon large class="mr-2">mdi-trophy</v-icon>
       <span style="font-size: 16pt">Added Accomplishments Go Here</span>
     </div>
     
     <v-container fill-height fluid>
       <v-row>
-        <!-- <TransitionGroup name="list"> -->
         <v-col 
-        class="col-sm-12 col-md-6"
-        v-for="(accomplishment, index) in accomplishments" :key="accomplishment.id">
-          <v-card>
-            
-            <div class="pa-4 pt-0">
-
-              <v-row>
-                <div class="ml-3 mt-7" v-if="missingInfo(accomplishment)">
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-icon
-                        v-bind="attrs"
-                        v-on="on"                  
-                      >
-                        mdi-alert
-                      </v-icon>
-                    </template>
-                    <span>Missing required information</span>
-                  </v-tooltip>     
-                </div>
-
-                <v-col cols="9">
-                  <v-text-field 
-                  v-model="accomplishments[index].title" 
-                  placeholder="Enter Title"
-                  style="font-weight: bold; font-size: 18pt;"
-                  outlined
-                  clearable
-                  color="blue"
-                  >{{ accomplishments[index].title }}</v-text-field>
-                </v-col>
-
-                <v-spacer></v-spacer>
-
-                <v-hover v-slot="{ hover }">
-                  <v-icon large right class="mb-7 mr-1" @click="removeAccomplishment(index)" color="error">{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
-                </v-hover>            
-              </v-row>
-
+          class="col-sm-12 col-md-6"
+          v-for="(accomplishment, index) in accomplishments" 
+          :key="accomplishment.id"
+        >
+          <CardWrapper
+            :missingInfo="missingInfo(accomplishment)"
+            :title="accomplishment.title"
+            @update-title="accomplishment.title = $event"
+            @remove="removeAccomplishment(index)"
+          >
+            <template>
               <v-text-field
                 label="Organization Name"
-                v-model="accomplishments[index].organization">
+                v-model="accomplishment.organization">
               </v-text-field>
               <v-textarea
                 color="blue"
-                :label="`Add a Description (${accomplishments[index].description.length}/3000)`"
+                :label="`Add a Description (${accomplishment.description.length}/3000)`"
                 no-resize
                 maxlength="3000"
-                v-model="accomplishments[index].description"
+                v-model="accomplishment.description"
               ></v-textarea>
 
               <Calender
-                :providedDate="accomplishments[index].date"
-                @date-updated="accomplishments[index].date = $event"
+                :providedDate="accomplishment.date"
+                @date-updated="accomplishment.date = $event"
               />
-
-            </div>
-            
-          </v-card>
+            </template>
+          </CardWrapper>
           
         </v-col>
-        <!-- </TransitionGroup> -->
             
       </v-row>
     </v-container>
@@ -96,7 +67,7 @@ export default {
     CreateMixin
   ],
   created() {
-    if (this.userData?.accomplishments) this.accomplishments = this.userData.accomplishments.content;
+    this.accomplishments = this.userData.accomplishments.content || [];
   },
   data: () => {
     return {
@@ -122,7 +93,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

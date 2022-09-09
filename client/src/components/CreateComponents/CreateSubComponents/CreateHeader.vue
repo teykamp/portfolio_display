@@ -2,29 +2,29 @@
   <div>
     
     <Toolbar
-      :title="'Header'"
+      title="Header"
       :exitAction="() => $parent.editComponentView = false"
       :disableAddBtn="true"
     />
 
     <div class="mx-12">
       <v-text-field
-        label="Name"
         v-model="data.name"
+        label="Name"
         :rules="[rules.required]"
         :append-icon="fullNameAlertIcon"
       ></v-text-field>
       
       <v-text-field
-        label="Professional Title"
         v-model="data.professionalTitle"
+        label="Professional Title"
         :rules="[rules.required]"
         :append-icon="profTitleAlertIcon"
       ></v-text-field>
 
       <v-text-field
-        label="Headshot URL"
         v-model="data.headshotURL"
+        label="Headshot URL"
       ></v-text-field>
 
       <v-text-field

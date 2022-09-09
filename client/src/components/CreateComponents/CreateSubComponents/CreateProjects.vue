@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div v-if="!techView">
 
       <Toolbar 
@@ -11,59 +10,41 @@
         :disabledAt="12"
       />
 
-      <div v-show="projects.length === 0" style="display: flex; align-items: center; justify-content: center;">
+      <div 
+        v-show="projects.length === 0" 
+        style="display: flex; align-items: center; justify-content: center;"
+      >
         <v-icon large class="mr-2">mdi-file-code-outline</v-icon>
-        <!-- code-json, file-code outline? -->
         <span style="font-size: 16pt">Added Projects Go Here</span>
       </div>
       
       <v-container fill-height fluid>
         <v-row>
           <v-col 
-          class="col-sm-12 col-md-6"
-          v-for="(project, index) in projects" :key="project.id">
-            <v-card>
-              
-              <div class="pa-4">
-                
-                  <v-row>
-
-                    <div cols="1" class="mt-7 ml-4" v-if="missingInfo(project)">
-                      <v-tooltip bottom>
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-icon
-                            v-bind="attrs"
-                            v-on="on"                  
-                          >
-                            mdi-alert
-                          </v-icon>
-                        </template>
-                        <span>Missing required information</span>
-                      </v-tooltip>     
-                    </div>
-                    <v-col cols="8">
-                      <v-text-field 
-                        v-model="projects[index].name" 
-                        placeholder="Project Name"
-                        style="font-weight: bold; font-size: 18pt;"
-                        outlined
-                        clearable
-                        color="blue"                
-                      ></v-text-field>
-                    </v-col>
-                    <v-spacer></v-spacer>
-                    <v-col cols="1" class="mt-3 mr-5">
-                      <v-hover v-slot="{ hover }">
-                        <v-icon large @click="removeProject(index)" color="error">{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
-                      </v-hover>
-                    </v-col>
-                  </v-row>
-
-                <v-btn class="mb-2" block color="primary" dark @click="techView = true; projectSelected = project">
+            class="col-sm-12 col-md-6"
+            v-for="(project, index) in projects" :key="project.id"
+          >
+            <CardWrapper
+              :placeholder="'Project Name'"
+              :missingInfo="missingInfo(project)"
+              :title="project.name"
+              @update-title="project.name = $event"
+              @remove="removeProject(index)"
+            >
+              <template>
+                <v-btn 
+                  class="mb-2" 
+                  block 
+                  color="primary" 
+                  dark 
+                  @click="techView = true; projectSelected = project"
+                >
                   <span>Add Technologies Used ({{ project.technologies.length }})</span>
-                  <!-- <v-icon>mdi-file-code-outline</v-icon> -->
                 </v-btn>
-                <p v-show="project.technologies.length === 0" style="color: red">*At Least 1 Technology Required</p>
+                <p 
+                  v-show="project.technologies.length === 0" 
+                  style="color: red"
+                >*At Least 1 Technology Required</p>
 
                 <v-text-field 
                   label="Deployment URL"
@@ -86,11 +67,8 @@
                   :providedDate="projects[index].date"
                   @date-updated="projects[index].date = $event"
                 />
-     
-              </div>
-              
-            </v-card>
-            
+              </template>
+            </CardWrapper>
           </v-col>              
         </v-row>
       </v-container>
@@ -124,17 +102,17 @@
             <v-card>
               <div class="pa-3 center">
                 <v-autocomplete
-                  label="Name"
+                  v-model="tech.name"
+                  label="Technology Name"
                   :items="techList"
-                  v-model="projectSelected.technologies[index].name"
                   :rules="[required]" 
                   autocomplete="do-not-autofill"        
                 ></v-autocomplete>
                 <img
-                  v-if="projectSelected.technologies[index].name" 
+                  v-if="tech.name" 
                   :src="require(`../../../assets/techLogos/${getImg(index)}`)" 
                   style="width: 30%" 
-                  :alt="projectSelected.technologies[index].name"
+                  :alt="tech.name"
                 />
               </div>
               <div class="center pb-3">
@@ -153,9 +131,7 @@
 
         </v-row>
       </v-container>
-
     </div>
-
   </div>
 </template>
 

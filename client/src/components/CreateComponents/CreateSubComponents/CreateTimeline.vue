@@ -7,15 +7,11 @@
       :disableAddBtn="true"
     />
     
-    <div class="center" style="text-align: center">
-      
-      <div class="mx-3">
-        <div class="text-h4">Select which components to add to timeline</div>
-        <p>Only items with dates specified will appear. All added items will display in chronological order.</p>
-      </div>
-      
+    <div class="center">
+  
+      <div class="text-h4 mb-5">Select Components</div>
       <div
-        v-for="component in timelineCompatible"
+        v-for="component in compatibleComponents"
         :key="component.id"
       >
         <v-btn
@@ -23,15 +19,24 @@
           min-width="200px"
           rounded
           dark
-          v-if="userData[component.name.toLowerCase()]"
-          :color="component.selected ? 'green' : 'red'"
-          @click.stop="component.selected = !component.selected"
-        >{{ component.name }}
-        </v-btn>
-
+          :color="btnColor(component)"
+          @click.stop="toggleSelected(component)"
+        >{{ component }}</v-btn>
       </div>
-      <!-- <h3>Add a theme</h3> -->
     </div>
+    
+    <div class="center">
+      <p v-if="compatibleComponents.length === 0">Added Components Show Up Here</p>
+    </div>
+
+    <v-banner
+      class="btm-disclaimer"
+      icon="mdi-help"
+      color="grey lighten-3"
+      :style="bannerStyle"
+    >
+      Items with dates specified will be added. Once added, items will appear in chronological order.
+    </v-banner>
 
   </div>
 
@@ -44,40 +49,59 @@ export default {
   mixins: [
     CreateMixin
   ],
+  props: {
+    selectedComponents: Array
+  },
   mounted() {
-    // takes a look to see if any items have been previously selected for timeline and re-selects them
-    if (this.userData.timeline.content.length > 0) {
-      this.timelineCompatible.forEach(item => {
-        if (this.userData.timeline.content.includes(item.name.toLowerCase())) {
-          item.selected = true;
-        }
-      })
-    }
+    this.userData.timeline.content.forEach(item => this.timelineCompatible[item] = true);
+    setTimeout(() => this.showBanner = true, 500);
   },
   data() {
     return {
-      timelineCompatible: [
-        {name: 'Experiences', selected: false}, 
-        {name: 'Education', selected: false}, 
-        {name: 'Accomplishments', selected: false},
-        {name: 'Projects', selected: false}
-      ]
+      timelineCompatible: {
+        experiences: false,
+        accomplishments: false,
+        education: false,
+        projects: false
+      },
+      showBanner: false,
+      anySelected: false
+    }
+  },
+  computed: {
+    bannerStyle() {
+      return this.showBanner ? 'opacity: 1' : 'opacity: 0';
+    },
+    compatibleComponents() {
+      return this.selectedComponents
+        .filter((item) => Object.keys(this.timelineCompatible).includes(item));
     }
   },
   methods: {
+    btnColor(componentName) {
+      return this.timelineCompatible[componentName] ? 'green' : 'red';
+    },
+    toggleSelected(componentName) {
+      this.timelineCompatible[componentName] = !this.timelineCompatible[componentName];
+    },
     emitData() {
-      // takes the list of compatible items and turns it into an array of strings containing the 
-      // 'name' properties of objects that have the 'selected' property set to true
-      const selectedComponents = this.timelineCompatible
-      .filter(component => component.selected)
-      .map(component => component.name.toLowerCase())
+      const selectedComponents = Object.keys(this.timelineCompatible)
+        .filter((key) => this.timelineCompatible[key])
       
       this.$emit('update-component-data', {
         componentType: 'timeline',
         content: selectedComponents
       });
     }
-  },
-
+  }
 }
 </script>
+
+<style scoped>
+  .btm-disclaimer {
+    position: fixed;
+    bottom: 0;
+    transition: 500ms;
+    width: 100%;
+  }
+</style>

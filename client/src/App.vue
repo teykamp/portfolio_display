@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="app">
     <v-app>
 
       <router-view :key="showSessionRestorationDialog" />
@@ -20,6 +20,15 @@
         :multi-line="true"
       >
         {{ $store.state.snackbarText }}
+        <template v-slot:action="{ attrs }">
+          <v-icon
+            v-bind="attrs"
+            @click="showSnackbar = false"
+            class="mr-2"
+          >
+            mdi-close
+          </v-icon>
+        </template>
       </v-snackbar>
     </v-app>
   </div>
@@ -72,6 +81,3 @@ export default Vue.extend({
   }
 })
 </script>
-
-<style>
-</style>

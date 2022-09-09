@@ -25,7 +25,7 @@
           :key="index"
         >
           <CardWrapper
-            :placeholder="'Experience Title'"
+            placeholder="Experience Title"
             :missingInfo="missingInfo(experience)"
             :title="experience.title"
             @update-title="experience.title = $event"
@@ -33,7 +33,7 @@
           >
             <template>
               <v-text-field 
-                label="Company Name"
+                label="Company Name *"
                 :rules="[required]"
                 v-model="experience.company"
               ></v-text-field>

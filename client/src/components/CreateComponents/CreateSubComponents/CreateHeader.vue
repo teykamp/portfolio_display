@@ -10,14 +10,14 @@
     <div class="mx-12">
       <v-text-field
         v-model="data.name"
-        label="Name"
+        label="Name *"
         :rules="[rules.required]"
         :append-icon="fullNameAlertIcon"
       ></v-text-field>
       
       <v-text-field
         v-model="data.professionalTitle"
-        label="Professional Title"
+        label="Professional Title *"
         :rules="[rules.required]"
         :append-icon="profTitleAlertIcon"
       ></v-text-field>

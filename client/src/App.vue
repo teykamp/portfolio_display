@@ -23,7 +23,7 @@
         <template v-slot:action="{ attrs }">
           <v-icon
             v-bind="attrs"
-            @click="showSnackbar = false"
+            @click.stop="showSnackbar = false"
             class="mr-2"
           >
             mdi-close

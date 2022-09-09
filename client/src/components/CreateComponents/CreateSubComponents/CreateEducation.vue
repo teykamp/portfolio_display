@@ -33,7 +33,7 @@
           >
             <template>  
               <v-autocomplete 
-                label="Degree Type"
+                label="Degree Type *"
                 :items="degreeTypes"
                 v-model="institution.degreeType"
                 :rules="[required]"
@@ -41,7 +41,7 @@
 
               <v-text-field 
                 v-if="displayDegreeField(index)"
-                label="Degree Field"
+                label="Degree Field *"
                 v-model="institution.degreeField"
                 :rules="[required]"
               ></v-text-field>

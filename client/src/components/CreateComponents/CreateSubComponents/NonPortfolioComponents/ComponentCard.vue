@@ -1,6 +1,6 @@
 <template>
   <v-card 
-    color="blue lighten-3"
+    :color="color"
     @click.stop="editOnMobile" 
   >
     <v-row
@@ -25,7 +25,7 @@
                 mdi-close-circle
               </v-icon>
             </template>
-            <span>Remove {{ item }}</span>
+            <span>remove {{ item }}</span>
           </v-tooltip>     
         </v-row>         
       </v-col>
@@ -33,7 +33,7 @@
       <!-- Title Text -->
       <v-col>
         <v-card-title style="font-size: 12pt">
-          {{ `${item[0].toUpperCase()}${item.substring(1)}` }}
+          {{ title }}
         </v-card-title>
       </v-col>
 
@@ -106,6 +106,14 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    }
+  },
+  computed: {
+    title() {
+      return `${this.item[0].toUpperCase()}${this.item.substring(1)}`;
+    },
+    color() {
+      return `${this.removable ? 'blue lighten-3' : 'blue lighten-2'}`;
     }
   },
   methods: {

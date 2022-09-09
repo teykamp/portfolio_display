@@ -25,7 +25,7 @@
             v-for="(project, index) in projects" :key="project.id"
           >
             <CardWrapper
-              :placeholder="'Project Name'"
+              placeholder="Project Name"
               :missingInfo="missingInfo(project)"
               :title="project.name"
               @update-title="project.name = $event"

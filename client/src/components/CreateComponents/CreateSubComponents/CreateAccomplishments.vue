@@ -33,8 +33,8 @@
             <template>
               <v-text-field
                 label="Organization Name"
-                v-model="accomplishment.organization">
-              </v-text-field>
+                v-model="accomplishment.organization"
+              ></v-text-field>
               <v-textarea
                 color="blue"
                 :label="`Add a Description (${accomplishment.description.length}/3000)`"

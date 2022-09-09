@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div v-if="!techView">
 
       <Toolbar 
@@ -42,7 +41,10 @@
                 >
                   <span>Add Technologies Used ({{ project.technologies.length }})</span>
                 </v-btn>
-                <p v-show="project.technologies.length === 0" style="color: red">*At Least 1 Technology Required</p>
+                <p 
+                  v-show="project.technologies.length === 0" 
+                  style="color: red"
+                >*At Least 1 Technology Required</p>
 
                 <v-text-field 
                   label="Deployment URL"
@@ -129,9 +131,7 @@
 
         </v-row>
       </v-container>
-
     </div>
-
   </div>
 </template>
 

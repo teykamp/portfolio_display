@@ -11,9 +11,11 @@
         :disabledAt="12"
       />
 
-      <div v-show="projects.length === 0" style="display: flex; align-items: center; justify-content: center;">
+      <div 
+        v-show="projects.length === 0" 
+        style="display: flex; align-items: center; justify-content: center;"
+      >
         <v-icon large class="mr-2">mdi-file-code-outline</v-icon>
-        <!-- code-json, file-code outline? -->
         <span style="font-size: 16pt">Added Projects Go Here</span>
       </div>
       
@@ -21,21 +23,24 @@
         <v-row>
           <v-col 
             class="col-sm-12 col-md-6"
-            v-for="(project, index) in projects" :key="project.id">
-            <v-card>
-
-              <CardTitle 
-                :missingInfo="missingInfo(project)"
-                :title="project.name"
-                @remove="removeProject(index)"
-                @update-title="project.name = $event"
-              />
-              
-              <div class="pa-4">
-
-                <v-btn class="mb-2" block color="primary" dark @click="techView = true; projectSelected = project">
+            v-for="(project, index) in projects" :key="project.id"
+          >
+            <CardWrapper
+              :placeholder="'Project Name'"
+              :missingInfo="missingInfo(project)"
+              :title="project.name"
+              @update-title="project.name = $event"
+              @remove="removeProject(index)"
+            >
+              <template>
+                <v-btn 
+                  class="mb-2" 
+                  block 
+                  color="primary" 
+                  dark 
+                  @click="techView = true; projectSelected = project"
+                >
                   <span>Add Technologies Used ({{ project.technologies.length }})</span>
-                  <!-- <v-icon>mdi-file-code-outline</v-icon> -->
                 </v-btn>
                 <p v-show="project.technologies.length === 0" style="color: red">*At Least 1 Technology Required</p>
 
@@ -60,11 +65,8 @@
                   :providedDate="projects[index].date"
                   @date-updated="projects[index].date = $event"
                 />
-     
-              </div>
-              
-            </v-card>
-            
+              </template>
+            </CardWrapper>
           </v-col>              
         </v-row>
       </v-container>

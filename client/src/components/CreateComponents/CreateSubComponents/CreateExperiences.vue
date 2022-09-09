@@ -9,7 +9,10 @@
       :disabledAt="4"
     />
 
-    <div v-show="experiences.length === 0" style="display: flex; align-items: center; justify-content: center;">
+    <div 
+      v-show="experiences.length === 0" 
+      style="display: flex; align-items: center; justify-content: center;"
+    >
       <v-icon large class="mr-2">mdi-file-document-plus-outline</v-icon>
       <span style="font-size: 16pt">Added Experiences Go Here</span>
     </div>
@@ -32,13 +35,13 @@
               <v-text-field 
                 label="Company Name"
                 :rules="[required]"
-                v-model="experience.company">
-              </v-text-field>
+                v-model="experience.company"
+              ></v-text-field>
               <v-text-field 
+                v-model="experience.companyImg"
                 color="orange"
                 label="Company Logo URL"
-                v-model="experience.companyImg">
-              </v-text-field>
+              ></v-text-field>
               <v-textarea
                 color="blue"
                 :label="`Add a Description (${experience.description.length}/3000)`"

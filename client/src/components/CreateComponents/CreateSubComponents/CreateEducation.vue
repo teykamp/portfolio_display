@@ -9,7 +9,10 @@
       :disabledAt="4"
     />
 
-    <div v-show="education.length === 0" style="display: flex; align-items: center; justify-content: center;">
+    <div 
+      v-show="education.length === 0" 
+      style="display: flex; align-items: center; justify-content: center;"
+    >
       <v-icon large class="mr-2">mdi-book-education-outline</v-icon>
       <span style="font-size: 16pt">Added Institutions Go Here</span>
     </div>
@@ -18,82 +21,45 @@
       <v-row>
         <v-col 
           class="col-sm-12 col-md-6"
-          v-for="(institution, index) in education" :key="institution.id">
-          <v-card>
-            
-            <div class="pa-4 pt-0">
-
-              <v-row>
-                <div class="ml-3 mt-7" v-if="missingInfo(institution)">
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-icon
-                        v-bind="attrs"
-                        v-on="on"                  
-                      >
-                        mdi-alert
-                      </v-icon>
-                    </template>
-                    <span>Missing required information</span>
-                  </v-tooltip>     
-                </div>
-
-                <v-col cols="9">
-                  <v-text-field 
-                    v-model="education[index].institution" 
-                    placeholder="Enter Institution"
-                    style="font-weight: bold; font-size: 18pt;"
-                    outlined
-                    clearable
-                    color="blue"
-                  >{{ education[index].institution }}</v-text-field>
-                </v-col>
-
-                <v-spacer></v-spacer>
-
-                <v-hover v-slot="{ hover }">
-                  <v-icon 
-                    large 
-                    right 
-                    class="mb-7 mr-1" 
-                    @click="removeInstitution(index)" 
-                    color="error"
-                  >{{ hover ? 'mdi-delete-empty' : 'mdi-delete' }}</v-icon>
-                </v-hover>            
-              </v-row>
-
+          v-for="(institution, index) in education" 
+          :key="institution.id"
+        >
+          <CardWrapper
+            placeholder="Name of School"
+            :missingInfo="missingInfo(institution)"
+            :title="institution.title"
+            @update-title="institution.title = $event"
+            @remove="removeInstitution(index)"
+          >
+            <template>  
               <v-autocomplete 
                 label="Degree Type"
                 :items="degreeTypes"
-                v-model="education[index].degreeType"
+                v-model="institution.degreeType"
                 :rules="[required]"
-              >
-              </v-autocomplete>
+              ></v-autocomplete>
 
               <v-text-field 
                 v-if="displayDegreeField(index)"
                 label="Degree Field"
-                v-model="education[index].degreeField"
+                v-model="institution.degreeField"
                 :rules="[required]"
-              >
-              </v-text-field>
+              ></v-text-field>
 
               <v-textarea
                 color="blue"
-                :label="`Add a Description (${education[index].description.length}/3000)`"
+                :label="`Add a Description (${institution.description.length}/3000)`"
                 no-resize
                 maxlength="3000"
-                v-model="education[index].description"
+                v-model="institution.description"
               ></v-textarea>
 
               <Calender
-                :providedDate="education[index].date"
-                @date-updated="education[index].date = $event"
+                :providedDate="institution.date"
+                @date-updated="institution.date = $event"
               />
-            </div>
-            
-          </v-card>
-          
+            </template>
+          </CardWrapper>
         </v-col>            
       </v-row>
     </v-container>
@@ -110,7 +76,7 @@ export default {
     CreateMixin
   ],
   created() {
-    if (this.userData?.education) this.education = this.userData.education.content;
+    this.education = this.userData.education.content || [];
   },
   data: () => {
     return {

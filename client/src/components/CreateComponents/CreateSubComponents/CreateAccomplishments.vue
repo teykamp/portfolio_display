@@ -2,9 +2,9 @@
   <div>
 
     <Toolbar 
-      title="Accomplishments" 
+      :title="componentTitle" 
       :exitAction="() => $parent.editComponentView = false"
-      :onAdd="() => addAccomplishment()"
+      :onAdd="addAccomplishment"
       :listLength="accomplishments.length"
       :disabledAt="8"
     />

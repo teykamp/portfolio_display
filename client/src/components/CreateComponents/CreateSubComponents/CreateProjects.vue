@@ -2,8 +2,8 @@
   <div>
     <div v-if="!techView">
 
-      <Toolbar 
-        :title="'Projects'"
+      <Toolbar
+        :title="componentTitle"
         :exitAction="() => $parent.editComponentView = false"
         :onAdd="() => addProject()"
         :listLength="projects.length"
@@ -186,12 +186,6 @@ export default {
     },
     missingInfo(obj) {
       return !Project.validate(obj);
-    },
-    emitData() {
-      this.$emit('update-component-data', {
-        componentType: 'projects',
-        content: this.projects
-      });
     }
   }
 }

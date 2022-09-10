@@ -2,7 +2,7 @@
   <div>
 
     <Toolbar 
-      :title="'Timeline'"
+      :title="componentTitle"
       :exitAction="() => $parent.editComponentView = false"
       :disableAddBtn="true"
     />

@@ -2,7 +2,7 @@
   <div>
 
     <Toolbar 
-      :title="'Experiences'" 
+      :title="componentTitle" 
       :exitAction="() => $parent.editComponentView = false"
       :onAdd="() => addExperience()"
       :listLength="experiences.length"

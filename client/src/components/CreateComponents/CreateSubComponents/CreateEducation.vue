@@ -2,7 +2,7 @@
   <div>
 
     <Toolbar
-      :title="'Education'" 
+      :title="componentTitle" 
       :exitAction="() => $parent.editComponentView = false"
       :onAdd="() => addInstitution()"
       :listLength="education.length"

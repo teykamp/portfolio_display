@@ -2,26 +2,26 @@
   <div>
 
     <Toolbar
-      :title="'Education'" 
-      :exitAction="() => $parent.editComponentView = false"
-      :onAdd="() => addInstitution()"
-      :listLength="education.length"
+      :title="componentTitle" 
+      :exitAction="leaveEditView"
+      :onAdd="addItem"
+      :listLength="items.length"
       :disabledAt="4"
     />
 
     <div 
-      v-show="education.length === 0" 
-      style="display: flex; align-items: center; justify-content: center;"
+      v-show="!items.length" 
+      class="center"
     >
       <v-icon large class="mr-2">mdi-book-education-outline</v-icon>
-      <span style="font-size: 16pt">Added Institutions Go Here</span>
+      <div class="text-h6 font-weight-normal">Added Institutions Go Here</div>
     </div>
     
     <v-container fill-height fluid>
       <v-row>
         <v-col 
           class="col-sm-12 col-md-6"
-          v-for="(institution, index) in education" 
+          v-for="(institution, index) in items" 
           :key="institution.id"
         >
           <CardWrapper
@@ -29,19 +29,19 @@
             :missingInfo="missingInfo(institution)"
             :title="institution.institution"
             @update-title="institution.institution = $event"
-            @remove="removeInstitution(index)"
+            @remove="removeItem(index)"
           >
             <template>  
-              <v-autocomplete 
-                label="Degree Type"
+              <v-autocomplete
+                label="Degree Type *"
                 :items="degreeTypes"
                 v-model="institution.degreeType"
                 :rules="[required]"
               ></v-autocomplete>
 
-              <v-text-field 
+              <v-text-field
                 v-if="displayDegreeField(index)"
-                label="Degree Field"
+                label="Degree Field *"
                 v-model="institution.degreeField"
                 :rules="[required]"
               ></v-text-field>
@@ -75,12 +75,8 @@ export default {
   mixins: [
     CreateMixin
   ],
-  created() {
-    this.education = this.userData.education.content || [];
-  },
-  data: () => {
+  data() {
     return {
-      education: [],
       degreeTypes: [
         'High School',
         'MA',
@@ -95,24 +91,15 @@ export default {
   methods: {
     displayDegreeField(i) {
       // resets degreeField if user selects high school
-      if (this.education[i].degreeType == 'High School') this.education[i].degreeField = '';
+      if (this.items[i].degreeType == 'High School') this.items[i].degreeField = '';
       // returns conditional based on whether degreeField is required
-      return this.education[i].degreeType != 'High School' && this.education[i].degreeType;
-    },
-    removeInstitution(index) {
-      this.education.splice(index, 1);
+      return this.items[i].degreeType != 'High School' && this.items[i].degreeType;
     },
     missingInfo(obj) {
       return !Education.validate(obj);
     },
-    addInstitution() {
-      this.education.push(new Education());
-    },
-    emitData() {
-      this.$emit('update-component-data', {
-        componentType: 'education',
-        content: this.education
-      });
+    addItem() {
+      this.items.push(new Education());
     }
   }
 }

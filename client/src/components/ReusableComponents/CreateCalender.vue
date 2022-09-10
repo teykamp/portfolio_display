@@ -13,7 +13,7 @@
 
       <v-date-picker 
         v-model="date" 
-        :header-color="headerColor"
+        :header-color="color"
         :type="calendarType" 
         color="secondary"
       ></v-date-picker>
@@ -49,6 +49,9 @@ export default {
   computed: {
     clearBtnStyle() {
       return this.date ? 'opacity: 1' : 'opacity: 0; cursor: default';
+    },
+    color() {
+      return this.date ? this.headerColor : 'red darken-2';
     }
   },
   mounted() {

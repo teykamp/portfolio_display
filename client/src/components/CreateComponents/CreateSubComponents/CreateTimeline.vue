@@ -2,8 +2,8 @@
   <div>
 
     <Toolbar 
-      :title="'Timeline'"
-      :exitAction="() => $parent.editComponentView = false"
+      :title="componentTitle"
+      :exitAction="leaveEditView"
       :disableAddBtn="true"
     />
     
@@ -64,8 +64,7 @@ export default {
         education: false,
         projects: false
       },
-      showBanner: false,
-      anySelected: false
+      showBanner: false
     }
   },
   computed: {

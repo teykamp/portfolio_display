@@ -92,7 +92,8 @@
       </div>
   
       <component v-else
-        :is="componentBeingEdited" 
+        :is="componentBeingEdited"
+        :component="componentBeingEdited"
         :userData="userData"
         :selectedComponents="activeComponents"
         @update-active-components="updateActiveComponents($event)"

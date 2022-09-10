@@ -2,34 +2,34 @@
   <div>
     <div v-if="!techView">
 
-      <Toolbar 
-        :title="'Projects'"
-        :exitAction="() => $parent.editComponentView = false"
-        :onAdd="() => addProject()"
-        :listLength="projects.length"
+      <Toolbar
+        :title="componentTitle"
+        :exitAction="leaveEditView"
+        :onAdd="addItem"
+        :listLength="items.length"
         :disabledAt="12"
       />
 
       <div 
-        v-show="projects.length === 0" 
-        style="display: flex; align-items: center; justify-content: center;"
+        v-show="!items.length" 
+        class="center"
       >
         <v-icon large class="mr-2">mdi-file-code-outline</v-icon>
-        <span style="font-size: 16pt">Added Projects Go Here</span>
+        <div class="text-h6 font-weight-normal">Added Projects Go Here</div>
       </div>
       
       <v-container fill-height fluid>
         <v-row>
           <v-col 
             class="col-sm-12 col-md-6"
-            v-for="(project, index) in projects" :key="project.id"
+            v-for="(project, index) in items" :key="project.id"
           >
             <CardWrapper
-              :placeholder="'Project Name'"
+              placeholder="Project Name"
               :missingInfo="missingInfo(project)"
               :title="project.name"
               @update-title="project.name = $event"
-              @remove="removeProject(index)"
+              @remove="removeItem(index)"
             >
               <template>
                 <v-btn 
@@ -48,24 +48,24 @@
 
                 <v-text-field 
                   label="Deployment URL"
-                  v-model="projects[index].linkToDeploy"
+                  v-model="project.linkToDeploy"
                 ></v-text-field>
                 <v-text-field 
                   color="orange"
                   label="Repository URL"
-                  v-model="projects[index].linkToRepo"
+                  v-model="project.linkToRepo"
                 ></v-text-field>
                 <v-textarea
                   color="blue"
-                  :label="`Add a Description (${projects[index].description.length}/5000)`"
+                  :label="`Add a Description (${project.description.length}/5000)`"
                   no-resize
                   maxlength="5000"
-                  v-model="projects[index].description"
+                  v-model="project.description"
                 ></v-textarea>
 
                 <Calender
-                  :providedDate="projects[index].date"
-                  @date-updated="projects[index].date = $event"
+                  :providedDate="project.date"
+                  @date-updated="project.date = $event"
                 />
               </template>
             </CardWrapper>
@@ -75,13 +75,12 @@
     </div>
 
     <div v-else>
-      <Toolbar 
-        :title="'Technology'"
-        :exitAction="() => leaveTechView()"
-        :onAdd="() => projectSelected.technologies.push({ name: '', logo: '' })"
-        :addBtnColor="'red'"
+      <Toolbar
+        title="Technology"
+        :exitAction="leaveTechView"
+        :onAdd="addTechnology"
         :listLength="projectSelected.technologies.length"
-        :disabledAt="99"
+        :disabledAt="20"
       />
 
       <v-container fluid fill-height>
@@ -89,8 +88,10 @@
           align="center" 
           justify="center"
         >
-          <div v-show="projectSelected.technologies.length === 0">
-            <span style="font-size: 16pt">Added Technologies {{ projectName }} Will Go Here!</span>
+          <div v-show="!projectSelected.technologies.length">
+            <div class="text-center text-h6 font-weight-normal">
+              Added Tech{{ projectName }} Goes Here
+            </div>
           </div>
 
           <v-col 
@@ -146,11 +147,9 @@ export default {
   ],
   created() {
     this.techList = Object.keys(techKeys);
-    if (this.userData?.projects?.content) this.projects = this.userData.projects.content;
   },
   data: () => {
     return {
-      projects: [],
       techView: false,
       projectSelected: {},
       techList: [],
@@ -178,20 +177,14 @@ export default {
       this.projectSelected = project;
       this.techView = true;
     },
-    removeProject(index) {
-      this.projects.splice(index, 1);
+    addTechnology() {
+      this.projectSelected.technologies.push({ name: '', logo: '' });
     },
-    addProject() {
-      this.projects.push(new Project());
+    addItem() {
+      this.items.push(new Project());
     },
     missingInfo(obj) {
       return !Project.validate(obj);
-    },
-    emitData() {
-      this.$emit('update-component-data', {
-        componentType: 'projects',
-        content: this.projects
-      });
     }
   }
 }

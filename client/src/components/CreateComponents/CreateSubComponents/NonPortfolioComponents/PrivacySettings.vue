@@ -1,11 +1,11 @@
 <template>
   <DialogBox
     :title="'Privacy Settings'" 
-    :description="`The portfolio privacy settings tool, 
+    description="The portfolio privacy settings tool, 
     allows you to hide your portfolio so that only you 
     can view/work on it. You may also generate 
     a private link that allows you to share your 
-    portfolio only with people that have the link`"
+    portfolio only with people that have the link"
     :visible="showPrivacySettingsDialog"
   >
     <template #actions>

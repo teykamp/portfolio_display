@@ -23,7 +23,8 @@ export default function parseProfileData(portfolioJSONBundle: any) {
     return contentArray;
   }
 
-  /* Add and configure components for display */
+  /* --- Add and configure components for display --- */
+
   const standardComponents = Object.keys(portfolioJSONBundle).filter((comp) => {
     // components listed here will be seperated from regular format components
     // ie <comp-name>: { content: <comp-name object>[], pageRank: n }

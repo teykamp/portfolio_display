@@ -3,7 +3,7 @@
 
     <Toolbar 
       :title="componentTitle"
-      :exitAction="() => $parent.editComponentView = false"
+      :exitAction="leaveEditView"
       :disableAddBtn="true"
     />
     
@@ -64,8 +64,7 @@ export default {
         education: false,
         projects: false
       },
-      showBanner: false,
-      anySelected: false
+      showBanner: false
     }
   },
   computed: {

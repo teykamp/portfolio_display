@@ -19,6 +19,9 @@ export default {
     removeItem(index) {
       this.items.splice(index, 1);
     },
+    leaveEditView() {
+      this.$parent.editComponentView = false;
+    },
     emitData() {
       this.$emit('update-component-data', {
         componentType: this.component,

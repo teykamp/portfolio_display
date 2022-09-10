@@ -4,7 +4,7 @@
 
       <Toolbar
         :title="componentTitle"
-        :exitAction="() => $parent.editComponentView = false"
+        :exitAction="leaveEditView"
         :onAdd="addItem"
         :listLength="items.length"
         :disabledAt="12"
@@ -12,10 +12,10 @@
 
       <div 
         v-show="!items.length" 
-        style="display: flex; align-items: center; justify-content: center;"
+        class="center"
       >
         <v-icon large class="mr-2">mdi-file-code-outline</v-icon>
-        <span style="font-size: 16pt">Added Projects Go Here</span>
+        <div class="text-h6 font-weight-normal">Added Projects Go Here</div>
       </div>
       
       <v-container fill-height fluid>

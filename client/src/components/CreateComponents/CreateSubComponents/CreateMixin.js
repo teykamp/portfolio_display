@@ -5,20 +5,24 @@ import CardWrapper from './CreateCardWrapper.vue'
 export default {
   data() {
     return {
+      items: [],
       required: value => !!value || 'Required'
     }
   },
   created() {
-    console.log('running')
+    this.items = this.userData[this.component].content || [];
   },
   destroyed() {
     this.emitData();
   },
   methods: {
+    removeItem(index) {
+      this.items.splice(index, 1);
+    },
     emitData() {
       this.$emit('update-component-data', {
-        componentType: 'projects',
-        content: this.projects
+        componentType: this.component,
+        content: this.items
       });
     }
   },

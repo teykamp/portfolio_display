@@ -11,6 +11,19 @@ import { store } from './store/index'
 // declares component object prototypes
 import './Prototypes'
 
+/* 
+
+components that do not conform to the standard portfolio
+component object structure:
+
+componentName: {
+  pageRank: int
+  content: Array<PortfolioEntry>
+}
+
+*/
+export const nonStandardComponents = ['header', 'timeline']
+
 // import GAuth from 'vue-google-oauth2'
 
 // const gauthOption = {

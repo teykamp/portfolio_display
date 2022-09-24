@@ -39,7 +39,7 @@ function validate(content: any, type: string): boolean {
       isValid = Experience.validate(content);
       break;
     case 'education':
-      isValid = Education.validate(content);
+      isValid = true;
       break;
   }
 

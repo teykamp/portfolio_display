@@ -1,16 +1,15 @@
-export default class Experience {
+import PortfolioEntry from "../PortfolioSchemas/PortfolioEntry";
+
+export default class Experience extends PortfolioEntry {
   title: string;
   company: string;
   companyImg: string;
-  description: string;
-  date: string;
 
   constructor() {
+    super()
     this.title = '',
     this.company = '',
-    this.companyImg = '',
-    this.description = '',
-    this.date = ''
+    this.companyImg = ''
   }
 
   // each obj has to pass this criteria to be considered valid

@@ -1,14 +1,13 @@
-export default class Accomplishment {
+import PortfolioEntry from "../PortfolioSchemas/PortfolioEntry";
+
+export default class Accomplishment extends PortfolioEntry {
   title: string;
   organization: string;
-  description: string;
-  date: string;
 
   constructor() {
+    super()
     this.title = '',
-    this.organization = '',
-    this.description = '',
-    this.date = ''
+    this.organization = ''
   }
 
   // each obj has to pass this criteria to be considered valid

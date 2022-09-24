@@ -15,9 +15,9 @@
       <slot name="actions">
         <v-btn 
           v-if="!disableAddBtn" 
+          @click="onAdd"
           :color="addBtnColor" 
           :dark="addBtnColor === 'red'" 
-          @click="onAdd" 
           :disabled="listLength === disabledAt"
         >
           <v-icon>mdi-plus</v-icon>

@@ -2,12 +2,13 @@
   "compilerOptions": {
     "target": "es5",
     "module": "esnext",
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "moduleResolution": "node",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@components": [ "components/*" ],
+      "@reusables": [ "components/ReusableComponents/*" ],
+      "@views": [ "views/*" ],
+      "@utils": [ "utils/*" ]
     },
     "lib": [
       "esnext",

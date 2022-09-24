@@ -1,8 +1,13 @@
+interface Link {
+  URL: string,
+  type: string
+}
+
 export default class Header {
   name: string;
   headshotURL: string;
   professionalTitle: string;
-  links: Array<object>;
+  links: Array<Link>;
   email: string;
   phone: string;
 

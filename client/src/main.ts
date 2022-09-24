@@ -7,6 +7,10 @@ import router from './router'
 import vuetify from './plugins/vuetify'
 import Meta from 'vue-meta'
 import { store } from './store/index'
+
+// declares component object prototypes
+import './Prototypes'
+
 // import GAuth from 'vue-google-oauth2'
 
 // const gauthOption = {

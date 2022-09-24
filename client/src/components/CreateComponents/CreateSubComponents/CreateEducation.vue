@@ -26,7 +26,7 @@
         >
           <CardWrapper
             placeholder="Name of School"
-            :missingInfo="missingInfo(institution)"
+            :missingInfo="!institution.validate()"
             :title="institution.institution"
             @update-title="institution.institution = $event"
             @remove="removeItem(index)"
@@ -94,9 +94,6 @@ export default {
       if (this.items[i].degreeType == 'High School') this.items[i].degreeField = '';
       // returns conditional based on whether degreeField is required
       return this.items[i].degreeType != 'High School' && this.items[i].degreeType;
-    },
-    missingInfo(obj) {
-      return !Education.validate(obj);
     },
     addItem() {
       this.items.push(new Education());

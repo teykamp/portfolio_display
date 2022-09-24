@@ -152,10 +152,10 @@ export default {
   async mounted() {
 
     const sessionUser = localStorage.getItem('username');
-
+   
     // checks if user is logged in
     if (!sessionUser) {
-      this.$router.push({ name: 'Auth', query: { type: 'login' } });
+      return this.$router.push({ name: 'Auth' });
     }
 
     // asks the database for the logged in users portfolio content

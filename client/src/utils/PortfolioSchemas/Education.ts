@@ -1,27 +1,25 @@
-export default class Education {
+import PortfolioEntry from '../PortfolioSchemas/PortfolioEntry';
+
+export default class Education extends PortfolioEntry {
   institution: string;
   degreeType: string;
   degreeField: string;
-  description: string;
-  date: string
+  validate: Function;
 
   constructor() {
+    super()
     this.institution = '',
     this.degreeType = '',
     this.degreeField = '',
-    this.description = '',
-    this.date = ''
-  }
-
-  // each obj has to pass this criteria to be considered valid
-  static validate(education: Education): boolean {
     
-    if (!education.institution) return false
-    if (!education.degreeType) return false
-    if (education.degreeType != 'High School') {
-      if (!education.degreeField) return false
-    }
+    this.validate = (): boolean => {
+      if (!this.institution) return false
+      if (!this.degreeType) return false
+      if (this.degreeType != 'High School') {
+        if (!this.degreeField) return false
+      }
 
-    return true
+      return true
+    }
   }
 }

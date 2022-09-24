@@ -1,25 +1,23 @@
-export default class Project {
+import PortfolioEntry from "../PortfolioSchemas/PortfolioEntry";
+
+export default class Project extends PortfolioEntry {
   name: string;
   technologies: object[];
   linkToDeploy: string;
   linkToRepo: string;
-  description: string;
-  date: string
+  validate: Function
 
   constructor() {
+    super()
     this.name = '',
     this.technologies = [],
     this.linkToDeploy = '',
-    this.linkToRepo = '', 
-    this.description = '',
-    this.date = ''
-  }
-
-  static validate(project: Project): boolean {
+    this.linkToRepo = '',
+    this.validate = (): boolean => {
+      if (!this.name) return false
+      if (this.technologies.length === 0) return false
     
-    if (!project.name) return false
-    if (project.technologies.length === 0) return false
-    
-    return true
+      return true
+    }
   }
 }

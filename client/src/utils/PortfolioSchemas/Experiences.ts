@@ -1,24 +1,21 @@
-export default class Experience {
+import PortfolioEntry from "../PortfolioSchemas/PortfolioEntry";
+
+export default class Experience extends PortfolioEntry {
   title: string;
   company: string;
   companyImg: string;
-  description: string;
-  date: string;
+  validate: Function
 
   constructor() {
+    super()
     this.title = '',
     this.company = '',
     this.companyImg = '',
-    this.description = '',
-    this.date = ''
-  }
+    this.validate = (): boolean => {
+      if (!this.title) return false
+      if (!this.company) return false
 
-  // each obj has to pass this criteria to be considered valid
-  static validate(experience: Experience): boolean {
-    
-    if (!experience.title) return false
-    if (!experience.company) return false
-
-    return true
+      return true
+    }
   }
 }

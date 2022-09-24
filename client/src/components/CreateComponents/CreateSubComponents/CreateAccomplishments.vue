@@ -25,7 +25,7 @@
           :key="accomplishment.id"
         >
           <CardWrapper
-            :missingInfo="missingInfo(accomplishment)"
+            :missingInfo="!accomplishment.validate()"
             :title="accomplishment.title"
             @update-title="accomplishment.title = $event"
             @remove="removeItem(index)"
@@ -69,9 +69,6 @@ export default {
   methods: {
     addItem() {
       this.items.push(new Accomplishment())
-    },
-    missingInfo(accomplishment) {
-      return !Accomplishment.validate(accomplishment)
     }
   }
 }

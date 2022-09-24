@@ -3,18 +3,16 @@ import PortfolioEntry from "../PortfolioSchemas/PortfolioEntry";
 export default class Accomplishment extends PortfolioEntry {
   title: string;
   organization: string;
+  validate: Function
 
   constructor() {
     super()
     this.title = '',
-    this.organization = ''
-  }
+    this.organization = '',
+    this.validate = (): boolean => {
+      if (!this.title) return false
 
-  // each obj has to pass this criteria to be considered valid
-  static validate(accomplishment: Accomplishment): boolean {
-    
-    if (!accomplishment.title) return false
-
-    return true
+      return true
+    }
   }
 }

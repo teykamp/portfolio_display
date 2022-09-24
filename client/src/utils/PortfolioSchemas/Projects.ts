@@ -5,20 +5,19 @@ export default class Project extends PortfolioEntry {
   technologies: object[];
   linkToDeploy: string;
   linkToRepo: string;
+  validate: Function
 
   constructor() {
     super()
     this.name = '',
     this.technologies = [],
     this.linkToDeploy = '',
-    this.linkToRepo = ''
-  }
-
-  static validate(project: Project): boolean {
+    this.linkToRepo = '',
+    this.validate = (): boolean => {
+      if (!this.name) return false
+      if (this.technologies.length === 0) return false
     
-    if (!project.name) return false
-    if (project.technologies.length === 0) return false
-    
-    return true
+      return true
+    }
   }
 }

@@ -4,7 +4,7 @@ export default class Education extends PortfolioEntry {
   institution: string;
   degreeType: string;
   degreeField: string;
-  validate: Function
+  validate: Function;
 
   constructor() {
     super()

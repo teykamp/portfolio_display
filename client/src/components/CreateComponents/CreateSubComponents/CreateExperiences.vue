@@ -26,7 +26,7 @@
         >
           <CardWrapper
             placeholder="Experience Title"
-            :missingInfo="missingInfo(experience)"
+            :missingInfo="!experience.validate()"
             :title="experience.title"
             @update-title="experience.title = $event"
             @remove="removeItem(index)"
@@ -75,9 +75,6 @@ export default {
   methods: {
     addItem() {
       this.items.push(new Experience())
-    },
-    missingInfo(obj) {
-      return !Experience.validate(obj);
     }
   }
 }

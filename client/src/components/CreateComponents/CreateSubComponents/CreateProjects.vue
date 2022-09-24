@@ -26,7 +26,7 @@
           >
             <CardWrapper
               placeholder="Project Name"
-              :missingInfo="missingInfo(project)"
+              :missingInfo="!project.validate()"
               :title="project.name"
               @update-title="project.name = $event"
               @remove="removeItem(index)"
@@ -104,9 +104,9 @@
               <div class="pa-3 center">
                 <v-autocomplete
                   v-model="tech.name"
-                  label="Technology Name"
                   :items="techList"
                   :rules="[required]" 
+                  label="Technology Name"
                   autocomplete="do-not-autofill"        
                 ></v-autocomplete>
                 <img
@@ -182,9 +182,6 @@ export default {
     },
     addItem() {
       this.items.push(new Project());
-    },
-    missingInfo(obj) {
-      return !Project.validate(obj);
     }
   }
 }

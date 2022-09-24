@@ -10,7 +10,8 @@ export default {
     }
   },
   created() {
-    // this.items = this.userData[this.component].content || [];
+    if (this.component === 'Header') return
+    this.items = this.userData[this.component].content || [];
   },
   destroyed() {
     this.emitData();

@@ -1,8 +1,14 @@
-import PortfolioEntry from "../PortfolioSchemas/PortfolioEntry";
+import PortfolioEntry from "../PortfolioSchemas/PortfolioEntry"
+
+// logo to be removed (GitHub issue #185)
+interface Tech {
+  logo: string,
+  name: string
+}
 
 export default class Project extends PortfolioEntry {
   name: string;
-  technologies: object[];
+  technologies: Array<Tech>;
   linkToDeploy: string;
   linkToRepo: string;
   validate: Function

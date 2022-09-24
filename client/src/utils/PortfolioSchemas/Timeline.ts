@@ -1,13 +1,5 @@
-import PortfolioEntry from "../PortfolioSchemas/PortfolioEntry";
-
-export default class Timeline extends PortfolioEntry {
-  validate: Function;
-
-  constructor() {
-    super()
-    this.validate = (): boolean => {
-      // add validation here
-      return true
-    }
+export default class Timeline {
+  static validate(timeline: string[]): boolean {
+    return !!timeline.length
   }
 }

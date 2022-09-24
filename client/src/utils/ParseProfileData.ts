@@ -1,3 +1,5 @@
+import { nonStandardComponents } from '../main'
+
 export default function parseProfileData(portfolioJSONBundle: any) {
   
   const displayedComponents = [];
@@ -28,7 +30,6 @@ export default function parseProfileData(portfolioJSONBundle: any) {
   const standardComponents = Object.keys(portfolioJSONBundle).filter((comp) => {
     // components listed here will be seperated from regular format components
     // ie <comp-name>: { content: <comp-name object>[], pageRank: n }
-    const nonStandardComponents = ['header', 'timeline'];
     return !nonStandardComponents.includes(comp);
   });
 

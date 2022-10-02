@@ -10,7 +10,7 @@ A full stack web-based application to dynamically display resumé material in a 
 
 ## View Live Production Build
 
-[portfolio-display-app.herokuapp.com]https://portfolio-display-app.herokuapp.com/
+```https://portfolio-display-app.herokuapp.com/```
 
 ## Getting Started
 

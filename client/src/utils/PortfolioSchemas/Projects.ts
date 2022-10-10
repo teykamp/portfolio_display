@@ -1,4 +1,4 @@
-import PortfolioEntry from "../PortfolioSchemas/PortfolioEntry"
+import PortfolioEntry, { ComponentType } from "../PortfolioSchemas/PortfolioEntry"
 
 // logo to be removed (GitHub issue #185)
 interface Tech {
@@ -7,23 +7,9 @@ interface Tech {
 }
 
 export default class Project extends PortfolioEntry {
-  name: string;
-  technologies: Array<Tech>;
-  linkToDeploy: string;
-  linkToRepo: string;
-  validate: Function
-
-  constructor() {
-    super()
-    this.name = '',
-    this.technologies = [],
-    this.linkToDeploy = '',
-    this.linkToRepo = '',
-    this.validate = (): boolean => {
-      if (!this.name) return false
-      if (this.technologies.length === 0) return false
-    
-      return true
-    }
-  }
+  name = '';
+  technologies: Array<Tech> = [];
+  linkToDeploy = '';
+  linkToRepo = '';
+  type = ComponentType.PROJECT
 }

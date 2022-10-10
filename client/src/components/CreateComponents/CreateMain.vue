@@ -158,6 +158,16 @@ export default {
       return this.$router.push({ name: 'Auth' });
     }
 
+    // checks if unresolved session is saved in state, 
+    // this could be because user exited previously or is returning from a preview
+    if (this.$store.state.portfolioItem) {
+      this.userData = this.$store.state.portfolioItem;
+      this.validatePortfolioComponents();
+      this.orderComponentsByPageRank();
+      this.loading = false;
+      return
+    }
+
     // asks the database for the logged in users portfolio content
     let data;
     try {
@@ -170,14 +180,8 @@ export default {
     // stores the portfolio obtained from the database to see if changes were made on exit
     this.userDataOnStart = JSON.stringify(data);
 
-    // checks if unresolved session is saved in state, 
-    // this could be because user exited previously or is returning from a preview
-    if (this.$store.state.portfolioItem) {
-      this.userData = this.$store.state.portfolioItem;
-    } 
-
     // checks if user has a portfolio on file w/o errors
-    else if (!data?.error) {
+    if (!data?.error) {
       this.userData = data;
     }
 

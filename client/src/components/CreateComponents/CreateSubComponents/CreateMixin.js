@@ -2,6 +2,8 @@ import Toolbar from '../../ReusableComponents/CreateToolbar.vue'
 import Calender from '../../ReusableComponents/CreateCalender.vue'
 import CardWrapper from './CreateCardWrapper.vue'
 
+import { validate } from '../../../utils/ValidatePortfolio'
+
 export default {
   data() {
     return {
@@ -22,6 +24,9 @@ export default {
     },
     leaveEditView() {
       this.$parent.editComponentView = false;
+    },
+    validate(obj) {
+      return validate(obj)
     },
     emitData() {
       this.$emit('update-component-data', {

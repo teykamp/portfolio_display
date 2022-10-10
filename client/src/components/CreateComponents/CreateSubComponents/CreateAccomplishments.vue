@@ -25,7 +25,7 @@
           :key="accomplishment.id"
         >
           <CardWrapper
-            :missingInfo="!accomplishment.validate()"
+            :missingInfo="!validate(accomplishment)"
             :title="accomplishment.title"
             @update-title="accomplishment.title = $event"
             @remove="removeItem(index)"

@@ -1,10 +1,14 @@
 // Parent class to Portfolio Items such as Education, Experiences etc
-export default class PortfolioEntry {
-  description: string;
-  date: string;
+export enum ComponentType {
+  ACCOMPLISHMENT = 'accomplishment',
+  PROJECT = 'project',
+  EXPERIENCES = 'experiences',
+  EDUCATION = 'education',
+  UNDEFINED = 'undefined'
+}
 
-  constructor() {
-    this.description = '',
-    this.date = ''
-  }
+export default class PortfolioEntry {
+  description = '';
+  date = '';
+  type = ComponentType.UNDEFINED;
 }

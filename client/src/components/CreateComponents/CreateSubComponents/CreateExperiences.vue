@@ -26,7 +26,7 @@
         >
           <CardWrapper
             placeholder="Experience Title"
-            :missingInfo="!experience.validate()"
+            :missingInfo="!validate(experience)"
             :title="experience.title"
             @update-title="experience.title = $event"
             @remove="removeItem(index)"

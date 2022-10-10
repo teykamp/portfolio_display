@@ -26,7 +26,7 @@
           >
             <CardWrapper
               placeholder="Project Name"
-              :missingInfo="!project.validate()"
+              :missingInfo="!validate(project)"
               :title="project.name"
               @update-title="project.name = $event"
               @remove="removeItem(index)"

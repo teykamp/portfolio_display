@@ -246,6 +246,15 @@ The following are what you need before cloning the repository.
 }
 ```
 
+#### Portfolio Privacy: Object Format Tree
+
+```
+{
+   "visibility":false,
+   "accesskey":"1613879"
+}
+```
+
 ---
 
 ## Documentation

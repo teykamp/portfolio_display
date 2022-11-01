@@ -202,8 +202,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.break-word {
-  word-wrap: break-word;
-}
-</style>
+

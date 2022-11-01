@@ -1,4 +1,5 @@
 <template>
+  <!-- COMPONENT CODE NOT IN USE -->
   <div>
     <div class="center">
 

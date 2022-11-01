@@ -1,11 +1,10 @@
 <template>
   <DialogBox
-    :title="'Privacy Settings'" 
-    description="The portfolio privacy settings tool, 
-    allows you to hide your portfolio so that only you 
-    can view/work on it. You may also generate 
-    a private link that allows you to share your 
-    portfolio only with people that have the link"
+    title="Privacy Settings"
+    description="Setting portfolio to private ensures 
+    no one but you view your work. Generating 
+    a link on private mode allows you to share your 
+    portfolio with others with the link."
     :visible="showPrivacySettingsDialog"
   >
     <template #actions>
@@ -82,14 +81,15 @@
             </v-col>
           </v-row>
         </v-row>
-        
-        <v-row class="mt-7">
+        <v-row 
+          class="mt-12" 
+          justify="center"
+          align="center"
+        >
           <v-btn
-            text
-            block
-            @click.stop="savePrivacySettings"
-            color="success"
-          >Save Preferences</v-btn>
+            @click.stop="$emit('close')"
+            color="info"
+          >Done</v-btn>
         </v-row>
       </v-container>
 
@@ -121,9 +121,6 @@ export default {
         visibility: true,
         accesskey: null
       },
-
-      // makes a copy of privacySettings after get req for comparing on save
-      privacySettingsOnStart: undefined,
 
       // true when loading state is active
       loading: true,
@@ -160,26 +157,12 @@ export default {
       }
     },
     generateLink() {
-      this.$store.state.snackbarText = "New link generated!";
       this.privacySettings.accesskey = Math.random().toString().substring(2, 9);
+      this.$store.state.snackbarText = "New link generated!";
     },
     deleteLink() {
       this.privacySettings.accesskey = null; 
       this.$store.state.snackbarText = 'Link deleted.';
-    },
-    async savePrivacySettings() {
-      this.$emit('close');
-      
-      // to prevent wasting unnecessary bandwidth
-      if (JSON.stringify(this.privacySettings) != this.privacySettingsOnStart) {
-        try {
-          await DatabaseServices.updatePorfolioPrivacy(this.privacySettings);
-          this.$store.state.snackbarText = 'New privacy settings now in effect!';
-        } catch (error) {
-          this.$store.state.snackbarText = 'Issue encountered whilst saving privacy settings.';
-          console.error(error, 'Put request failed');
-        }
-      }
     }
   },
   watch: {
@@ -190,13 +173,29 @@ export default {
         }, 2000);
       }
     },
+    privacySettings: {
+      deep: true,
+      async handler(v) {
+        try {
+          await DatabaseServices.updatePorfolioPrivacy(v);
+        } catch (error) {
+          this.$store.state.snackbarText = 'Issue encountered whilst saving privacy settings.';
+          console.error(error, 'Put request failed');
+        }
+      }
+    },
     // runs like a mounted lifecycle hook
     async showPrivacySettingsDialog(v) {
       if (v) {
         this.loading = true;
         try {
           this.privacySettings = await DatabaseServices.getPortfolioPrivacyByUsername(this.username);
-          this.privacySettingsOnStart = JSON.stringify(this.privacySettings);
+
+          // sets watcher on visibility after privacySettings are loaded in
+          this.$watch(() => this.privacySettings.visibility, (v) => {
+            const MSG = v ? "Portfolio now publicly visible." : "Private mode activated."
+            this.$store.state.snackbarText = MSG;
+          })
         } catch {
           this.$store.state.snackbarText = 'Failed to load privacy settings.';
           this.$emit('close');

@@ -40,11 +40,15 @@
                 <strong> {{ displayDate(timePoint.date) }} </strong>
               </span>
               <!-- Education -->
-              <v-card class="elevation-2" 
-                v-if="timePoint.type === 'education'"
+              <v-card 
+                v-if="timePoint.type === ComponentType.EDUCATION"
+                class="elevation-2"
               >
                 <v-container fill-height>
-                  <v-card-title class="text-center pb-7">
+                  <v-card-title 
+                    class="text-center pb-7"
+                    style="word-break:break-word;"
+                  >
                     {{ timePoint.degreeType }} in {{ timePoint.degreeField }}
                   </v-card-title>
                   <v-card-subtitle class="text-center">
@@ -55,11 +59,15 @@
               </v-card>
 
               <!-- Experiences -->
-              <v-card class="elevation-2" 
-                v-else-if="timePoint.type ==='experiences'" 
+              <v-card 
+                v-else-if="timePoint.type === ComponentType.EXPERIENCES"
+                class="elevation-2" 
               >
                 <v-container fill-height>
-                  <v-card-title class="pb-2">
+                  <v-card-title 
+                    class="pb-2"
+                    style="word-break:break-word;"
+                  >
                     {{ timePoint.title }}
                   </v-card-title>
                   <v-row 
@@ -83,17 +91,23 @@
               </v-card>
 
               <!-- Projects -->
-              <v-card class="elevation-2" 
-                v-else-if="timePoint.type === 'projects'"
+              <v-card 
+                v-else-if="timePoint.type === ComponentType.PROJECT"
+                class="elevation-2"
               >
                 <v-container fill-height>
-                  <v-card-title class="text-center">
+                  <v-card-title 
+                    class="text-center"
+                    style="word-break:break-word;"
+                  >
                     {{ timePoint.name }}
                   </v-card-title>
                   <v-container class="pa-0">
                     <v-card-subtitle class="text-center pt-0">
                         <v-icon>mdi-head-cog</v-icon>
-                        <span v-for="technology, index in timePoint.technologies" :key="technology.id">
+                        <span 
+                          v-for="technology, index in timePoint.technologies" 
+                          :key="technology.id">
                           <span v-if="index !== 0"> , </span>
                           {{ technology.name }} 
                         </span>
@@ -103,11 +117,15 @@
               </v-card>
 
               <!-- Accomplishments -->
-              <v-card class="elevation-2" 
-                v-else-if="timePoint.type === 'accomplishments'"
+              <v-card 
+                class="elevation-2" 
+                v-else-if="timePoint.type === ComponentType.ACCOMPLISHMENT"
               >
                 <v-container fill-height>
-                  <v-card-title class="text-center pb-7">
+                  <v-card-title 
+                    class="text-center pb-7 break-word"
+                    style="word-break:break-word;"
+                  >
                     {{ timePoint.title }}
                   </v-card-title>
                   <v-card-subtitle class="text-center">
@@ -136,6 +154,7 @@
 
 <script>
 import displayDate from "../../utils/DateToText.ts"
+import { ComponentType } from "../../utils/PortfolioSchemas/PortfolioEntry"
 
 export default {
   props: {
@@ -150,18 +169,14 @@ export default {
   },
   data() {
     return {
+      // ComponentType enum
+      ComponentType,
       // filtered and sorted version of the relevantInfo prop
       displayData: [],
       // icons that are displayed inside the timeline circles
       typeIcons: [],
       // key value pairs that match the object types with mdi-icons
-      iconData: {
-        projects: 'mdi-projector-screen',
-        education: 'mdi-school',
-        accomplishments: 'mdi-trophy',
-        experiences: 'mdi-briefcase'
-      },
-
+      iconData: {},
       // imported function
       displayDate
     }
@@ -173,6 +188,11 @@ export default {
       return parseInt(a.date.replace('-', '')) - parseInt(b.date.replace('-', ''));
     });
 
+    this.iconData[ComponentType.PROJECT] = 'mdi-projector-screen';
+    this.iconData[ComponentType.EDUCATION] = 'mdi-school';
+    this.iconData[ComponentType.ACCOMPLISHMENT] = 'mdi-trophy';
+    this.iconData[ComponentType.EXPERIENCES] = 'mdi-briefcase'; 
+
     this.displayData = sortedDataByDate;
 
     this.displayData.forEach(item => {
@@ -181,3 +201,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.break-word {
+  word-wrap: break-word;
+}
+</style>

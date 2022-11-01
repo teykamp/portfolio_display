@@ -24,7 +24,7 @@ export default function validatePortfolio(portfolioData: any) {
   components.forEach((comp) => {
     if (nonStandardComponents.includes(comp)) return;
     else if (!portfolioData[comp].content.length) invalidComponents.push(comp);
-    else portfolioData[comp].content.forEach((item: PortfolioEntry) => {
+    else portfolioData[comp].content.forEach((item: any) => {
       if (!validate(item)) invalidComponents.push(comp);
     });
   });
@@ -33,6 +33,7 @@ export default function validatePortfolio(portfolioData: any) {
 }
 
 export function validate(item: any): boolean {
+  
   switch (item.type) {
     case ComponentType.ACCOMPLISHMENT:
       return !!item.title
@@ -42,7 +43,6 @@ export function validate(item: any): boolean {
       if (item.degreeType != 'High School') {
         if (!item.degreeField) return false
       }
-
       return true
     case ComponentType.EXPERIENCES:
       if (!item.title) return false
@@ -54,6 +54,7 @@ export function validate(item: any): boolean {
       return true
     default:
       console.error('Component Type Left Undefined! ValidatePortfolio.ts', item)
+      console.log(ComponentType.ACCOMPLISHMENT, item.type);
       return false
   }
 }

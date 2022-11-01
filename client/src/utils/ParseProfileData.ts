@@ -4,22 +4,10 @@ export default function parseProfileData(portfolioJSONBundle: any) {
   
   const displayedComponents = [];
 
-  /* takes an array of objects and a component type and outputs the same 
-  objects but with an added property with type (for adding things on timeline).
-  example: input -> arr: [{title: 'SETA Cup Winner'}], type: 'accomplishments'
-  output -> arr: [{title: 'SETA Cup Winner', type: 'accomplishments'}] */
-  function addComponentTypeProperty(arr: any[], type: string): object[] {
-    for (let i = 0; i < arr.length; i++) {
-      arr[i].type = type;
-    }
-    
-    return arr;
-  }
-
   function getTimelineContent(): object[] {
     let contentArray: object[] = [];
     portfolioJSONBundle.timeline.content.forEach((item: string) => {
-      contentArray = contentArray.concat(addComponentTypeProperty(portfolioJSONBundle[item].content, item));
+      contentArray = contentArray.concat(portfolioJSONBundle[item].content);
     });
 
     return contentArray;

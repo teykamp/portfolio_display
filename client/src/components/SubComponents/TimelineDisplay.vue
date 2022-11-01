@@ -40,11 +40,15 @@
                 <strong> {{ displayDate(timePoint.date) }} </strong>
               </span>
               <!-- Education -->
-              <v-card class="elevation-2" 
+              <v-card 
                 v-if="timePoint.type === ComponentType.EDUCATION"
+                class="elevation-2"
               >
                 <v-container fill-height>
-                  <v-card-title class="text-center pb-7">
+                  <v-card-title 
+                    class="text-center pb-7"
+                    style="word-break:break-word;"
+                  >
                     {{ timePoint.degreeType }} in {{ timePoint.degreeField }}
                   </v-card-title>
                   <v-card-subtitle class="text-center">
@@ -55,11 +59,15 @@
               </v-card>
 
               <!-- Experiences -->
-              <v-card class="elevation-2" 
-                v-else-if="timePoint.type === ComponentType.EXPERIENCES" 
+              <v-card 
+                v-else-if="timePoint.type === ComponentType.EXPERIENCES"
+                class="elevation-2" 
               >
                 <v-container fill-height>
-                  <v-card-title class="pb-2">
+                  <v-card-title 
+                    class="pb-2"
+                    style="word-break:break-word;"
+                  >
                     {{ timePoint.title }}
                   </v-card-title>
                   <v-row 
@@ -83,11 +91,15 @@
               </v-card>
 
               <!-- Projects -->
-              <v-card class="elevation-2"
+              <v-card 
                 v-else-if="timePoint.type === ComponentType.PROJECT"
+                class="elevation-2"
               >
                 <v-container fill-height>
-                  <v-card-title class="text-center">
+                  <v-card-title 
+                    class="text-center"
+                    style="word-break:break-word;"
+                  >
                     {{ timePoint.name }}
                   </v-card-title>
                   <v-container class="pa-0">
@@ -105,11 +117,15 @@
               </v-card>
 
               <!-- Accomplishments -->
-              <v-card class="elevation-2" 
+              <v-card 
+                class="elevation-2" 
                 v-else-if="timePoint.type === ComponentType.ACCOMPLISHMENT"
               >
                 <v-container fill-height>
-                  <v-card-title class="text-center pb-7">
+                  <v-card-title 
+                    class="text-center pb-7 break-word"
+                    style="word-break:break-word;"
+                  >
                     {{ timePoint.title }}
                   </v-card-title>
                   <v-card-subtitle class="text-center">
@@ -185,3 +201,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.break-word {
+  word-wrap: break-word;
+}
+</style>

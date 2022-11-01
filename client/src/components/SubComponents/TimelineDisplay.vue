@@ -41,7 +41,7 @@
               </span>
               <!-- Education -->
               <v-card class="elevation-2" 
-                v-if="timePoint.type === 'education'"
+                v-if="timePoint.type === ComponentType.EDUCATION"
               >
                 <v-container fill-height>
                   <v-card-title class="text-center pb-7">
@@ -56,7 +56,7 @@
 
               <!-- Experiences -->
               <v-card class="elevation-2" 
-                v-else-if="timePoint.type ==='experiences'" 
+                v-else-if="timePoint.type === ComponentType.EXPERIENCES" 
               >
                 <v-container fill-height>
                   <v-card-title class="pb-2">
@@ -83,8 +83,8 @@
               </v-card>
 
               <!-- Projects -->
-              <v-card class="elevation-2" 
-                v-else-if="timePoint.type === 'projects'"
+              <v-card class="elevation-2"
+                v-else-if="timePoint.type === ComponentType.PROJECT"
               >
                 <v-container fill-height>
                   <v-card-title class="text-center">
@@ -93,7 +93,9 @@
                   <v-container class="pa-0">
                     <v-card-subtitle class="text-center pt-0">
                         <v-icon>mdi-head-cog</v-icon>
-                        <span v-for="technology, index in timePoint.technologies" :key="technology.id">
+                        <span 
+                          v-for="technology, index in timePoint.technologies" 
+                          :key="technology.id">
                           <span v-if="index !== 0"> , </span>
                           {{ technology.name }} 
                         </span>
@@ -104,7 +106,7 @@
 
               <!-- Accomplishments -->
               <v-card class="elevation-2" 
-                v-else-if="timePoint.type === 'accomplishments'"
+                v-else-if="timePoint.type === ComponentType.ACCOMPLISHMENT"
               >
                 <v-container fill-height>
                   <v-card-title class="text-center pb-7">
@@ -136,6 +138,7 @@
 
 <script>
 import displayDate from "../../utils/DateToText.ts"
+import { ComponentType } from "../../utils/PortfolioSchemas/PortfolioEntry"
 
 export default {
   props: {
@@ -150,18 +153,14 @@ export default {
   },
   data() {
     return {
+      // ComponentType enum
+      ComponentType,
       // filtered and sorted version of the relevantInfo prop
       displayData: [],
       // icons that are displayed inside the timeline circles
       typeIcons: [],
       // key value pairs that match the object types with mdi-icons
-      iconData: {
-        projects: 'mdi-projector-screen',
-        education: 'mdi-school',
-        accomplishments: 'mdi-trophy',
-        experiences: 'mdi-briefcase'
-      },
-
+      iconData: {},
       // imported function
       displayDate
     }
@@ -172,6 +171,11 @@ export default {
     const sortedDataByDate = removedNullData.sort((b, a) => {
       return parseInt(a.date.replace('-', '')) - parseInt(b.date.replace('-', ''));
     });
+
+    this.iconData[ComponentType.PROJECT] = 'mdi-projector-screen';
+    this.iconData[ComponentType.EDUCATION] = 'mdi-school';
+    this.iconData[ComponentType.ACCOMPLISHMENT] = 'mdi-trophy';
+    this.iconData[ComponentType.EXPERIENCES] = 'mdi-briefcase'; 
 
     this.displayData = sortedDataByDate;
 

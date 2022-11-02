@@ -37,80 +37,20 @@
               </v-card-text>
             </v-card>
 
-              <!-- Expand Card -->
-              <div v-if="project.description.length > 300 || project.technologies.length > 2">
-                <template>
-                  <div class="text-center">
-                    <v-dialog
-                      v-model="dialog"
-                      width="800"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          v-if="project.linkToRepo"
-                          icon
-                          color="primary"
-                          small
-                          fab
-                          absolute
-                          left
-                          bottom
-                          v-bind="attrs"
-                          v-on="on"
-                          class="moreButton"
-                        >
-                          MORE
-                        </v-btn>
-                      </template>
-
-                      <v-card>
-                        <v-system-bar
-                          color="primary"
-                          dark
-                        >
-                        </v-system-bar>
-                        <v-card
-                          class="overflow-auto"
-                          flex-direction="column"
-                          elevation="0"
-                        >
-                          <v-card-title class="text-h5">
-                            {{ project.name }}
-                          </v-card-title>
-
-                          <v-card-text>
-                            {{ project.description }}
-                          </v-card-text>
-                        </v-card>
-
-                        <TechnologyDisplay 
-                          :technologies="project.technologies" 
-                          :maxTechnologies="project.technologies.length"
-                        />
-
-                        <v-divider></v-divider>
-
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn
-                            color="indigo"
-                            text
-                            @click="dialog = false"
-                          >
-                            Back
-                          </v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
-                  </div>
-                </template> 
-              </div>
-
               <!-- Main Card -->
               <TechnologyDisplay :technologies="project.technologies" :maxTechnologies="2"/>
 
               <!-- Link Buttons -->
               <v-card-actions>
+                <v-btn
+                  v-if="project.linkToRepo"
+                  @click.stop="selectedProject = project; moreDialog = true"
+                  color="primary"
+                  small
+                  text
+                >
+                  MORE
+                </v-btn>
                 <v-spacer></v-spacer>
                 <v-btn 
                   v-if="project.linkToRepo"
@@ -131,6 +71,50 @@
           </v-sheet>
         </v-row>
       </v-container>
+
+      <v-dialog
+        v-model="moreDialog"
+        width="800"
+      >
+        <v-card>
+          <v-system-bar
+            color="primary"
+            dark
+          >
+          </v-system-bar>
+          <v-card
+            class="overflow-auto"
+            flex-direction="column"
+            elevation="0"
+          >
+            <v-card-title class="text-h5">
+              {{ selectedProject.name }}
+            </v-card-title>
+
+            <v-card-text>
+              {{ selectedProject.description }}
+            </v-card-text>
+          </v-card>
+
+          <TechnologyDisplay 
+            :technologies="selectedProject.technologies" 
+            :maxTechnologies="selectedProject.technologies.length"
+          />
+
+          <v-divider></v-divider>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="indigo"
+              text
+              @click="moreDialog = false"
+            >
+              Back
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
   </div>
 </template>
 
@@ -146,14 +130,13 @@ export default {
   },
   data: () => {
     return {
-      dialog: false,
+      moreDialog: false,
+      selectedProject: {
+        name: 'undefined',
+        desciption: 'undefined',
+        technologies: []
+      }
     }
   },
 }
 </script>
-
-<style scoped>
-.moreButton {
-  margin-bottom: 20px;
-}
-</style>

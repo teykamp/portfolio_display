@@ -49,7 +49,7 @@
               <!-- Link Buttons -->
               <v-card-actions class="mt-8">
                 <v-btn
-                  v-if="project.linkToRepo"
+                  v-if="project.description > 100 || project.technologies.length > 1"
                   @click.stop="selectedProject = project; moreDialog = true"
                   color="primary"
                   small
@@ -143,6 +143,6 @@ export default {
         technologies: []
       }
     }
-  },
+  }
 }
 </script>

@@ -71,6 +71,7 @@ export default {
     // if true, loads preview mode
     if (this.$route.fullPath.includes('preview') && this.$store.state.portfolioItem) {
       this.previewMode = true;
+      document.title = "Preview - Portfolio"
       return this.formatDataForDisplay(this.$store.state.portfolioItem);
     // catched edge case were someone tries to manually enters preview route without info being stored
     } else if (this.$route.fullPath.includes('preview')) {
@@ -104,6 +105,7 @@ export default {
     try {
       const portfolioItem = await DatabaseServices.getPortfolioContentByUsername(this.$route.params.user);
       if (portfolioItem?.error) this.error = portfolioItem.error
+      document.title = `${this.$route.params.user} - Portfolio`
       this.formatDataForDisplay(portfolioItem);
     } catch (err) {
       return this.catchClause(err);
@@ -121,10 +123,8 @@ export default {
       previewMode: false,
     }
   },
-  metaInfo() {
-    return {
-      title: `${this.$route.params.user} - Portfolio`
-    }
+  mounted() {
+    
   },
   computed: {
     canEditPortfolio() {

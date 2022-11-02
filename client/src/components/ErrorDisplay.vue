@@ -38,10 +38,12 @@
 
 <script>
 export default {
-  props: [
-    'errorType',
-    'username',
-  ],
+  props: {
+    errorType: {
+      required: true,
+      type: String
+    }
+  },
   created() {
     this.error = this.errorData.find(error => error.errorType === this.errorType) ?? {
       title: 'Error Encountered',
@@ -70,7 +72,6 @@ export default {
         desc: `This portfolio has been marked as private!`,
         displayType: 'info'
       }]
-      // 
     }
   },
   methods: {

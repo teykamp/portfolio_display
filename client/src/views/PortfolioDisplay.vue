@@ -3,30 +3,24 @@
 
     <!-- Error With Profile -->
     <div v-if="error">
-      <Error 
-        :errorType="error"
-        :username="$route.params.user" 
-      />
+      <Error :errorType="error" />
     </div>
 
     <!-- Porfolio Display -->
     <div v-else>
 
       <v-row
-        style="
-        z-index: 2;
-        top: 10px;
-        position: fixed;"
+        style="z-index: 2; top: 10px; position: fixed;"
         class="ml-1"
       >  
         <v-btn
-          text
           @click="back"
+          text
         >Back</v-btn>
         <v-btn
           v-if="canEditPortfolio"
-          text
           @click="$router.push({ name: 'Build' })"
+          text
         >Edit</v-btn>
       </v-row>
 

@@ -14,7 +14,7 @@
           >
           <v-card
             hover
-            width="400"
+            :width="$vuetify.breakpoint.xs ? 325 : 450"
           >
             <v-system-bar
               color="primary"
@@ -41,7 +41,10 @@
             </v-card>
 
               <!-- Main Card -->
-              <TechnologyDisplay :technologies="project.technologies" :maxTechnologies="2"/>
+              <TechnologyDisplay 
+                :technologies="project.technologies" 
+                :maxTechnologies="1"
+              />
 
               <!-- Link Buttons -->
               <v-card-actions class="mt-8">

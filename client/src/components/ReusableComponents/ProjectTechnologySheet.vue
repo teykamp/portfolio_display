@@ -1,5 +1,5 @@
 <template>
-  <div class="scrollmenu">
+  <div :class="`scrollmenu ${maxTechnologies === 1 ? 'center' : ''}`">
     <div
       v-for="technology in technologies.slice(0, maxTechnologies)" 
       :key="technology.name"

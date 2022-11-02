@@ -15,7 +15,6 @@
           <v-card
             hover
             width="400"
-            height="500"
           >
             <v-system-bar
               color="primary"
@@ -27,21 +26,25 @@
                 {{ project.name }}
               </v-card-title> 
             <v-card
-              height="145"
-              class="overflow-hidden"
+              class="overflow-hidden px-4 mb-5"
               flex-direction="column"
               elevation="0"
             >
-              <v-card-text>
-                {{ project.description }}
-              </v-card-text>
+              <!-- Truncates text after 100th character -->
+              <div style="min-height: 90px">
+                {{ `${
+                    project.description.substring(0, 100)
+                  }${
+                    project.description.length > 100 ? '...' : ''
+                  }` }}
+              </div>
             </v-card>
 
               <!-- Main Card -->
               <TechnologyDisplay :technologies="project.technologies" :maxTechnologies="2"/>
 
               <!-- Link Buttons -->
-              <v-card-actions>
+              <v-card-actions class="mt-8">
                 <v-btn
                   v-if="project.linkToRepo"
                   @click.stop="selectedProject = project; moreDialog = true"

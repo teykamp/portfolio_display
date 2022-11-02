@@ -112,7 +112,7 @@ export default {
     'username',
   ],
   created() {
-
+    document.title = this.errorType
   },
   data: () => {
     return {

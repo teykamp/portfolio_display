@@ -69,7 +69,7 @@
               </draggable>
 
               <KickStartSuggestions 
-                v-if="activeComponents.length === 0 && !loading"
+                v-if="showKickstart"
                 :addAction="() => toggleEditView('SelectComponents')" 
               />
 
@@ -225,7 +225,10 @@ export default {
       return `Dragging is ${this.canComponentsDrag ? '':'in'}active`;
     },
     showDragSwitch() {
-      return !this.$vuetify.breakpoint.mdAndUp;
+      return !(this.$vuetify.breakpoint.mdAndUp || this.showKickstart);
+    },
+    showKickstart() {
+      return this.activeComponents.length === 0 && !this.loading;
     }
   },
   methods: {

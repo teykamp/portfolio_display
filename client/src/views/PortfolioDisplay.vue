@@ -8,7 +8,6 @@
 
     <!-- Porfolio Display -->
     <div v-else>
-
       <v-row
         style="z-index: 2; top: 10px; position: fixed;"
         class="ml-1"
@@ -24,20 +23,7 @@
         >Edit</v-btn>
       </v-row>
 
-      <div>
-        <Header :data="headerData" />
-      </div>
-
-      <div v-for="component in componentArray" :key="component.id">
-        <component-display-factory 
-          :relevantInfo="component.content" 
-          :componentType="component.category" 
-        />
-      </div>
-
-      <div>
-        <Footer :data="footerData" />
-      </div>
+      
 
     </div>
 
@@ -45,19 +31,12 @@
 </template>
 
 <script>
-import ComponentDisplayFactory from '../components/ComponentDisplayFactory.vue'
 import DatabaseServices from '../DatabaseServices'
-import parseProfileData from '../utils/ParseProfileData'
 import Error from '../components/ErrorDisplay.vue'
-import Header from '../components/PortfolioHeader.vue'
-import Footer from '../components/PortfolioFooter.vue'
 
 export default {
   components: {
-    ComponentDisplayFactory,
-    Error,
-    Header,
-    Footer
+    Error
   },
   async created() {
 
@@ -110,9 +89,6 @@ export default {
   data() {
     return {
       componentArray: [],
-      headerData: {},
-      footerData: {},      
-
       error: undefined,
       previewMode: false,
     }

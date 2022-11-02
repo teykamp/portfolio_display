@@ -35,7 +35,7 @@
               </div>
             </v-col>
             <v-col class="shrink">
-              <v-btn @click.stop="$router.push('/')">
+              <v-btn @click.stop="$router.push({ name: 'Home', query: { to: 'explore' } })">
                 Search Again
               </v-btn>
             </v-col>
@@ -62,31 +62,6 @@
             </v-col>
           </v-row>
         </v-alert>
-      </div>
-
-      <!-- User not found -->
-      <div v-else-if="errorType">
-        <v-alert
-          prominent
-          type="info"
-        >
-          <v-row 
-            align="center"
-            justify="center"
-          >
-            <v-col class="grow">
-              <div class="errorPadding">
-                <h5>Oops!</h5>
-                {{ errorType }}
-              </div>
-            </v-col>
-            <v-col class="shrink">
-              <v-btn @click.stop="$router.push('/')">
-                Home
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-alert>  
       </div>
 
       <!-- Fallback -->

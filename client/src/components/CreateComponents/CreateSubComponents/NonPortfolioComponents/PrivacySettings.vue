@@ -2,7 +2,7 @@
   <DialogBox
     title="Privacy Settings"
     description="Setting portfolio to private ensures 
-    no one but you view your work. Generating 
+    no one but you can view your work. Generating 
     a link on private mode allows you to share your 
     portfolio with others with the link."
     :visible="showPrivacySettingsDialog"

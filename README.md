@@ -1,6 +1,6 @@
 <br/>
 
-***Current Version 0.9.1***
+***Current Version 0.9.2***
 
 ---
 
@@ -10,7 +10,7 @@ A full stack web-based application to dynamically display resumé material in a 
 
 ## View Live Production Build
 
-```https://portfolio-display-app.herokuapp.com/```
+https://portfolio-display-app.herokuapp.com/
 
 ## Getting Started
 
@@ -34,7 +34,7 @@ The following are what you need before cloning the repository.
 
 #### Portfolio Content: Object Format Tree
 
-```
+```json
 {
    "header":{
       "name":"Yona Alexander Voss-Andreae",
@@ -248,7 +248,7 @@ The following are what you need before cloning the repository.
 
 #### Portfolio Privacy: Object Format Tree
 
-```
+```json
 {
    "visibility":false,
    "accesskey":"1613879"

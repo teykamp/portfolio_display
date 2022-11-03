@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header :data="portfolio.header" />
+    <Header :data="portfolio.header" />
     <div
       v-for="component in components" 
       :key="component"
@@ -10,13 +10,13 @@
         :data="portfolio[component].content"
       />
     </div>
-    <footer :data="footerData" />
+    <Footer :data="footerData" />
   </div>
 </template>
 
 <script>
-import header from '../PortfolioHeader.vue'
-import footer from '../PortfolioFooter.vue'
+import Header from '../PortfolioHeader.vue'
+import Footer from '../PortfolioFooter.vue'
 import projects from '../SubComponents/ProjectsDisplay.vue'
 import accomplishments from '../SubComponents/AccomplishmentsDisplay.vue'
 import experiences from '../SubComponents/ExperiencesDisplay.vue'
@@ -25,8 +25,8 @@ import education from '../SubComponents/EducationDisplay.vue'
 
 export default {
   components: {
-    header,
-    footer,
+    Header,
+    Footer,
     projects,
     accomplishments,
     experiences,
@@ -41,6 +41,7 @@ export default {
   },
   data() {
     return {
+      // portfolio
       components: [],
       footerData: {
         disclaimer: 'Legal Disclaimer, and Stuff...',
@@ -55,6 +56,21 @@ export default {
       .filter(component => component !== 'header');
     this.components
       .sort((a, b) => this.portfolio[a].pageRank - this.portfolio[b].pageRank);
+
+    if (this.components.includes('timeline')) {
+      this.configureTimeline();
+    }
+  },
+  methods: {
+    configureTimeline() {
+      let timelineEntries = [];
+      this.portfolio.timeline.content.forEach(componentInTimeline => {
+        timelineEntries = timelineEntries
+          .concat(this.portfolio[componentInTimeline].content);
+      })
+      // eslint-disable-next-line
+      this.portfolio.timeline.content = timelineEntries;
+    }
   }
 }
 </script>

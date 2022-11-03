@@ -107,8 +107,12 @@
 export default {
   props: {
     data: {
-      required: true,
-      type: Object
+      required: false,
+      default: () => {
+        return {
+          headshotURL: 'empty'
+        }
+      }
     }
   }
 }

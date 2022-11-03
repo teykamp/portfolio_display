@@ -3,8 +3,9 @@ export default {
     data: {
       props: {
         data: {
-          required: true,
-          type: Object
+          required: false,
+          type: Array,
+          default: []
         },
         backgroundColor: {
           required: false,

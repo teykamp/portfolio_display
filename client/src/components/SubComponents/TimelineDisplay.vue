@@ -155,18 +155,12 @@
 <script>
 import displayDate from "../../utils/DateToText.ts"
 import { ComponentType } from "../../utils/PortfolioSchemas/PortfolioEntry"
+import ComponentMixin from './componentDisplayMixin'
 
 export default {
-  props: {
-    relevantInfo: {
-      type: Array,
-      required: true
-    },
-    backgroundColor: {
-      type: String,
-      required: true
-    },
-  },
+  mixins: [
+    ComponentMixin
+  ],
   data() {
     return {
       // ComponentType enum
@@ -182,7 +176,7 @@ export default {
     }
   },
   created() {
-    const removedNullData = this.relevantInfo.filter(item => item.date);
+    const removedNullData = this.data.filter(item => item.date);
 
     const sortedDataByDate = removedNullData.sort((b, a) => {
       return parseInt(a.date.replace('-', '')) - parseInt(b.date.replace('-', ''));

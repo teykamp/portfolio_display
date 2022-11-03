@@ -14,7 +14,7 @@
         >
           <v-expansion-panels inset>
             <v-expansion-panel
-              v-for="education in relevantInfo"
+              v-for="education in data"
               :key="education.id"
             >
               <v-expansion-panel-header class="text-h6"> 
@@ -44,11 +44,11 @@
 
 <script>
 import dateDisplay from "../../utils/DateToText.ts"
+import ComponentMixin from './componentDisplayMixin'
 
 export default {
-  props: [
-    'relevantInfo',
-    'backgroundColor',
+  mixins: [
+    ComponentMixin
   ],
   data() {
     return {

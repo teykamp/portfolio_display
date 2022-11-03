@@ -5,7 +5,13 @@
       <h3 class="mt-6">Accomplishments</h3>
     </div>  
     <v-container class="pa-0 mb-16 mt-8">
-      <v-col  xl="6" lg="8" md="12" sm="12" xs="12">
+      <v-col  
+        xl="6" 
+        lg="8" 
+        md="12" 
+        sm="12" 
+        xs="12"
+      >
         <v-card 
           tile
           outlined
@@ -18,7 +24,7 @@
             class="mt-6"
           >
             <v-carousel-item
-              v-for="accomplishment in relevantInfo"
+              v-for="accomplishment in data"
               :key="accomplishment.title"
             >
               <v-sheet height="100%">
@@ -67,17 +73,18 @@
 </template>
 
 <script>
-import dateDisplay from "../../utils/DateToText.ts"
+import dateDisplay from '../../utils/DateToText.ts'
+import ComponentMixin from './componentDisplayMixin'
+
 export default {
-  props: [
-    'relevantInfo',
-    'backgroundColor',
+  mixins: [
+    ComponentMixin
   ],
-  data: () => {
+  data() {
     return {
       cycle: true,
       dateDisplay,
     }
-  },
+  }
 }
 </script>

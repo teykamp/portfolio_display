@@ -24,12 +24,12 @@
                   <v-system-bar
                     color="secondary"
                     dark
-                    :height="50 * relevantInfo.length + 20"
+                    :height="50 * data.length + 20"
                   >
                   </v-system-bar><v-system-bar
                     color="primary"
                     dark
-                    :height="50 * relevantInfo.length + 20"
+                    :height="50 * data.length + 20"
                   ></v-system-bar>
                 </v-sheet>
               </v-container>
@@ -57,7 +57,7 @@
                     <v-card 
                       tile
                       flat
-                      v-for="experience in relevantInfo.slice(0, 4)" 
+                      v-for="experience in data.slice(0, 4)" 
                       :key="experience.title"
                     >
                       <v-card-title> {{ experience.title }} </v-card-title>
@@ -92,10 +92,11 @@
 
 <script>
 import dateDisplay from "../../utils/DateToText.ts"
+import ComponentMixin from './componentDisplayMixin'
+
 export default {
-  props: [
-    'relevantInfo',
-    'backgroundColor',
+  mixins: [
+    ComponentMixin
   ],
   data() {
     return {

@@ -1,36 +1,37 @@
 <template>
   <div>
-    <Header :data="portfolio.header" />
+    <header :data="portfolio.header" />
     <div
       v-for="component in components" 
       :key="component"
     >
-      <div>
-        {{ portfolio[component] }}
-      </div>
+      <component 
+        :is="component"
+        :data="portfolio[component].content"
+      />
     </div>
-    <Footer :data="footerData" />
+    <footer :data="footerData" />
   </div>
 </template>
 
 <script>
-import Header from '../PortfolioHeader.vue'
-import Footer from '../PortfolioFooter.vue'
-// import Projects from '../SubComponents/ProjectsDisplay.vue'
-// import Accomplishments from '../SubComponents/AccomplishmentsDisplay.vue'
-// import Experiences from '../SubComponents/ExperiencesDisplay.vue'
-// import Timeline from '../SubComponents/TimelineDisplay.vue'
-// import Education from '../SubComponents/EducationDisplay.vue'
+import header from '../PortfolioHeader.vue'
+import footer from '../PortfolioFooter.vue'
+import projects from '../SubComponents/ProjectsDisplay.vue'
+import accomplishments from '../SubComponents/AccomplishmentsDisplay.vue'
+import experiences from '../SubComponents/ExperiencesDisplay.vue'
+import timeline from '../SubComponents/TimelineDisplay.vue'
+import education from '../SubComponents/EducationDisplay.vue'
 
 export default {
   components: {
-    Header,
-    Footer,
-    // Projects,
-    // Accomplishments,
-    // Experiences,
-    // Timeline,
-    // Education
+    header,
+    footer,
+    projects,
+    accomplishments,
+    experiences,
+    timeline,
+    education
   },
   props: {
     portfolio: {
@@ -50,8 +51,10 @@ export default {
     }
   },
   mounted() {
-    this.components = Object.keys(this.portfolio).filter(component => component !== 'header');
-    this.components.sort((a, b) => this.portfolio[a].pageRank - this.portfolio[b].pageRank)
+    this.components = Object.keys(this.portfolio)
+      .filter(component => component !== 'header');
+    this.components
+      .sort((a, b) => this.portfolio[a].pageRank - this.portfolio[b].pageRank);
   }
 }
 </script>

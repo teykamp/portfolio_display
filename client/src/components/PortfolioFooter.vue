@@ -53,8 +53,11 @@
 
 <script>
 export default {
-  props: [
-    'data'
-  ],
+  props: {
+    data: {
+      required: true,
+      type: Object
+    }
+  },
 }
 </script>

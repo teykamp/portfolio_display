@@ -102,6 +102,8 @@
 
     </transition>
 
+    <display-engine :portfolio="userData" />
+
     <DeleteDialog 
       :description="`Removing the ${activeComponents[targetedComponentIndex]} 
       component from your portfolio will delete all the data contained inside and cannot be undone!`" 
@@ -128,6 +130,8 @@ import MainToolbar from './CreateSubComponents/NonPortfolioComponents/MainToolba
 import SelectComponents from './SelectComponents.vue'
 import KickStartSuggestions from './CreateSubComponents/NonPortfolioComponents/KickStartSuggestions.vue'
 
+import DisplayEngine from '../ReusableComponents/DisplayEngine.vue'
+
 // Logic
 import draggable from 'vuedraggable'
 import DatabaseServices from '../../DatabaseServices'
@@ -136,6 +140,7 @@ import HeaderClass from '../../utils/PortfolioSchemas/Header'
 
 export default {
   components: {
+    DisplayEngine,
     Projects,
     Accomplishments,
     Experiences,

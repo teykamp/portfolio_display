@@ -1,13 +1,9 @@
 import Header from '../utils/PortfolioSchemas/Header'
 import Footer from '../utils/PortfolioSchemas/Footer'
 import Timeline from '../utils/PortfolioSchemas/Timeline'
-// import Accomplishment from './PortfolioSchemas/Accomplishments'
-// import Project from './PortfolioSchemas/Projects'
-// import Education from './PortfolioSchemas/Education'
-// import Experience from './PortfolioSchemas/Experiences'
 
 import { nonStandardComponents } from '../main'
-import PortfolioEntry, { ComponentType } from '../utils/PortfolioSchemas/PortfolioEntry'
+import { ComponentType } from '../utils/PortfolioSchemas/PortfolioEntry'
 
 // takes full portfolio data (of type object) and returns an array<string> of components that are invalid
 export default function validatePortfolio(portfolioData: any) {

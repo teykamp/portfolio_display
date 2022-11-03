@@ -1,11 +1,14 @@
 <template>
   <div>
-    <Header :data="portfolio.header" />
+    <div v-if="portfolio.header">
+      <Header :data="portfolio.header" />
+    </div>
     <div
       v-for="component in components" 
       :key="component"
     >
       <component 
+        v-if="portfolio[component].content"
         :is="component"
         :data="portfolio[component].content"
       />
@@ -51,17 +54,17 @@ export default {
       }
     }
   },
-  mounted() {
-    this.components = Object.keys(this.portfolio)
-      .filter(component => component !== 'header');
-    this.components
-      .sort((a, b) => this.portfolio[a].pageRank - this.portfolio[b].pageRank);
-
-    if (this.components.includes('timeline')) {
-      this.configureTimeline();
-    }
-  },
   methods: {
+    buildDisplay() {
+      this.components = Object.keys(this.portfolio)
+        .filter(component => component !== 'header');
+      this.components
+        .sort((a, b) => this.portfolio[a].pageRank - this.portfolio[b].pageRank);
+
+      if (this.components.includes('timeline')) {
+        this.configureTimeline();
+      }
+    },
     configureTimeline() {
       let timelineEntries = [];
       this.portfolio.timeline.content.forEach(componentInTimeline => {
@@ -70,6 +73,16 @@ export default {
       })
       // eslint-disable-next-line
       this.portfolio.timeline.content = timelineEntries;
+    }
+  },
+  watch: {
+    portfolio: {
+      deep: true,
+      handler(v) {
+        if (typeof v !== 'object') return;
+        if (!Object.keys(v).length) return;
+        this.buildDisplay();
+      }
     }
   }
 }

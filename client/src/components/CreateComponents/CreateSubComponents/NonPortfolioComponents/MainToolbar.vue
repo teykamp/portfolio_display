@@ -146,7 +146,6 @@ export default {
       return this.userDataOnStart != JSON.stringify(this.userData);
     },
     sendUserToPreview() {
-      console.log('preview')
       this.$parent.saveSessionLocally();
       this.$emit('send-to-preview');
     },

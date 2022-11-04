@@ -1,5 +1,6 @@
 <template>
   <div v-if="isPortfolioValid && timelineReady">
+    <slot></slot>
     <Header :data="mutatedPortfolio.header" />
     <div
       v-for="component in components" 

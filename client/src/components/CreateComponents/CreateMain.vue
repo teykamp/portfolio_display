@@ -94,7 +94,13 @@
       <display-engine 
         v-else-if="showPreview" 
         :portfolio="userData" 
-      />
+      >
+        <template>
+          <v-btn @click.stop="showPreview = false">
+            back
+          </v-btn>
+        </template>
+      </display-engine>
   
       <component 
         v-else

@@ -2,7 +2,7 @@
   <div>
 
     <transition :name="`slide-${transitionDirection}`">
-      <div v-if="!editComponentView">
+      <div v-if="!(editComponentView || showPreview)">
 
         <MainToolbar
           :invalidComponents="invalidComponents"
@@ -11,6 +11,7 @@
           :userDataOnStart="userDataOnStart"
           @refresh-userdata-onstart="userDataOnStart = JSON.stringify(userData);"
           @select-components="toggleEditView('SelectComponents')"
+          @send-to-preview="showPreview = true"
         />
 
         <div v-if="loading">
@@ -87,11 +88,16 @@
 
             </v-col>
           </v-row> 
-        </v-container>      
-        <display-engine :portfolio="userData" />
+        </v-container>
       </div>
+
+      <display-engine 
+        v-else-if="showPreview" 
+        :portfolio="userData" 
+      />
   
-      <component v-else
+      <component 
+        v-else
         :is="componentBeingEdited"
         :component="componentBeingEdited"
         :userData="userData"
@@ -199,6 +205,8 @@ export default {
   },
   data() {
     return {
+      // true when user is looking at a preview of their portfolio
+      showPreview: false,
       // captures userData on mounted and compares it with the userData on exit
       userDataOnStart: '',
       // true if component is in a loading state and data has not finished fetching
@@ -218,9 +226,7 @@ export default {
       // userData object is the portfolioItem that is being edited by the user
       userData: {},
       // if true, components are allowed to be dragged
-      canComponentsDrag: true,
-      // the direction the component transitions slide in
-      transitionDirection: 'out'
+      canComponentsDrag: true
     }
   },
   computed: {
@@ -231,7 +237,10 @@ export default {
       return !(this.$vuetify.breakpoint.mdAndUp || this.showKickstart);
     },
     showKickstart() {
-      return this.activeComponents.length === 0 && !this.loading;
+      return !(this.activeComponents.length || this.loading);
+    },
+    transitionDirection() {
+      return this.editComponentView || this.showPreview ? 'out' : 'in'
     }
   },
   methods: {
@@ -318,9 +327,6 @@ export default {
       for (let i in this.activeComponents) {
         this.userData[this.activeComponents[i]].pageRank = i;
       }
-    },
-    editComponentView(v) {
-      this.transitionDirection =  v ? 'out' : 'in';
     }
   }
 }

@@ -146,8 +146,9 @@ export default {
       return this.userDataOnStart != JSON.stringify(this.userData);
     },
     sendUserToPreview() {
+      console.log('preview')
       this.$parent.saveSessionLocally();
-      this.$router.push({ name: 'Preview' });
+      this.$emit('send-to-preview');
     },
     intendToExit() {
       this.hasDataChanged() ? this.showExitDialog = true : this.$router.push('/');

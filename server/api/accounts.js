@@ -4,7 +4,7 @@ const Account = require('../models/accounts');
 const { verifyToken, authorizeTokenForUse } = require('../config');
 
 router.get('/', verifyToken, async (req, res) => {
-
+  
   try {
     const authorizeToken = authorizeTokenForUse(req.token);
     if (authorizeToken.isAuthorized) {

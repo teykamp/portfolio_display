@@ -88,7 +88,7 @@
             </v-col>
           </v-row> 
         </v-container>      
-
+        <display-engine :portfolio="userData" />
       </div>
   
       <component v-else
@@ -99,10 +99,8 @@
         @update-active-components="updateActiveComponents($event)"
         @update-component-data="updateComponentData($event)"
       />
-
     </transition>
 
-    <display-engine :portfolio="userData" />
 
     <DeleteDialog 
       :description="`Removing the ${activeComponents[targetedComponentIndex]} 

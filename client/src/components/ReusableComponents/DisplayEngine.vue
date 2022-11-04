@@ -1,16 +1,13 @@
 <template>
-  <div>
-    <div v-if="portfolio.header">
-      <Header :data="portfolio.header" />
-    </div>
+  <div v-if="isPortfolioValid && timelineReady">
+    <Header :data="mutatedPortfolio.header" />
     <div
       v-for="component in components" 
       :key="component"
     >
       <component 
-        v-if="portfolio[component].content"
         :is="component"
-        :data="portfolio[component].content"
+        :data="mutatedPortfolio[component].content"
       />
     </div>
     <Footer :data="footerData" />
@@ -44,7 +41,9 @@ export default {
   },
   data() {
     return {
-      // portfolio
+      mutatedPortfolio: {},
+      // makes sure that timeline has content property before rendering components
+      timelineReady: false,
       components: [],
       footerData: {
         disclaimer: 'Legal Disclaimer, and Stuff...',
@@ -54,16 +53,36 @@ export default {
       }
     }
   },
+  mounted() {
+    this.entryPoint();
+  },
+  computed: {
+    isPortfolioValid() {
+      if (typeof this.mutatedPortfolio !== 'object') return false;
+      if (!Object.keys(this.mutatedPortfolio).length) return false;
+      if (!this.mutatedPortfolio?.header) return false;
+      return true;
+    }
+  },
   methods: {
+    entryPoint() {
+      // creates deep copy for us the mutate
+      this.mutatedPortfolio = JSON.parse(JSON.stringify(this.portfolio));
+      if (this.isPortfolioValid) {
+        this.buildDisplay();
+      }
+    },
     buildDisplay() {
+      if (this.mutatedPortfolio?.timeline) {
+        this.configureTimeline();
+      } else {
+        this.timelineReady = true;
+      }
+
       this.components = Object.keys(this.portfolio)
         .filter(component => component !== 'header');
       this.components
         .sort((a, b) => this.portfolio[a].pageRank - this.portfolio[b].pageRank);
-
-      if (this.components.includes('timeline')) {
-        this.configureTimeline();
-      }
     },
     configureTimeline() {
       let timelineEntries = [];
@@ -71,17 +90,15 @@ export default {
         timelineEntries = timelineEntries
           .concat(this.portfolio[componentInTimeline].content);
       })
-      // eslint-disable-next-line
-      this.portfolio.timeline.content = timelineEntries;
+      this.mutatedPortfolio.timeline.content = timelineEntries;
+      this.timelineReady = true;
     }
   },
   watch: {
     portfolio: {
       deep: true,
-      handler(v) {
-        if (typeof v !== 'object') return;
-        if (!Object.keys(v).length) return;
-        this.buildDisplay();
+      handler() {
+        this.entryPoint();
       }
     }
   }

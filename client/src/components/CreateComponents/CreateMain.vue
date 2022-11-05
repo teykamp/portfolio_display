@@ -177,37 +177,24 @@ export default {
       return this.$router.push({ name: 'Auth' });
     }
 
-    // checks if unresolved session is saved in state, 
-    // this could be because user exited previously or is returning from a preview
-    if (this.$store.state.portfolioItem) {
-      this.userData = this.$store.state.portfolioItem;
-      this.validatePortfolioComponents();
-      this.orderComponentsByPageRank();
-      this.loading = false;
-      return
+    // restore unsaved session
+    if (localStorage.getItem('unsavedSessionData')) {
+      try {
+        this.userData = JSON.parse(localStorage.getItem('unsavedSessionData'));
+        this.$store.state.snackbarText = 'Previous session restored';
+      } catch {
+        this.$store.state.snackbarText = 'Failed to restore session';
+        await this.pullPortfolioFromAPI(sessionUser);
+      }
     }
 
     // asks the database for the logged in users portfolio content
-    let data;
-    try {
-      data = await DatabaseServices.getPortfolioContentByUsername(sessionUser);
-    } catch {
-      this.$store.state.snackbarText = 'There was an issue connecting to our servers';
-      this.$router.push('/');
-    }
-
-    // stores the portfolio obtained from the database to see if changes were made on exit
-    this.userDataOnStart = JSON.stringify(data);
-
-    // checks if user has a portfolio on file w/o errors
-    if (!data?.error) {
-      this.userData = data;
-    }
-
-    // if no valid porfolio is on file, it starts user off with some boilerplate
     else {
-      this.userData.header = new HeaderClass();
-    } 
+      await this.pullPortfolioFromAPI(sessionUser);
+    }
+
+    // stores starting portfolio to check if changes were made to it on exit
+    this.userDataOnStart = JSON.stringify(this.userData);
 
     this.validatePortfolioComponents();
     this.orderComponentsByPageRank();
@@ -254,6 +241,25 @@ export default {
     }
   },
   methods: {
+    async pullPortfolioFromAPI(username) {
+      let data;
+      try {
+        data = await DatabaseServices.getPortfolioContentByUsername(username);
+      } catch {
+        this.$store.state.snackbarText = 'There was an issue connecting to our servers';
+        this.$router.push('/');
+      }
+
+      // checks if user has a portfolio on file w/o errors
+      if (!data?.error) {
+        this.userData = data;
+      }
+
+      // if no valid portfolio is on file, it starts user off with some boilerplate
+      else {
+        this.userData.header = new HeaderClass();
+      }
+    },
     dragEnded() {
       if (!this.showDragSwitch) this.canComponentsDrag = false;
     },

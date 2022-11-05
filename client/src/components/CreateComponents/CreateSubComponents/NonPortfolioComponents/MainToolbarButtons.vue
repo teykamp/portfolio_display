@@ -1,11 +1,11 @@
 <template>
 <div>
   <v-btn 
+    @click.stop="actions[0]"
     :disabled="invalidComponents.length != 0" 
     :loading="loading"
     :dark="invalidComponents.length == 0"
     :color="saveBtnColor" 
-    @click.stop="actions[0]"
     :style="styles"
     :class="classes"
   >
@@ -14,36 +14,35 @@
   </v-btn>
 
   <v-btn 
-    :disabled="invalidComponents.length != 0" 
-    color="primary" 
-    :loading="loading"
     @click.stop="actions[1]"
+    :loading="loading"
     :style="styles"
     :class="classes"
+    color="primary" 
   >
     <v-icon class="mr-2">mdi-file-eye-outline</v-icon>
     Preview
   </v-btn>
 
   <v-btn
-    color="cyan darken-1"
-    dark
-    :loading="loading"
     @click.stop="actions[2]"
+    :loading="loading"
     :style="styles"
     :class="classes"
+    color="cyan darken-1"
+    dark
   >
     <v-icon>mdi-help-circle-outline</v-icon>
     <span class="ml-2">Help</span>
   </v-btn>
 
   <v-btn 
-    color="gray" 
-    text
-    :loading="loading"
     @click.stop="actions[3]"
+    :loading="loading"
     :style="styles"
     :class="classes"
+    color="gray" 
+    text
   >
     <v-icon class="mr-2">mdi-cog-outline</v-icon>
     Privacy Settings

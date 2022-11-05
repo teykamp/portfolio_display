@@ -95,9 +95,13 @@
         v-else-if="showPreview" 
         :portfolio="userData" 
       >
-        <template>
-          <v-btn @click.stop="showPreview = false">
-            back
+        <template #actions>
+          <v-btn 
+            @click.stop="showPreview = false"
+            text
+          >
+            <v-icon>mdi-chevron-left</v-icon>
+            back to building
           </v-btn>
         </template>
       </display-engine>

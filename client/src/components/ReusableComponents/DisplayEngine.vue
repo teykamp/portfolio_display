@@ -1,6 +1,8 @@
 <template>
   <div v-if="isPortfolioValid && timelineReady">
-    <slot></slot>
+    <div class="action-bar">
+      <slot name="actions" />
+    </div>
     <Header :data="mutatedPortfolio.header" />
     <div
       v-for="component in components" 
@@ -105,3 +107,13 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.action-bar {
+  position: fixed; 
+  top: 0; 
+  z-index: 2; 
+  width: 100%; 
+  background-color: rgba(0, 0, 0, 0.25)
+}
+</style>

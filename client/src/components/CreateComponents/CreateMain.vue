@@ -300,8 +300,6 @@ export default {
       } catch {
         throw new Error('An issue was encountered when trying to backup session data locally.');
       }
-
-      this.$store.state.portfolioItem = this.userData;
     },
     toggleEditView(componentName) {
       this.componentBeingEdited = componentName;

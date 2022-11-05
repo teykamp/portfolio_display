@@ -81,6 +81,12 @@ export default {
     document.querySelectorAll('article').forEach((section) => {
       observer.observe(section);
     });
+
+    setTimeout(() => {
+      if (this.$route.query.to) {
+        document.getElementById(this.$route.query.to).scrollIntoView();
+      }
+    }, 50)
   },
   destroyed() {
     document.removeEventListener('scroll', this.adjustTopBar);

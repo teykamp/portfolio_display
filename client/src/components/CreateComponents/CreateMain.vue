@@ -2,7 +2,7 @@
   <div>
 
     <transition :name="`slide-${transitionDirection}`">
-      <div v-if="!editComponentView">
+      <div v-if="!(editComponentView || showPreview)">
 
         <MainToolbar
           :invalidComponents="invalidComponents"
@@ -11,6 +11,7 @@
           :userDataOnStart="userDataOnStart"
           @refresh-userdata-onstart="userDataOnStart = JSON.stringify(userData);"
           @select-components="toggleEditView('SelectComponents')"
+          @send-to-preview="showPreview = true"
         />
 
         <div v-if="loading">
@@ -69,7 +70,7 @@
               </draggable>
 
               <KickStartSuggestions 
-                v-if="activeComponents.length === 0 && !loading"
+                v-if="showKickstart"
                 :addAction="() => toggleEditView('SelectComponents')" 
               />
 
@@ -87,11 +88,26 @@
 
             </v-col>
           </v-row> 
-        </v-container>      
-
+        </v-container>
       </div>
+
+      <display-engine 
+        v-else-if="showPreview" 
+        :portfolio="userData" 
+      >
+        <template #actions>
+          <v-btn 
+            @click.stop="showPreview = false"
+            text
+          >
+            <v-icon>mdi-chevron-left</v-icon>
+            back to building
+          </v-btn>
+        </template>
+      </display-engine>
   
-      <component v-else
+      <component 
+        v-else
         :is="componentBeingEdited"
         :component="componentBeingEdited"
         :userData="userData"
@@ -99,8 +115,8 @@
         @update-active-components="updateActiveComponents($event)"
         @update-component-data="updateComponentData($event)"
       />
-
     </transition>
+
 
     <DeleteDialog 
       :description="`Removing the ${activeComponents[targetedComponentIndex]} 
@@ -128,6 +144,8 @@ import MainToolbar from './CreateSubComponents/NonPortfolioComponents/MainToolba
 import SelectComponents from './SelectComponents.vue'
 import KickStartSuggestions from './CreateSubComponents/NonPortfolioComponents/KickStartSuggestions.vue'
 
+import DisplayEngine from '../ReusableComponents/DisplayEngine.vue'
+
 // Logic
 import draggable from 'vuedraggable'
 import DatabaseServices from '../../DatabaseServices'
@@ -136,6 +154,7 @@ import HeaderClass from '../../utils/PortfolioSchemas/Header'
 
 export default {
   components: {
+    DisplayEngine,
     Projects,
     Accomplishments,
     Experiences,
@@ -158,37 +177,24 @@ export default {
       return this.$router.push({ name: 'Auth' });
     }
 
-    // checks if unresolved session is saved in state, 
-    // this could be because user exited previously or is returning from a preview
-    if (this.$store.state.portfolioItem) {
-      this.userData = this.$store.state.portfolioItem;
-      this.validatePortfolioComponents();
-      this.orderComponentsByPageRank();
-      this.loading = false;
-      return
+    // restore unsaved session
+    if (localStorage.getItem('unsavedSessionData')) {
+      try {
+        this.userData = JSON.parse(localStorage.getItem('unsavedSessionData'));
+        this.$store.state.snackbarText = 'Previous session restored';
+      } catch {
+        this.$store.state.snackbarText = 'Failed to restore session';
+        await this.pullPortfolioFromAPI(sessionUser);
+      }
     }
 
     // asks the database for the logged in users portfolio content
-    let data;
-    try {
-      data = await DatabaseServices.getPortfolioContentByUsername(sessionUser);
-    } catch {
-      this.$store.state.snackbarText = 'There was an issue connecting to our servers';
-      this.$router.push('/');
-    }
-
-    // stores the portfolio obtained from the database to see if changes were made on exit
-    this.userDataOnStart = JSON.stringify(data);
-
-    // checks if user has a portfolio on file w/o errors
-    if (!data?.error) {
-      this.userData = data;
-    }
-
-    // if no valid porfolio is on file, it starts user off with some boilerplate
     else {
-      this.userData.header = new HeaderClass();
-    } 
+      await this.pullPortfolioFromAPI(sessionUser);
+    }
+
+    // stores starting portfolio to check if changes were made to it on exit
+    this.userDataOnStart = JSON.stringify(this.userData);
 
     this.validatePortfolioComponents();
     this.orderComponentsByPageRank();
@@ -196,6 +202,8 @@ export default {
   },
   data() {
     return {
+      // true when user is looking at a preview of their portfolio
+      showPreview: false,
       // captures userData on mounted and compares it with the userData on exit
       userDataOnStart: '',
       // true if component is in a loading state and data has not finished fetching
@@ -215,9 +223,7 @@ export default {
       // userData object is the portfolioItem that is being edited by the user
       userData: {},
       // if true, components are allowed to be dragged
-      canComponentsDrag: true,
-      // the direction the component transitions slide in
-      transitionDirection: 'out'
+      canComponentsDrag: true
     }
   },
   computed: {
@@ -225,10 +231,35 @@ export default {
       return `Dragging is ${this.canComponentsDrag ? '':'in'}active`;
     },
     showDragSwitch() {
-      return !this.$vuetify.breakpoint.mdAndUp;
+      return !(this.$vuetify.breakpoint.mdAndUp || this.showKickstart);
+    },
+    showKickstart() {
+      return !(this.activeComponents.length || this.loading);
+    },
+    transitionDirection() {
+      return this.editComponentView || this.showPreview ? 'out' : 'in'
     }
   },
   methods: {
+    async pullPortfolioFromAPI(username) {
+      let data;
+      try {
+        data = await DatabaseServices.getPortfolioContentByUsername(username);
+      } catch {
+        this.$store.state.snackbarText = 'There was an issue connecting to our servers';
+        this.$router.push('/');
+      }
+
+      // checks if user has a portfolio on file w/o errors
+      if (!data?.error) {
+        this.userData = data;
+      }
+
+      // if no valid portfolio is on file, it starts user off with some boilerplate
+      else {
+        this.userData.header = new HeaderClass();
+      }
+    },
     dragEnded() {
       if (!this.showDragSwitch) this.canComponentsDrag = false;
     },
@@ -312,9 +343,6 @@ export default {
       for (let i in this.activeComponents) {
         this.userData[this.activeComponents[i]].pageRank = i;
       }
-    },
-    editComponentView(v) {
-      this.transitionDirection =  v ? 'out' : 'in';
     }
   }
 }

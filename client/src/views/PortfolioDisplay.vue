@@ -3,47 +3,30 @@
 
     <!-- Error With Profile -->
     <div v-if="error">
-      <Error 
-        :errorType="error"
-        :username="$route.params.user" 
-      />
+      <Error :errorType="error" />
     </div>
 
     <!-- Porfolio Display -->
     <div v-else>
-
       <v-row
-        style="
-        z-index: 2;
-        top: 10px;
-        position: fixed;"
+        style="z-index: 2; top: 10px; position: fixed;"
         class="ml-1"
       >  
         <v-btn
-          text
           @click="back"
+          text
         >Back</v-btn>
         <v-btn
           v-if="canEditPortfolio"
-          text
           @click="$router.push({ name: 'Build' })"
+          text
         >Edit</v-btn>
       </v-row>
 
-      <div>
-        <Header :data="headerData" />
-      </div>
-
-      <div v-for="component in componentArray" :key="component.id">
-        <component-display-factory 
-          :relevantInfo="component.content" 
-          :componentType="component.category" 
-        />
-      </div>
-
-      <div>
-        <Footer :data="footerData" />
-      </div>
+      <DisplayEngine 
+        :portfolio="portfolio" 
+        :key="Object.keys(portfolio)[0]"
+      />
 
     </div>
 
@@ -51,19 +34,14 @@
 </template>
 
 <script>
-import ComponentDisplayFactory from '../components/ComponentDisplayFactory.vue'
+import DisplayEngine from '../components/ReusableComponents/DisplayEngine.vue'
 import DatabaseServices from '../DatabaseServices'
-import parseProfileData from '../utils/ParseProfileData'
 import Error from '../components/ErrorDisplay.vue'
-import Header from '../components/PortfolioHeader.vue'
-import Footer from '../components/PortfolioFooter.vue'
 
 export default {
   components: {
-    ComponentDisplayFactory,
     Error,
-    Header,
-    Footer
+    DisplayEngine
   },
   async created() {
 
@@ -71,8 +49,8 @@ export default {
     // if true, loads preview mode
     if (this.$route.fullPath.includes('preview') && this.$store.state.portfolioItem) {
       this.previewMode = true;
-      document.title = "Preview - Portfolio"
-      return this.formatDataForDisplay(this.$store.state.portfolioItem);
+      document.title = "Preview - Portfolio";
+      return this.portfolio = this.$store.state.portfolioItem;
     // catched edge case were someone tries to manually enters preview route without info being stored
     } else if (this.$route.fullPath.includes('preview')) {
       this.$store.state.snackbarText = 'There seems to be nothing to preview!';
@@ -104,9 +82,9 @@ export default {
     // PULLS DOWN ACTUAL PORTFOLIO DATA ONCE PRIVACY SCREENING HAS PASSED
     try {
       const portfolioItem = await DatabaseServices.getPortfolioContentByUsername(this.$route.params.user);
-      if (portfolioItem?.error) this.error = portfolioItem.error
-      document.title = `${this.$route.params.user} - Portfolio`
-      this.formatDataForDisplay(portfolioItem);
+      if (portfolioItem?.error) this.error = portfolioItem.error;
+      document.title = `${this.$route.params.user} - Portfolio`;
+      this.portfolio = portfolioItem;
     } catch (err) {
       return this.catchClause(err);
     }
@@ -115,12 +93,9 @@ export default {
   },
   data() {
     return {
-      componentArray: [],
-      headerData: {},
-      footerData: {},      
-
       error: undefined,
       previewMode: false,
+      portfolio: { default: null }
     }
   },
   mounted() {
@@ -139,20 +114,6 @@ export default {
       this.$store.state.snackbarText = 'Cannot connect to server';
       this.error = 'no server conection';
       console.warn(error);
-    },
-    formatDataForDisplay(userData) {
-
-      /* sorts data into seperate categories for passing down sub-component specific info */
-
-      this.componentArray = parseProfileData(userData);
-      this.headerData = userData.header;
-
-      this.footerData = {
-        disclaimer: 'Legal Disclaimer, and Stuff...',
-        version: '0.1.0',
-        githubSource: 'https://github.com/teykamp/portfolio_display',
-        logo: 'https://avatars.githubusercontent.com/u/46391052?s=120&v=4',
-      }
     }
   }
 }

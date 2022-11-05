@@ -6,11 +6,11 @@
 
       <DialogBox 
         :visible="showSessionRestorationDialog"
-        :title="'Restore Previous Session?'"
-        :description="'We have detected that you previously made changes to your portfolio that went unsaved, would you like to restore your session?'"
-        :mainBtnText="'Restore'"
-        :mainBtnColor="'success'"
-        :secondaryBtnText="'Discard'"
+        title="Restore Previous Session?"
+        description="We have detected that you previously made changes to your portfolio that went unsaved, would you like to restore your session?"
+        mainBtnText="Restore"
+        mainBtnColor="success"
+        secondaryBtnText="Discard"
         @confirmed="restoreSession"
         @close="dialogClosed"
       />
@@ -44,6 +44,7 @@ export default Vue.extend({
     return {
       showSessionRestorationDialog: false,
       showSnackbar: false,
+      sessionRestored: false
     }
   },
   components: {
@@ -55,22 +56,22 @@ export default Vue.extend({
     this.$watch(() => this.$store.state.snackbarText, (newValue) => {
       this.showSnackbar = !!newValue;
     });
+    
     // check for unresolved session
-    if (localStorage?.unsavedSessionData) this.showSessionRestorationDialog = true;
+    if (localStorage?.unsavedSessionData) {
+      this.$router.push('/');
+      this.showSessionRestorationDialog = true;
+    }
   },
   methods: {
     restoreSession() {
-      try {
-        this.$store.state.portfolioItem = JSON.parse(localStorage.unsavedSessionData);
-      } catch {
-        this.$store.state.snackbarText = 'Previous version corrupted. Restoration Unsuccessful.';
-        return;
-      }
       this.$router.push({ name: 'Build' });
+      this.sessionRestored = true;
     },
     dialogClosed() {
       this.showSessionRestorationDialog = false;
-      setTimeout(() => localStorage.removeItem('unsavedSessionData'), 100);
+      if (this.sessionRestored) this.sessionRestored = false;
+      else localStorage.removeItem('unsavedSessionData');
     }
   },
   watch: {

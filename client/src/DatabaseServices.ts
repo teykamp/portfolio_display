@@ -16,7 +16,7 @@ function getLoggedInUser(): string {
 }
 
 // defines request timeout in milliseconds
-const timeout = 3000;
+const timeout = 6500;
 
 interface AxiosRequestObject {
   method: string,

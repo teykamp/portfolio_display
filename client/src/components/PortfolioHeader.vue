@@ -105,8 +105,15 @@
 
 <script>
 export default {
-  props: [
-    'data'
-  ]
+  props: {
+    data: {
+      required: false,
+      default: () => {
+        return {
+          headshotURL: 'empty'
+        }
+      }
+    }
+  }
 }
 </script>

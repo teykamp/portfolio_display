@@ -8,7 +8,7 @@
         <h4 class="mb-6">Projects</h4>
         <v-row justify="center">
           <v-sheet
-            v-for="project in relevantInfo" 
+            v-for="project in data" 
             :key="project.name"
             class="ma-6"
           >
@@ -126,10 +126,11 @@
 
 <script>
 import TechnologyDisplay from '../ReusableComponents/ProjectTechnologySheet.vue'
+import ComponentMixin from './componentDisplayMixin'
+
 export default {
-  props: [
-    'relevantInfo',
-    'backgroundColor',
+  mixins: [
+    ComponentMixin
   ],
   components: {
     TechnologyDisplay,

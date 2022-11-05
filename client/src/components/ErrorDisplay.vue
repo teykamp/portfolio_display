@@ -5,24 +5,11 @@
       fluid
       class="container"
     >
-      <!-- User not defined -->
-      <div v-if="errorType === 'no server conection'">
-        <v-alert
-          prominent
-          type="error"
-          icon="mdi-cloud-alert"
-        >
-          <div class="errorPadding">
-            There has been an issue connecting with our servers, this may be an internet connectivity issue.
-          </div>
-        </v-alert>
-      </div>
-
       <!-- User not found -->
-      <div v-else-if="errorType === 'user not found'">
+      <div v-if="error">
         <v-alert
           prominent
-          type="error"
+          :type="error.displayType"
         >
           <v-row 
             align="center"
@@ -30,76 +17,20 @@
           >
             <v-col class="grow">
               <div class="errorPadding">
-                <h5>Portfolio Not Found</h5>
-                Please search for another portfolio.
+                <h5>{{ error.title }}</h5>
+                {{ error.desc }}
+                <br>
+                <v-btn 
+                  @click.stop="btnAction"
+                  class="mt-5 black--text"
+                  color="white"
+                >
+                  Search Again
+                </v-btn>
               </div>
-            </v-col>
-            <v-col class="shrink">
-              <v-btn @click.stop="$router.push('/')">
-                Search Again
-              </v-btn>
             </v-col>
           </v-row>
         </v-alert>  
-      </div>
-
-      <!-- Private Account -->
-      <div v-else-if="errorType === 'account set private'">
-        <v-alert
-          prominent
-          type="warning"
-        >
-          <v-row align="center">
-            <v-col class="grow">
-              <div class="errorPadding">
-                This portfolio has been marked as private, contact {{ username }} to gain access!
-              </div>
-            </v-col>
-            <v-col class="shrink">
-              <v-btn @click.stop="$router.push('/')">
-                Home
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-alert>
-      </div>
-
-      <!-- User not found -->
-      <div v-else-if="errorType">
-        <v-alert
-          prominent
-          type="info"
-        >
-          <v-row 
-            align="center"
-            justify="center"
-          >
-            <v-col class="grow">
-              <div class="errorPadding">
-                <h5>Oops!</h5>
-                {{ errorType }}
-              </div>
-            </v-col>
-            <v-col class="shrink">
-              <v-btn @click.stop="$router.push('/')">
-                Home
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-alert>  
-      </div>
-
-      <!-- Fallback -->
-      <div v-else>
-        <v-alert
-        prominent
-        type="error"
-        icon="mdi-cloud-alert"
-        >
-          <div class="errorPadding">
-            There has been an error loading this page.
-          </div>
-        </v-alert>
       </div>
     </v-container>
   </div>
@@ -107,16 +38,50 @@
 
 <script>
 export default {
-  props: [
-    'errorType',
-    'username',
-  ],
+  props: {
+    errorType: {
+      required: true,
+      type: String
+    }
+  },
   created() {
-    document.title = this.errorType
+    this.error = this.errorData.find(error => error.errorType === this.errorType) ?? {
+      title: 'Error Encountered',
+      desc: 'An error was encountered whilst loading portfolio.',
+      displayType: 'warning'
+    };
+    document.title = this.error.title;
   },
   data: () => {
     return {
-      errorMsg: ''
+      error: null,
+      errorData: [{
+        errorType: 'user not found',
+        title: 'Portfolio Not Found',
+        desc: 'Please search for another portfolio.',
+        displayType: 'error'
+      }, {
+        errorType: 'no server connection',
+        title: 'No Connection',
+        desc: 'There has been an issue connecting to our servers. This may be an internet connectivity issue.',
+        displayType: 'error'
+      },
+      {
+        errorType: 'account set private',
+        title: 'Access Restricted',
+        desc: `This portfolio has been marked as private!`,
+        displayType: 'info'
+      }]
+    }
+  },
+  methods: {
+    btnAction() {
+      this.$router.push({
+        name: 'Home',
+        query: {
+          to: 'explore'
+        }
+      })
     }
   }
 }

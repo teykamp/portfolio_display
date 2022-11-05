@@ -147,7 +147,7 @@ export default {
     },
     sendUserToPreview() {
       this.$parent.saveSessionLocally();
-      this.$router.push({ name: 'Preview' });
+      this.$emit('send-to-preview');
     },
     intendToExit() {
       this.hasDataChanged() ? this.showExitDialog = true : this.$router.push('/');
@@ -155,7 +155,6 @@ export default {
     leaveCreateRoute() {
       this.showExitDialog = false;
       if (this.preventLeave) return this.preventLeave = false;
-      this.$store.state.portfolioItem = undefined;
       localStorage.removeItem('unsavedSessionData');
       this.$router.push('/');
     },
@@ -176,7 +175,6 @@ export default {
       }
       
       this.$emit('refresh-userdata-onstart');
-      this.$store.state.portfolioItem = undefined;
       localStorage.removeItem('unsavedSessionData');
     }
   },

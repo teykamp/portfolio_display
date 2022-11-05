@@ -193,9 +193,6 @@ export default {
       await this.pullPortfolioFromAPI(sessionUser);
     }
 
-    // stores starting portfolio to check if changes were made to it on exit
-    this.userDataOnStart = JSON.stringify(this.userData);
-
     this.validatePortfolioComponents();
     this.orderComponentsByPageRank();
     this.loading = false;
@@ -259,6 +256,9 @@ export default {
       else {
         this.userData.header = new HeaderClass();
       }
+
+      // stores saved version of portfolio to check if changes were made to it on exit
+      this.userDataOnStart = JSON.stringify(this.userData);
     },
     dragEnded() {
       if (!this.showDragSwitch) this.canComponentsDrag = false;

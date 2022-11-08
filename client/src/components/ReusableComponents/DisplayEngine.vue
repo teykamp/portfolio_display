@@ -62,7 +62,6 @@ export default {
   computed: {
     isPortfolioValid() {
       if (typeof this.mutatedPortfolio !== 'object') return false;
-      if (!Object.keys(this.mutatedPortfolio).length) return false;
       if (!this.mutatedPortfolio?.header) return false;
       return true;
     }
@@ -83,8 +82,7 @@ export default {
       }
 
       this.components = Object.keys(this.portfolio)
-        .filter(component => component !== 'header');
-      this.components
+        .filter(component => component !== 'header')
         .sort((a, b) => this.portfolio[a].pageRank - this.portfolio[b].pageRank);
     },
     configureTimeline() {

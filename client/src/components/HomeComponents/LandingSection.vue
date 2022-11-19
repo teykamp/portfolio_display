@@ -1,5 +1,5 @@
 <template>
-  <div class="background-matte">
+  <div class="background-matte center">
     <div class="background-fade"></div>
     <div class="content-container pl-10">
       <div style="width: 70%">
@@ -30,6 +30,21 @@
         alt="portfolio"
         style="mix-blend-mode: darken; width: 25%"
       />
+    </div>
+    <div class="bottom-text">
+      <p 
+        class="text-p" 
+        style="font-size: 20pt; font-weight: 200; margin: 0%"
+      >
+        learn about how
+      </p>
+      <v-icon
+        x-large 
+        class="down-chevron ml-1"
+        style="opacity: 0.8"
+      >
+        mdi-chevron-down
+      </v-icon>
     </div>
   </div>
 </template>
@@ -99,6 +114,8 @@ export default {
 
 <style scoped>
 .background-fade {
+  position: absolute;
+  top: 0;
   width: 100%;
   height: 55%;
   background: linear-gradient(180deg, #294DCD 0%, rgba(53, 69, 205, 0.61) 22.57%, rgba(93, 41, 205, 0.00990103) 100%);
@@ -107,10 +124,10 @@ export default {
   width: 100vw;
   height: 100vh;
   background: white;
+  position: relative;
 }
 .content-container {
   position: absolute;
-  top: 12.5%;
   width: 100%;
   display: flex;
   justify-content: left;
@@ -126,5 +143,19 @@ export default {
 }
 .popout {
   transition: 3s;
+}
+.bottom-text {
+  position: absolute;
+  bottom: 1.5%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+}
+.down-chevron {
+  transition: 300ms ease;
+}
+.down-chevron:hover {
+  transform: translateY(5px)
 }
 </style>

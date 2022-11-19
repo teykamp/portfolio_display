@@ -1,20 +1,15 @@
 <template>
-  <div class="action-btns px-10 pt-2">
+  <div class="action-btns pl-2 pr-10 pt-2">
     <div 
-      @click.stop="selected('build')"
-      :style="selectedStyle('build')"
-      class="text-h4 action-btn mr-8 pa-1"
-    >build</div>
-    <div 
-      @click.stop="selected('explore')"
-      :style="selectedStyle('explore')"
-      class="text-h4 action-btn mx-8 pa-1"
-    >explore</div>
-    <div
-      @click.stop="selected('register')"
-      :style="selectedStyle('register')"
-      class="text-h4 action-btn mx-8 pa-1"
-    >register</div>
+      v-for="button in buttons" 
+      :key="button"
+    >
+      <div
+        @click.stop="select(button)"
+        :style="selectedStyle(button)"
+        class="text-h4 action-btn mx-8 pa-1"
+      >{{ button }}</div>
+    </div>
     <v-spacer></v-spacer>
     {{ modelValue}}
     <div class="text-h4 action-btn">login</div>
@@ -23,15 +18,28 @@
 
 <script>
 export default {
-  props: ['currentSection'],
-  emits: ['updateCurrentSection'],
+  props: {
+    currentSection: String
+  },
+  emits: {
+    updateCurrentSection: String
+  },
+  data() {
+    return {
+      buttons: [
+        'build',
+        'explore',
+        'register'
+      ]
+    }
+  },
   methods: {
     selectedStyle(sectionName) {
       if (sectionName === this.currentSection) {
         return 'color: black; background: rgba(255,255,255,0.85); border-radius: 10px;'
       }
     },
-    selected(sectionName) {
+    select(sectionName) {
       this.$emit('updateCurrentSection', sectionName)
     }
   }

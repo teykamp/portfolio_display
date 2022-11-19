@@ -1,16 +1,40 @@
 <template>
   <div class="action-btns px-10 pt-2">
-    <div class="text-h4 action-btn pr-8">build</div>
-    <div class="text-h4 action-btn px-8">explore</div>
-    <div class="text-h4 action-btn px-8">register</div>
+    <div 
+      @click.stop="selected('build')"
+      :style="selectedStyle('build')"
+      class="text-h4 action-btn mr-8 pa-1"
+    >build</div>
+    <div 
+      @click.stop="selected('explore')"
+      :style="selectedStyle('explore')"
+      class="text-h4 action-btn mx-8 pa-1"
+    >explore</div>
+    <div
+      @click.stop="selected('register')"
+      :style="selectedStyle('register')"
+      class="text-h4 action-btn mx-8 pa-1"
+    >register</div>
     <v-spacer></v-spacer>
+    {{ modelValue}}
     <div class="text-h4 action-btn">login</div>
   </div>
 </template>
 
 <script>
 export default {
-  
+  props: ['currentSection'],
+  emits: ['updateCurrentSection'],
+  methods: {
+    selectedStyle(sectionName) {
+      if (sectionName === this.currentSection) {
+        return 'color: black; background: rgba(255,255,255,0.85); border-radius: 10px;'
+      }
+    },
+    selected(sectionName) {
+      this.$emit('updateCurrentSection', sectionName)
+    }
+  }
 }
 </script>
 

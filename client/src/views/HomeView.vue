@@ -1,32 +1,32 @@
 <template>
   <div>
-    <Actions />
-    <Landing />
-    <Build />
-    <Explore />
-    <Register />
+    <Actions
+      :currentSection="currentSection"
+      @updateCurrentSection="currentSection = $event"
+    />
+    <component :is="currentSection" />
   </div>
 </template>
 
 <script>
 import Actions from '../components/HomeComponents/ActionButtons.vue'
-import Landing from '../components/HomeComponents/LandingSection.vue'
-import Register from '../components/HomeComponents/RegisterSection.vue'
-import Build from '../components/HomeComponents/BuildSection.vue'
-import Explore from '../components/HomeComponents/ExploreSection.vue'
+import landing from '../components/HomeComponents/LandingSection.vue'
+import register from '../components/HomeComponents/RegisterSection.vue'
+import build from '../components/HomeComponents/BuildSection.vue'
+import explore from '../components/HomeComponents/ExploreSection.vue'
 
 export default {
   name: 'HomeView',
   components: {
-    Register,
-    Build,
-    Explore,
     Actions,
-    Landing
+    register,
+    build,
+    explore,
+    landing
   },
   data() {
     return {
-      currentSection: 0,
+      currentSection: 'landing',
       username: localStorage.username
     }
   },

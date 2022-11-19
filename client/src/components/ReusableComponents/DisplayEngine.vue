@@ -68,7 +68,7 @@ export default {
   },
   methods: {
     entryPoint() {
-      // creates deep copy for us the mutate
+      // creates deep copy for us to mutate
       this.mutatedPortfolio = JSON.parse(JSON.stringify(this.portfolio));
       if (this.isPortfolioValid) {
         this.buildDisplay();

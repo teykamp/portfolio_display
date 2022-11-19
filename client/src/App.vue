@@ -82,3 +82,7 @@ export default Vue.extend({
   }
 })
 </script>
+
+<style>
+  @import url('./UniversalStyles.css');
+</style>

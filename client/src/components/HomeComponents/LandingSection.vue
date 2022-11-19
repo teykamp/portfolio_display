@@ -1,9 +1,76 @@
 <template>
-  <div>Landing</div>
+  <div class="background-matte">
+    <div class="background-fade"></div>
+    <div class="title-container ma-10">
+      <h1 class="title text-h1">
+        Popout Portfolio
+      </h1>
+      <p 
+        class="text-h3" 
+        style="font-weight: 200"
+      >
+        Create a portfolio on the cloud that 
+        <span 
+          @mouseover="playHighlightAnimation"
+          :style="`width: ${highlightWidth}px`"
+          class="highlight"
+        ></span>
+        stands out. 100% for free
+      </p>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
-  
+  data() {
+    return {
+      highlightWidth: 0
+    }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.playHighlightAnimation();
+    }, 2000)
+  },
+  methods: {
+    playHighlightAnimation() {
+      this.highlightWidth = 0;
+      const HIGHLIGHT_WIDTH = 230;
+      // final transition dur in ms = HIGHLIGHT_WIDTH * TRANSITION_DUR
+      const TRANSITION_DUR = 2.5;
+      for (let i = 0; i < HIGHLIGHT_WIDTH; i++) {
+        setTimeout(() => {
+          this.highlightWidth++
+        }, i * TRANSITION_DUR)
+      }
+    }
+  }
 }
 </script>
+
+<style scoped>
+.background-fade {
+  width: 100%;
+  height: 55%;
+  background: linear-gradient(180deg, #294DCD 0%, rgba(53, 69, 205, 0.61) 22.57%, rgba(93, 41, 205, 0.00990103) 100%);
+}
+.background-matte {
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+}
+.title {
+  font-weight: 900;
+}
+.title-container {
+  position: absolute;
+  width: 70%;
+  top: 15%;
+}
+.highlight {
+  position: absolute;
+  background-color: #294DCD33;
+  height: 50px;
+}
+</style>

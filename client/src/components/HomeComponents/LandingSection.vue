@@ -3,11 +3,11 @@
     <div class="background-fade"></div>
     <div class="title-container ma-10">
       <h1 class="title text-h1">
-        Popout Portfolio
+        <span class="popout" :style="popoutColorDisplay">Popout</span> Portfolio
       </h1>
       <p 
         class="text-h3" 
-        style="font-weight: 200"
+        style="font-weight: 200; cursor: default"
       >
         Create a portfolio on the cloud that 
         <span 
@@ -25,20 +25,48 @@
 export default {
   data() {
     return {
-      highlightWidth: 0
+      highlightWidth: 0,
+      highlightAnimationPlaying: false,
+      popoutColor: 'red',
+      popoutColors: [
+        'red',
+        'blue',
+        'green'
+      ]
     }
   },
   mounted() {
+    this.popoutColorChange = setInterval(() => {
+      const INX = this.popoutColors.indexOf(this.popoutColor)
+      const LAST_COLOR = INX === this.popoutColors.length - 1
+      this.popoutColor = LAST_COLOR ? this.popoutColors[0] : this.popoutColors[INX + 1]
+    }, 2500)
+
     setTimeout(() => {
       this.playHighlightAnimation();
-    }, 2000)
+    }, 500)
+  },
+  destroyed() {
+    clearInterval(this.popoutColorChange)
+  },
+  computed: {
+    popoutColorDisplay() {
+      return `color: ${this.popoutColor}`
+    }
   },
   methods: {
     playHighlightAnimation() {
+      if (this.highlightAnimationPlaying) return;
       this.highlightWidth = 0;
       const HIGHLIGHT_WIDTH = 230;
+      const TRANSITION_DUR = 3.5;
+
+      this.highlightAnimationPlaying = true;
+      setTimeout(() => {
+        this.highlightAnimationPlaying = false;
       // final transition dur in ms = HIGHLIGHT_WIDTH * TRANSITION_DUR
-      const TRANSITION_DUR = 2.5;
+      }, TRANSITION_DUR * HIGHLIGHT_WIDTH)
+
       for (let i = 0; i < HIGHLIGHT_WIDTH; i++) {
         setTimeout(() => {
           this.highlightWidth++
@@ -72,5 +100,8 @@ export default {
   position: absolute;
   background-color: #294DCD33;
   height: 50px;
+}
+.popout {
+  transition: 5s;
 }
 </style>

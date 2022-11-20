@@ -1,7 +1,7 @@
 <template>
   <div class="background-matte center">
     <div class="background-fade"></div>
-    <div class="content-container pl-10">
+    <div :class="`content-container pl-${sm ? '4':'10'}`">
       <div :style="`width: ${sm ? '100':'70'}%`">
         <h1 :class="`title text-${sm ? 'h3':'h1'}`">
           <span 
@@ -96,7 +96,7 @@ export default {
       return `color: ${this.popoutColor}`;
     },
     highlightAnimation() {
-      return `background: linear-gradient(to right, #294DCD33 ${this.highlightWidth}%, 0%, transparent);`
+      return `background: linear-gradient(to right, #294DCD33 ${this.highlightWidth}%, 0%, transparent);`;
     },
     sm() {
       return !this.$vuetify.breakpoint.mdAndUp;

@@ -1,131 +1,88 @@
 <template>
   <div>
-
-    <div 
-      class="header pa-2" 
-      :style="`background-color: rgba(255, 255, 255, ${barWhiteness}); box-shadow: 0px 0px ${calcShadow()}px`"
-    > 
-      <v-btn
-        :text="currentSection !== 'register'"
-        :color="currentSection !== 'register' ? '' : 'info'"
-        @click.stop="$router.push({ name: 'Auth', query: { type: 'register' } })"
-      >Register</v-btn>
-      <v-btn 
-        :text="currentSection !== 'build'"
-        :color="currentSection !== 'build' ? '' : 'error'"
-        @click.stop="$router.push({ name: 'Build' })"
-      >Build</v-btn>
-      <a href="#explore">
-        <v-btn
-          :text="currentSection !== 'explore'"
-          :color="currentSection !== 'explore' ? '' : 'success'"
-        >Explore</v-btn>
-      </a>
-    </div>
-
-    <article id="invigorate">
-      <v-img position="absolute" width="100vw" src="../assets/LandingPage/smilingman2.jpeg" />
-    </article>
-    <article id="register" style="background-color: white;" class="content-container">
-      <Register />
-    </article>
-    <article id="build" style="background-color: white;" class="content-container">
-      <Build />
-    </article>
-    <article id="explore" style="background-color: white;" class="content-container">
-      <Explore />
-    </article>
-    <article id="footer" style="height: 50vh" class="content-container"></article>
-  
-    <v-btn 
-      v-if="username"
-      color="error"
-      @click.stop="logout()"
-    >Logout</v-btn>
-
+    <Actions
+      :sections="sections"
+      :currentSection="currentSection"
+      @updateCurrentSection="currentSection = $event"
+    />
+    <transition :name="`slide-${transitionDirection}`">
+      <component 
+        :is="currentSection"
+        @updateCurrentSection="currentSection = $event"
+      />
+    </transition>
   </div>
 </template>
 
 <script>
-import Register from '../components/HomeComponents/RegisterSection.vue'
-import Build from '../components/HomeComponents/BuildSection.vue'
-import Explore from '../components/HomeComponents/ExploreSection.vue'
+import Actions from '../components/HomeComponents/ActionButtons.vue'
+import welcome from '../components/HomeComponents/WelcomeSection.vue'
+import register from '../components/HomeComponents/RegisterSection.vue'
+import build from '../components/HomeComponents/BuildSection.vue'
+import explore from '../components/HomeComponents/ExploreSection.vue'
 
 export default {
   name: 'HomeView',
-  data: () => {
+  components: {
+    Actions,
+    register,
+    build,
+    explore,
+    welcome
+  },
+  data() {
     return {
-      barWhiteness: 0,
-      currentSection: 0,
-      username: localStorage.username
+      username: localStorage.username,
+      sections: [
+        'welcome',
+        'build',
+        'explore',
+        'register'
+      ],
+      currentSection: 'welcome',
+      transitionDirection: 'down'
     }
   },
-  components: {
-    Register,
-    Build,
-    Explore
-  },
-  mounted() {
-    document.addEventListener('scroll', this.adjustTopBar);
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.intersectionRatio > 0) {
-          this.currentSection = entry.target.getAttribute('id');
-        }
-      })
-    }, {
-      rootMargin: '0px 0px -93% 0px'
-    })
-
-    document.querySelectorAll('article').forEach((section) => {
-      observer.observe(section);
-    });
-
-    setTimeout(() => {
-      if (this.$route.query.to) {
-        document.getElementById(this.$route.query.to).scrollIntoView();
-      }
-    }, 50)
-  },
-  destroyed() {
-    document.removeEventListener('scroll', this.adjustTopBar);
+  // ask thomas what he thinks
+  // mounted() {
+  //   if (this.sections.includes(this.$route.query.to)) {
+  //     this.currentSection = this.$route.query.to;
+  //   }
+  // },
+  created() {
+    if (this.sections.includes(this.$route.query.to)) {
+      this.currentSection = this.$route.query.to;
+    }
   },
   methods: {
-    calcShadow() {
-      let shadow;
-      const maxShadow = 8;
-      if ((window.scrollY / 50) < maxShadow) shadow = window.scrollY / 50;
-      else shadow = maxShadow;
-      return shadow;
-    },
-    adjustTopBar() {
-      this.barWhiteness = window.scrollY / 400;
-    },
-    handleCreate() {
-      this.$router.push({ name: 'Build' });
-    },
     logout() {
       localStorage.clear();
       this.$router.push({ name: 'Auth' });
       setTimeout(() => location.reload(), 25);
     }
-    // async login() {
-    //   const googleUser = await this.$gAuth.signIn();
-    //   console.log(googleUser)
-    // }
+  },
+  watch: {
+    currentSection(newValue, oldValue) {
+      let oldValueIndex = this.sections.indexOf(oldValue);
+      let newValueIndex = this.sections.indexOf(newValue);
+      this.transitionDirection = oldValueIndex > newValueIndex ? 'up' : 'down';
+    }
   }
 }
 </script>
 
 <style scoped>
-  @import url('../UniversalStyles.css');
-  .header {
-    position: fixed;
-    z-index: 2;
-    width: 100vw;
-  }
-  .content-container {
-    /* height: 75vh; */
-  }
+.slide-up-enter, .slide-down-leave-to {
+  transform: translateY(-100vh);
+}
+.slide-up-enter-to, .slide-up-leave-from, .slide-down-enter-to, .slide-down-leave-from {
+  transform: translateY(0);
+}
+.slide-up-enter-active, .slide-up-leave-active, .slide-down-enter-active, .slide-down-leave-active {
+  transition: all 1250ms;
+  position: fixed;
+}
+.slide-up-leave-to, .slide-down-enter {
+  transform: translateY(100vh);
+}
 </style>

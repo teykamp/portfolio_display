@@ -21,7 +21,7 @@
         <div v-if="$vuetify.breakpoint.mdAndUp">
           <Buttons 
             :saveState="saveState"
-            :classes="'ml-2'"
+            classes="ml-2"
             :invalidComponents="invalidComponents"
             :loading="loading"
             :actions="actions"
@@ -68,11 +68,11 @@
       <div class="mt-3 ml-3">
         <Buttons 
           :saveState="saveState"
-          :styles="'width: 90%'"
-          :classes="'my-1'"
           :invalidComponents="invalidComponents"
           :loading="loading"
           :actions="actions"
+          styles="width: 90%"
+          classes="my-1"
         />
       </div>
     </v-navigation-drawer>
@@ -150,7 +150,11 @@ export default {
       this.$emit('send-to-preview');
     },
     intendToExit() {
-      this.hasDataChanged() ? this.showExitDialog = true : this.$router.push('/');
+      if (this.hasDataChanged()) this.showExitDialog = true;
+      else {
+        localStorage.removeItem('unsavedSessionData');
+        this.$router.push('/');
+      }
     },
     leaveCreateRoute() {
       this.showExitDialog = false;

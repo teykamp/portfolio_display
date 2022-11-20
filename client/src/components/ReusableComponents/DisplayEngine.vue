@@ -62,14 +62,13 @@ export default {
   computed: {
     isPortfolioValid() {
       if (typeof this.mutatedPortfolio !== 'object') return false;
-      if (!Object.keys(this.mutatedPortfolio).length) return false;
       if (!this.mutatedPortfolio?.header) return false;
       return true;
     }
   },
   methods: {
     entryPoint() {
-      // creates deep copy for us the mutate
+      // creates deep copy for us to mutate
       this.mutatedPortfolio = JSON.parse(JSON.stringify(this.portfolio));
       if (this.isPortfolioValid) {
         this.buildDisplay();
@@ -83,8 +82,7 @@ export default {
       }
 
       this.components = Object.keys(this.portfolio)
-        .filter(component => component !== 'header');
-      this.components
+        .filter(component => component !== 'header')
         .sort((a, b) => this.portfolio[a].pageRank - this.portfolio[b].pageRank);
     },
     configureTimeline() {

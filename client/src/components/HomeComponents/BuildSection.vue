@@ -1,15 +1,27 @@
 <template>
-  <div class="background-matte pt-12">
-    <div class="content-container">
-      <div class="inner-container-text">
+  <div :class="`background-matte pt-${sm ? '0':'12'}`">
+    <div
+      style="top: 10%"
+      class="content-container"
+    >
+      <div 
+        :style="sm ? 'width: 90%':''"
+        class="inner-container-text"
+      >
         <div class="title-container">
           <h1 style="color: white; margin: 0%">
-            <span class="main-text text-h1">Build</span>
-            <span class="sub-text ml-3 text-h3">something amazing</span>
+            <span 
+              :style="sm ? 'font-size: 39pt':''"
+              :class="`main-text ${sm ? '':'text-h1'}`"
+            >Build</span>
+            <span 
+              :style="sm ? 'font-size: 18pt':''"
+              :class="`sub-text ${sm ? '':'text-h3'} ml-1`"
+            >something amazing</span>
           </h1>
           <p 
             class="body-text" 
-            style="font-weight: 100"
+            :style="`font-weight: 100; font-size: ${sm ? '15pt':''}; line-height: ${sm ? '18pt':''};`"
           >
             Making a stunning portfolio to display 
             what you have accomplished has never been easier.
@@ -30,21 +42,21 @@
             </div>
             <div class="timeline-text-container ml-5">
               <p 
+                :style="`font-weight: 400; font-size: ${sm ? '16pt':''}; line-height: ${sm ? '18pt':''};`"
                 class="body-text"
-                style="font-weight: 400"
               >
                 Add info about yourself, then drag and drop each component into place.
               </p>
               <p 
+                :style="`font-weight: 200; font-size: ${sm ? '16pt':''}; line-height: ${sm ? '18pt':''};`"
                 class="body-text" 
-                style="font-weight: 200"
               >
                 Share your portfolio with others by sending them a 
                 custom link in just one click.
               </p>
               <p 
+                :style="`font-weight: 400; font-size: ${sm ? '16pt':''}; line-height: ${sm ? '18pt':''};`"
                 class="body-text" 
-                style="font-weight: 400"
               >
                 Done!
               </p>
@@ -52,7 +64,7 @@
           </div>
         </div>
       </div>
-      <div class="img-container">
+      <div v-if="!sm" class="img-container">
         <div class="center">
         <v-img
           src="../../assets/LandingPage/wrench.svg"
@@ -65,8 +77,8 @@
     <div class="center">
       <div 
         @click.stop="getStarted"
+        :style="`transform: translateY(-10px); ${sm ? 'width: 90vw; height: 70px; font-size: 34pt':''}`"
         class="get-started-btn"
-        style="transform: translateY(-20px)"
       >
         Get Started Now
       </div>
@@ -94,6 +106,11 @@
 
 <script>
 export default {
+  computed: {
+    sm() {
+      return !this.$vuetify.breakpoint.mdAndUp;
+    }
+  },
   methods: {
     getStarted() {
       this.$router.push({
@@ -116,7 +133,6 @@ export default {
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  top: 10%;
   height: 80%;
   position: relative;
   /* border: 5px solid black; */

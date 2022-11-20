@@ -1,5 +1,5 @@
 <template>
-  <div class="action-btns pl-2 pr-10 pt-2">
+  <div :class="`action-btns pl-2 pr-${sm ? '2':'10'} pt-2`">
     <div 
       v-for="section in sections" 
       :key="section"
@@ -7,13 +7,13 @@
       <div
         @click.stop="select(section)"
         :style="selectedStyle(section)"
-        class="text-h4 action-btn mx-8 pa-1"
+        :class="`text-${sm ? 'p':'h4'} action-btn mx-${sm ? '1':'8'} pa-1`"
       >{{ section }}</div>
     </div>
     <v-spacer></v-spacer>
     <div 
       @click.stop="login"
-      class="text-h4 action-btn"
+      :class="`text-${sm ? 'p':'h4'} pa-1 action-btn`"
     >login</div>
   </div>
 </template>
@@ -26,6 +26,11 @@ export default {
   },
   emits: {
     updateCurrentSection: String
+  },
+  computed: {
+    sm() {
+      return !this.$vuetify.breakpoint.mdAndUp;
+    }
   },
   methods: {
     selectedStyle(section) {

@@ -63,8 +63,30 @@
       </div>
     </div>
     <div class="center">
-      <div style="text-align: center; font-size: 40pt; font-weight: 900" class="get-started-btn">
+      <div 
+        @click.stop="getStarted"
+        class="get-started-btn"
+        style="transform: translateY(-20px)"
+      >
         Get Started Now
+      </div>
+      <div
+        @click.stop="$emit('updateCurrentSection', 'explore')"
+        class="bottom-text"
+      >
+        <p 
+          class="text-p" 
+          style="font-size: 20pt; font-weight: 200; margin: 0%"
+        >
+          explore what's out there
+        </p>
+        <v-icon
+          x-large 
+          class="down-chevron ml-1"
+          style="opacity: 0.8"
+        >
+          mdi-chevron-down
+        </v-icon>
       </div>
     </div>
   </div>
@@ -72,7 +94,13 @@
 
 <script>
 export default {
-  
+  methods: {
+    getStarted() {
+      this.$router.push({
+        name: 'Build'
+      })
+    }
+  }
 }
 </script>
 
@@ -156,6 +184,9 @@ export default {
 }
 
 .get-started-btn {
+  text-align: center; 
+  font-size: 40pt; 
+  font-weight: 900;
   width: 450px;
   height: 80px;
   background: white;
@@ -168,5 +199,22 @@ export default {
 
 .get-started-btn:hover {
   background: rgb(255, 215, 142);
+}
+
+.down-chevron {
+  transition: 300ms ease;
+}
+
+.down-chevron:hover {
+  transform: translateY(5px)
+}
+
+.bottom-text {
+  position: absolute;
+  bottom: 1.5%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
 }
 </style>

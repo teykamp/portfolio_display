@@ -14,11 +14,11 @@
           style="font-weight: 200; cursor: default"
         >
           Create a portfolio on the cloud that 
-          <span @mouseover="playHighlightAnimation"
-              :style="`${highlightAnimation}; height: ${sm ? '35':'50'}px;`"
-              class="highlight">
-            stands out.
-          </span>
+          <span 
+            @mouseover="playHighlightAnimation"
+            :style="`${highlightAnimation}; height: ${sm ? '35':'50'}px;`"
+            class="highlight"
+          >stands out.</span>
           100% for free
         </p>
       </div>

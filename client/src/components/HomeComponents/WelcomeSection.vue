@@ -31,7 +31,10 @@
         style="mix-blend-mode: darken; width: 25%"
       />
     </div>
-    <div class="bottom-text">
+    <div 
+      @click.stop="$emit('updateCurrentSection', 'build')"
+      class="bottom-text"
+    >
       <p 
         class="text-p" 
         style="font-size: 20pt; font-weight: 200; margin: 0%"
@@ -79,7 +82,7 @@ export default {
 
     setTimeout(() => {
       this.playHighlightAnimation();
-    }, 500)
+    }, 1000)
   },
   destroyed() {
     clearInterval(this.popoutColorChange)

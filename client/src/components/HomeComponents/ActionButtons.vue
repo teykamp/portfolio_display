@@ -1,45 +1,48 @@
 <template>
   <div class="action-btns pl-2 pr-10 pt-2">
     <div 
-      v-for="button in buttons" 
-      :key="button"
+      v-for="section in sections" 
+      :key="section"
     >
       <div
-        @click.stop="select(button)"
-        :style="selectedStyle(button)"
+        @click.stop="select(section)"
+        :style="selectedStyle(section)"
         class="text-h4 action-btn mx-8 pa-1"
-      >{{ button }}</div>
+      >{{ section }}</div>
     </div>
     <v-spacer></v-spacer>
-    <div class="text-h4 action-btn">login</div>
+    <div 
+      @click.stop="login"
+      class="text-h4 action-btn"
+    >login</div>
   </div>
 </template>
 
 <script>
 export default {
   props: {
+    sections: Array,
     currentSection: String
   },
   emits: {
     updateCurrentSection: String
   },
-  data() {
-    return {
-      buttons: [
-        'build',
-        'explore',
-        'register'
-      ]
-    }
-  },
   methods: {
-    selectedStyle(sectionName) {
-      if (sectionName === this.currentSection) {
+    selectedStyle(section) {
+      if (section === this.currentSection) {
         return 'color: black; background: rgba(255,255,255,0.85); border-radius: 10px;'
       }
     },
-    select(sectionName) {
-      this.$emit('updateCurrentSection', sectionName)
+    select(section) {
+      this.$emit('updateCurrentSection', section)
+    },
+    login() {
+      this.$router.push({
+        name: 'Auth',
+        query: {
+          type: 'login'
+        }
+      })
     }
   }
 }

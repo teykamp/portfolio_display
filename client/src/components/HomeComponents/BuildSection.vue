@@ -12,7 +12,7 @@ export default {
 .background-matte {
   width: 100vw;
   height: 100vh;
-  position: relative;
+  position: fixed;
   background: linear-gradient(180deg, #E15241 0%, #E1AB41 0.01%, #E16455 100%);
 }
 </style>

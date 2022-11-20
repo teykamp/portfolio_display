@@ -1,13 +1,14 @@
 <template>
   <div class="background-matte">
+    <div class="text-h1 mt-12">Explore</div>
     <v-btn
       @click.stop="showSearch = true"
       :fab="!showSearch"
-      color="white"
-      style="transition: 250ms"
-      class="pa-0 ma-0"
       :width="showSearch ? searchBarWidth : ''"
       :height="showSearch ? '70px' : ''"
+      color="white"
+      style="transition: 250ms"
+      class="ma-12"
     >
 
       <v-icon dark v-if="!showSearch">
@@ -69,9 +70,15 @@ export default {
 
 <style scoped>
   .background-matte {
-    position: relative;
+    position: fixed;
     width: 100vw;
     height: 100vh;
     background: #67AC5B;
+  }
+  .button-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
   }
 </style>

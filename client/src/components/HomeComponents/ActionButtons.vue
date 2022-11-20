@@ -7,7 +7,7 @@
       <div
         @click.stop="select(section)"
         :style="selectedStyle(section)"
-        :class="`text-${sm ? 'p':'h4'} action-btn mx-${sm ? '1':'8'} pa-1`"
+        :class="`text-${sm ? 'p':'h4'} mx-${sm ? '1':'8'} pa-1 px-${sm ? '1':'3'} action-btn`"
       >{{ section }}</div>
     </div>
     <v-spacer></v-spacer>

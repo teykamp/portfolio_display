@@ -11,7 +11,6 @@
       >{{ button }}</div>
     </div>
     <v-spacer></v-spacer>
-    {{ modelValue}}
     <div class="text-h4 action-btn">login</div>
   </div>
 </template>

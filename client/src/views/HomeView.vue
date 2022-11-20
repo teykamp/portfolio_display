@@ -4,7 +4,9 @@
       :currentSection="currentSection"
       @updateCurrentSection="currentSection = $event"
     />
-    <component :is="currentSection" />
+    <transition name="slide-down">
+      <component :is="currentSection" />
+    </transition>
   </div>
 </template>
 
@@ -50,4 +52,17 @@ export default {
 </script>
 
 <style scoped>
+.slide-up-enter, .slide-down-leave-to {
+  transform: translateY(-100vh);
+}
+.slide-up-enter-to, .slide-up-leave-from, .slide-down-enter-to, .slide-down-leave-from {
+  transform: translateY(0);
+}
+.slide-up-enter-active, .slide-up-leave-active, .slide-down-enter-active, .slide-down-leave-active {
+  transition: all 1500ms;
+  position: fixed;
+}
+.slide-up-leave-to, .slide-down-enter {
+  transform: translateY(100vh);
+}
 </style>

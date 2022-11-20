@@ -43,14 +43,16 @@ export default {
       transitionDirection: 'down'
     }
   },
-  mounted() {
-    // TODO: make this work with new system
-
-    // setTimeout(() => {
-    //   if (this.$route.query.to) {
-    //     document.getElementById(this.$route.query.to).scrollIntoView();
-    //   }
-    // }, 50)
+  // ask thomas what he thinks
+  // mounted() {
+  //   if (this.sections.includes(this.$route.query.to)) {
+  //     this.currentSection = this.$route.query.to;
+  //   }
+  // },
+  created() {
+    if (this.sections.includes(this.$route.query.to)) {
+      this.currentSection = this.$route.query.to;
+    }
   },
   methods: {
     logout() {

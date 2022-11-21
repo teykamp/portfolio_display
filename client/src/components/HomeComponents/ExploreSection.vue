@@ -1,6 +1,5 @@
 <template>
   <div :class="`background-matte pt-${sm ? '0':'12'}`">
-    <SearchBoxIcon />
     <div
       style="top: 10%"
       class="content-container"
@@ -20,30 +19,36 @@
               :class="`${sm ? '':'text-h3'} ml-2`"
             >what is out there</span>
           </h1>
-        </div>
-        <div style="position: relative; width: 100%; height: 100%; top: 20%; transform: translateX(35%)">
-          <div style="width: 100%; height: 20%; position: relative">
-            <div class="path" style="transform: rotate(20deg)"></div>
-            <div 
-              style="width: 40%; transform: translate(200px, 15px);"
-              class="text-h4 white--text"
-            >Find out what others are up to</div>
+          <div style="transform: translate(40%, 10%)">
+            <div style="width: 100%; height: 20%; position: relative">
+              <div class="path" style="transform: rotate(-20deg)"></div>
+              <div 
+                style="width: 40%; transform: translate(-250px, 0px);"
+                class="text-h4 white--text"
+              >Find out what others are up to</div>
+            </div>
+            <div style="width: 100%; height: 20%; position: relative">
+              <div class="path" style="transform: rotate(20deg)"></div>
+              <div 
+                style="width: 30%; transform: translate(190px, 0px)"
+                class="text-h4 white--text"
+              >Get inpired and come up with ideas</div>
+            </div>
+            <div style="width: 100%; height: 20%; position: relative">
+              <div class="path" style="transform: rotate(-20deg)"></div>
+              <div 
+                style="width: 40%; transform: translate(-250px, 0px)"
+                class="text-h4 white--text"
+              >Connect with professionals in your field</div>
+            </div>
+            <div style="width: 100%; height: 20%; position: relative">
+              <div class="path" style="transform: rotate(20deg)"></div>
+              <div style="transform: translate(200px, 0px)">
+                <SearchBoxIcon />
+              </div>
+            </div>
           </div>
-          <div style="width: 100%; height: 20%; position: relative">
-            <div class="path" style="transform: rotate(-20deg)"></div>
-            <div 
-              style="width: 30%; transform: translate(-200px, 0px)"
-              class="text-h4 white--text"
-            >Get inpired and come up with ideas</div>
-          </div>
-          <div style="width: 100%; height: 20%; position: relative">
-            <div class="path" style="transform: rotate(20deg)"></div>
-            <div 
-              style="width: 40%; transform: translate(200px, 15px)"
-              class="text-h4 white--text"
-            >Connect with professionals in your field</div>
-          </div>
-        </div>
+         </div>
       </div>
       <div v-if="!sm" class="img-container">
         <div class="center">

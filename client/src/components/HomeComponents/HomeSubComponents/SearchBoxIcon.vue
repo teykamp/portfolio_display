@@ -5,7 +5,7 @@
     :width="showSearch ? searchBarWidth : ''"
     :height="showSearch ? '70px' : ''"
     color="white"
-    style="transition: 250ms; position: absolute;"
+    style="transition: 250ms;"
   >
     <v-icon 
       v-if="!showSearch"

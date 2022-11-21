@@ -19,29 +19,29 @@
               :class="`${sm ? '':'text-h3'} ml-2`"
             >what is out there</span>
           </h1>
-          <div style="transform: translate(40%, 10%)">
-            <div style="width: 100%; height: 20%; position: relative">
+          <div style="transform: translate(45%, 10%)">
+            <div class="destination-container">
               <div class="path" style="transform: rotate(-20deg)"></div>
               <div 
                 style="width: 40%; transform: translate(-250px, 0px);"
                 class="text-h4 white--text"
               >Find out what others are up to</div>
             </div>
-            <div style="width: 100%; height: 20%; position: relative">
+            <div class="destination-container">
               <div class="path" style="transform: rotate(20deg)"></div>
               <div 
                 style="width: 30%; transform: translate(190px, 0px)"
                 class="text-h4 white--text"
               >Get inpired and come up with ideas</div>
             </div>
-            <div style="width: 100%; height: 20%; position: relative">
+            <div class="destination-container">
               <div class="path" style="transform: rotate(-20deg)"></div>
               <div 
                 style="width: 40%; transform: translate(-250px, 0px)"
                 class="text-h4 white--text"
               >Connect with professionals in your field</div>
             </div>
-            <div style="width: 100%; height: 20%; position: relative">
+            <div class="destination-container">
               <div class="path" style="transform: rotate(20deg)"></div>
               <div style="transform: translate(200px, 0px)">
                 <SearchBoxIcon />
@@ -156,31 +156,10 @@ export default {
   /* border: 4px solid white; */
 }
 
-.dot {
-  height: 25px;
-  width: 25px;
-  background-color: white;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.stripe {
-  width: 5px;
-  height: 40px;
-  background: white;
-  border-radius: 1px;
-}
-
-.timeline-text-container {
-  display: flex; 
-  flex-direction: column; 
-  transform: translateY(-10px);
-}
-
-.timeline-container {
-  width: 50px; 
-  height: 100%;
-  /* border: 3px solid green; */
+.destination-container {
+  width: 100%; 
+  height: 20%; 
+  position: relative;
 }
 
 .down-chevron {

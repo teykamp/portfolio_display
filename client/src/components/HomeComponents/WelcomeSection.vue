@@ -43,7 +43,7 @@
         class="text-p" 
         style="font-size: 20pt; font-weight: 200; margin: 0%"
       >
-        learn about how
+        learn how
       </p>
       <v-icon
         x-large 

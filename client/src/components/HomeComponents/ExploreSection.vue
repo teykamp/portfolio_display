@@ -37,7 +37,7 @@
             <div class="destination-container">
               <div class="path" style="transform: rotate(-20deg)"></div>
               <div 
-                style="width: 40%; transform: translate(-250px, 0px)"
+                style="width: 30%; transform: translate(-250px, 0px)"
                 class="text-h4 white--text"
               >Connect with professionals in your field</div>
             </div>

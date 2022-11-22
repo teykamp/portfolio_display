@@ -8,40 +8,60 @@
         :style="sm ? 'width: 90%':''"
         class="inner-container-text"
       >
-        <div class="title-container">
-          <h1 style="color: white; margin: 0%">
-            <span 
-              :style="sm ? 'font-size: 39pt':''"
-              :class="`main-text ${sm ? '':'text-h1'}`"
-            >Register</span>
-            <span 
-              :style="sm ? 'font-size: 18pt':''"
-              :class="`sub-text ${sm ? '':'text-h3'} ml-1`"
-            >an account</span>
-          </h1>
-          <p 
-            class="body-text" 
-            :style="`font-weight: 100; font-size: ${sm ? '15pt':''}; line-height: ${sm ? '18pt':''};`"
-          >
-            Join our amazing and dedicated community of professionals
-          </p>
-          <div class="text-box-container">
-            <input
-              placeholder="username *"
-              type="text" 
-              class="text-box text-h4 pl-3"
-            />
-            <input
-              placeholder="password *"
-              type="text" 
-              class="text-box text-h4 pl-3"
-            />
-            <input
-              placeholder="re-enter password *"
-              type="text" 
-              class="text-box text-h4 pl-3"
-            />
-          </div>
+        <h1 style="color: white; margin: 0%">
+          <span 
+            :style="sm ? 'font-size: 39pt':''"
+            :class="`main-text ${sm ? '':'text-h1'}`"
+          >Register</span>
+          <span 
+            :style="sm ? 'font-size: 18pt':''"
+            :class="`sub-text ${sm ? '':'text-h3'} ml-1`"
+          >an account</span>
+        </h1>
+        <p 
+          class="body-text" 
+          :style="`font-weight: 100; font-size: ${sm ? '15pt':''}; line-height: ${sm ? '18pt':''};`"
+        >
+          Join our amazing community of dedicated professionals
+        </p>
+        <div class="text-box-container">
+          <input
+            v-model.trim="username"
+            placeholder="username *"
+            type="text" 
+            class="text-box text-h4 pl-3"
+          />
+          <input
+            v-model="password"
+            placeholder="password *"
+            type="password" 
+            class="text-box text-h4 pl-3"
+          />
+          <input
+            v-model="rePassword"
+            placeholder="re-enter password *"
+            type="password" 
+            class="text-box text-h4 pl-3"
+          />
+        </div>
+        <div 
+          @click.stop="register"
+          :style="`${sm ? 'width: 90vw; height: 70px; font-size: 34pt':''}`"
+          class="register-btn"
+        >
+          Register Now
+        </div>
+        <div 
+          v-show="error" 
+          class="text-h5 error--text mt-4"
+          style="display: flex; flex-direction: row; align-items: center"
+        >
+          <v-icon 
+            color="error"
+            class="mr-2"
+            large
+          >mdi-alert-outline</v-icon>
+          {{ error }}
         </div>
       </div>
       <div v-if="!sm" class="img-container">
@@ -54,28 +74,58 @@
         </div>
       </div>
     </div>
-    <div class="center">
-      <div 
-        @click.stop="register"
-        :style="`transform: translateY(-10px); ${sm ? 'width: 90vw; height: 70px; font-size: 34pt':''}`"
-        class="get-started-btn"
-      >
-        Register Now
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      username: '',
+      password: '',
+      rePassword: '',
+      error: ''
+    }
+  },
+  computed: {
+    sm() {
+      return !this.$vuetify.breakpoint.mdAndUp;
+    }
+  },
   methods: {
     register() {
+      if (!(this.username && this.password && this.rePassword)) {
+        return this.error = 'All Fields Must Be Filled';
+      }
+      if (localStorage.getItem('username')) {
+        return this.error = `Already Signed In As ${localStorage.getItem('username')}`;
+      }
+      const MIN_PASSWORD_LEN = 6;
+      if (this.password.length < MIN_PASSWORD_LEN) {
+        return this.error = `Password Too Short: Min Length ${MIN_PASSWORD_LEN}`;
+      }
+      if (this.password !== this.rePassword) {
+        return this.error = 'Passwords Do Not Match';
+      }
       this.$router.push({
         name: 'Auth',
         query: {
-          type: 'register'
+          type: 'register',
+          payload: {
+            username: this.username,
+            password: this.password
+          }
         }
       })
+    }
+  },
+  watch: {
+    error(v) {
+      if (v) {
+        setTimeout(() => {
+          if (this.error) this.error = '';
+        }, 5000)
+      }
     }
   }
 }
@@ -110,13 +160,6 @@ export default {
   color: white;
   font-size: 20pt;
   line-height: 35px;
-}
-
-.title-container {
-  position: absolute; 
-  top: 0;
-  left: 0;
-  /* border: 2px solid red; */
 }
 
 .inner-container-text {
@@ -154,7 +197,7 @@ export default {
   /* border: 4px solid white; */
 }
 
-.get-started-btn {
+.register-btn {
   text-align: center; 
   font-size: 40pt; 
   font-weight: 900;
@@ -168,7 +211,7 @@ export default {
   z-index: 2;
 }
 
-.get-started-btn:hover {
+.register-btn:hover {
   background: rgb(209, 250, 255);
 }
 </style>

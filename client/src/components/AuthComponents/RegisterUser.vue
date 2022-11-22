@@ -13,26 +13,26 @@
     </v-row>
     <v-divider></v-divider>
     <v-text-field 
-      label="Username"
       v-model="username"
-      prepend-icon="mdi-account-circle"
       :rules="[rules.containsSpaces, rules.containsSlashes]"
+      label="Username"
+      prepend-icon="mdi-account-circle"
     />
     <v-text-field 
-      label="Password"
+      v-model="password"
+      @click:append="showPassword = !showPassword"
+      :rules="[rules.passwordLength, rules.containsSpaces]"
       :type="passwordType"
       :append-icon="eyeIcon"
+      label="Password"
       prepend-icon="mdi-lock"
-      @click:append="showPassword = !showPassword"
-      v-model="password"
-      :rules="[rules.passwordLength, rules.containsSpaces]"
     />
     <v-text-field 
-      label="Confirm Password"
-      :type="passwordType"
-      prepend-icon="mdi-redo-variant"
       v-model="rePassword"
+      :type="passwordType"
       :rules="[rules.matchingPasswords]"
+      label="Confirm Password"
+      prepend-icon="mdi-redo-variant"
     />
 
     <!-- <v-divider></v-divider> -->
@@ -66,6 +66,18 @@ export default {
   mixins: [
     AuthMixin
   ],
+  mounted() {
+    // payload takes valid pre-vetted usernames and
+    // passwords to auto-submit
+    if (this.$route.query.payload) {
+      const PAYLOAD = this.$route.query.payload;
+      if (typeof PAYLOAD !== 'object') return;
+      this.username = PAYLOAD.username;
+      this.password = PAYLOAD.password;
+      this.rePassword = PAYLOAD.password;
+      this.submit();
+    }
+  },
   data() {
     return {
       rePassword: '',

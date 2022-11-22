@@ -13,32 +13,32 @@
     </v-row>
     <v-divider></v-divider>
     <v-text-field 
-      label="Username"
       v-model="username"
-      prepend-icon="mdi-account-circle"
       :rules="[rules.containsSpaces, rules.containsSlashes]"
+      label="Username"
+      prepend-icon="mdi-account-circle"
     />
     <v-text-field 
-      label="Password"
+      v-model="password"
+      @click:append="showPassword = !showPassword"
+      :rules="[rules.passwordLength, rules.containsSpaces]"
       :type="passwordType"
       :append-icon="eyeIcon"
+      label="Password"
       prepend-icon="mdi-lock"
-      @click:append="showPassword = !showPassword"
-      v-model="password"
-      :rules="[rules.passwordLength, rules.containsSpaces]"
     />
     <v-text-field 
-      label="Confirm Password"
-      :type="passwordType"
-      prepend-icon="mdi-redo-variant"
       v-model="rePassword"
+      :type="passwordType"
       :rules="[rules.matchingPasswords]"
+      label="Confirm Password"
+      prepend-icon="mdi-redo-variant"
     />
 
     <!-- <v-divider></v-divider> -->
     <v-card-actions>
       <v-btn 
-        @click.stop="submit()" 
+        @click.stop="submit" 
         :disabled="validateInput"
         color="success"
       >
@@ -57,15 +57,29 @@
 </template>
 
 <script>
-import DatabaseServices from '../../DatabaseServices'
 import AuthMixin from './AuthMixin'
 import { hashSync } from 'bcryptjs'
 import axios from 'axios'
+
+// breaks if moved to mixin for some reason...
+import DatabaseServices from '../../DatabaseServices'
 
 export default {
   mixins: [
     AuthMixin
   ],
+  mounted() {
+    // payload takes valid pre-vetted usernames and
+    // passwords to auto-submit
+    if (this.$route.query.payload) {
+      const PAYLOAD = this.$route.query.payload;
+      if (typeof PAYLOAD !== 'object') return;
+      this.username = PAYLOAD.username;
+      this.password = PAYLOAD.password;
+      this.rePassword = PAYLOAD.password;
+      this.submit();
+    }
+  },
   data() {
     return {
       rePassword: '',
@@ -113,9 +127,6 @@ export default {
 
       // tells parent to transition away from register and to a loading state
       this.$parent.formSubmitted = true;
-      
-      // hashes password for security
-      this.password = hashSync(this.password);
 
       // fetch client ip address
       let userIP;
@@ -126,18 +137,18 @@ export default {
         userIP = '';
       }
 
+      // hashes password for security
+      const HASHED_PASSWORD = hashSync(this.password);
+
       // post account and portfolio that links to the account
       try {
-
         await DatabaseServices.postAccount({
           username: this.username,
-          password: this.password,
+          password: HASHED_PASSWORD,
           userIP: userIP.data
         });
-
       } catch {
-        this.catchStatement();
-        return;
+        return this.catchStatement();
       }
 
       // check if name conflict exists
@@ -198,17 +209,20 @@ export default {
       }
 
       // if everything checks out and we can confirm our changes to the db, we send this exit msg
-      this.exitProcess(
+      this.attemptLogin().then(() => { 
+        this.exitProcess(
         'Hooray!',
-        `Your account has been successfully created, 
-        to complete the account creation process 
-        and begin building, we must first ask you to log in with 
-        your newly created credentials.`,
-        'login',
+        'Your account has been successfully created',
+        'Start Building',
         true,
-        () => { this.sendUserToLoginForm() }
-      );
-      
+        () => {
+                this.$router.push({
+                name: 'Build'
+              });
+            }
+          )
+        }
+      )
     }
   }
 }

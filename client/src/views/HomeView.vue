@@ -32,7 +32,6 @@ export default {
   },
   data() {
     return {
-      username: localStorage.username,
       sections: [
         'welcome',
         'build',
@@ -52,13 +51,6 @@ export default {
   created() {
     if (this.sections.includes(this.$route.query.to)) {
       this.currentSection = this.$route.query.to;
-    }
-  },
-  methods: {
-    logout() {
-      localStorage.clear();
-      this.$router.push({ name: 'Auth' });
-      setTimeout(() => location.reload(), 25);
     }
   },
   watch: {

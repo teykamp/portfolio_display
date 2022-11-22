@@ -14,7 +14,7 @@
     <div 
       @click.stop="login"
       :class="`text-${sm ? 'p':'h4'} pa-1 action-btn`"
-    >login</div>
+    >{{ profileBtnText }}</div>
   </div>
 </template>
 
@@ -30,6 +30,9 @@ export default {
   computed: {
     sm() {
       return !this.$vuetify.breakpoint.mdAndUp;
+    },
+    profileBtnText() {
+      return localStorage.getItem('username') || 'login'
     }
   },
   methods: {

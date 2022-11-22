@@ -13,12 +13,12 @@
       >
         <template #actions>
           <v-btn
-            @click.stop="$router.push({ name: 'Home' })"
+            @click.stop="back"
             text
           >Back</v-btn>
           <v-btn
             v-if="canEditPortfolio"
-            @click.stop="$router.push({ name: 'Build' })"
+            @click.stop="edit"
             text
           >Edit</v-btn>
         </template>
@@ -81,15 +81,25 @@ export default {
       portfolio: { default: null }
     }
   },
-  mounted() {
-    
-  },
   computed: {
     canEditPortfolio() {
-      return this.$route.params.user === localStorage.getItem('username')
+      return this.$route.params.user === localStorage.getItem('username');
     }
   },
   methods: {
+    back() {
+      this.$router.push({ 
+        name: 'Home',
+        query: {
+          to: 'explore'
+        } 
+      });
+    },
+    edit() {
+      this.$router.push({ 
+        name: 'Build' 
+      });
+    },
     catchClause(error) {
       this.$store.state.snackbarText = 'Cannot connect to server';
       this.error = 'no server conection';

@@ -38,7 +38,7 @@
     <!-- <v-divider></v-divider> -->
     <v-card-actions>
       <v-btn 
-        @click.stop="submit()" 
+        @click.stop="submit" 
         :disabled="validateInput"
         color="success"
       >
@@ -60,6 +60,9 @@
 import AuthMixin from './AuthMixin'
 import { hashSync } from 'bcryptjs'
 import axios from 'axios'
+
+// breaks if moved to mixin for some reason...
+import DatabaseServices from '../../DatabaseServices'
 
 export default {
   mixins: [
@@ -124,9 +127,6 @@ export default {
 
       // tells parent to transition away from register and to a loading state
       this.$parent.formSubmitted = true;
-      
-      // hashes password for security
-      this.password = hashSync(this.password);
 
       // fetch client ip address
       let userIP;
@@ -137,18 +137,18 @@ export default {
         userIP = '';
       }
 
+      // hashes password for security
+      const HASHED_PASSWORD = hashSync(this.password);
+
       // post account and portfolio that links to the account
       try {
-
         await DatabaseServices.postAccount({
           username: this.username,
-          password: this.password,
+          password: HASHED_PASSWORD,
           userIP: userIP.data
         });
-
       } catch {
-        this.catchStatement();
-        return;
+        return this.catchStatement();
       }
 
       // check if name conflict exists
@@ -209,14 +209,20 @@ export default {
       }
 
       // if everything checks out and we can confirm our changes to the db, we send this exit msg
-      this.exitProcess(
+      this.attemptLogin().then(() => { 
+        this.exitProcess(
         'Hooray!',
         'Your account has been successfully created',
         'Start Building',
         true,
-        () => { this.submit() }
-      );
-      
+        () => {
+                this.$router.push({
+                name: 'Build'
+              });
+            }
+          )
+        }
+      )
     }
   }
 }

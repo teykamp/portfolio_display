@@ -57,17 +57,13 @@ export default {
         password: this.password
       };
 
+      console.log(this.username, this.password)
+
       let authStatus;
       try {
         authStatus = await DatabaseServices.authorizeLogin(loginAttempt);
       } catch {
-        throw this.exitProcess(
-          'There has been an issue with a request made to our servers',
-          'This could be an issue with connectivity on your end, or a server problem on ours.',
-          'Try one more time',
-          false,
-          () => { this.sendUserToLoginForm() }
-        );
+        throw this.catchStatement();
       }
 
       if (!authStatus.isAuthorized) {

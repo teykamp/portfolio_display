@@ -57,7 +57,6 @@
 </template>
 
 <script>
-import DatabaseServices from '../../DatabaseServices'
 import AuthMixin from './AuthMixin'
 import { hashSync } from 'bcryptjs'
 import axios from 'axios'
@@ -212,13 +211,10 @@ export default {
       // if everything checks out and we can confirm our changes to the db, we send this exit msg
       this.exitProcess(
         'Hooray!',
-        `Your account has been successfully created, 
-        to complete the account creation process 
-        and begin building, we must first ask you to log in with 
-        your newly created credentials.`,
-        'login',
+        'Your account has been successfully created',
+        'Start Building',
         true,
-        () => { this.sendUserToLoginForm() }
+        () => { this.submit() }
       );
       
     }

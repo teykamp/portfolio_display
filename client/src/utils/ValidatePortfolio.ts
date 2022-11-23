@@ -50,7 +50,6 @@ export function validate(item: any): boolean {
       return true
     default:
       console.error('Component Type Left Undefined! ValidatePortfolio.ts', item)
-      console.log(ComponentType.ACCOMPLISHMENT, item.type);
       return false
   }
 }

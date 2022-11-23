@@ -173,7 +173,7 @@ export default {
         this.saveState = true;
         this.$store.state.snackbarText = 'Your portfolio has been successfully updated!';
       } catch (error) {
-        this.$store.state.snackbarText = 'There has been an issue making contact with our servers, your work has not been saved';
+        this.$store.state.snackbarText = 'There has been an issue making contact with our servers. your work has not been saved';
         console.error('Put request was unsuccessful!', error);
         return;
       }

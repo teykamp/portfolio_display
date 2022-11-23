@@ -7,10 +7,6 @@ import router from './router'
 import vuetify from './plugins/vuetify'
 import Meta from 'vue-meta'
 import { store } from './store/index'
-
-// declares component object prototypes
-import './Prototypes'
-
 /* 
 
 components that do not conform to the standard portfolio

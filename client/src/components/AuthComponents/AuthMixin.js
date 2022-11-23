@@ -57,8 +57,6 @@ export default {
         password: this.password
       };
 
-      console.log(this.username, this.password)
-
       let authStatus;
       try {
         authStatus = await DatabaseServices.authorizeLogin(loginAttempt);

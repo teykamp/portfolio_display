@@ -8,7 +8,7 @@
       justify="center"
     >
       <v-card-title>
-        You Are Already Logged In!
+        Logged In
       </v-card-title>
     </v-row>
     <v-divider></v-divider>

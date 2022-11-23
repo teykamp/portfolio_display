@@ -44,16 +44,15 @@
             class="text-box text-h4 pl-3"
           />
         </div>
-        <div 
-          style="display: flex; flex-direction: row; align-items: center"
-        >
+        <div style="display: flex; flex-direction: row; align-items: center;">
           <v-checkbox
             v-model="showPassword"
             color="black"
           ></v-checkbox>
           <div 
+            @click.stop="showPassword = !showPassword"
             class="text-h6"
-            style="font-weight: 300"
+            style="font-weight: 300; cursor: pointer; user-select: none"
           >
             show password
           </div>
@@ -65,12 +64,26 @@
         >
           Register Now
         </div>
+        <div
+          v-if="loggedInUser"
+          class="white--text text-h5 mt-3" 
+          style="font-weight: 300"
+        >
+          Logged in as {{ loggedInUser }}.
+          <span
+            @click.stop="login"
+            style="text-decoration: underline; cursor: pointer"
+          >
+            Logout here
+          </span>
+        </div>
         <div 
+          v-else
           class="white--text text-h5 mt-3" 
           style="font-weight: 300"
         >
           Already have an account? 
-          <span 
+          <span
             @click.stop="login"
             style="text-decoration: underline; cursor: pointer"
           >
@@ -92,11 +105,11 @@
       </div>
       <div v-if="!sm" class="img-container">
         <div class="center">
-        <v-img
-          src="../../assets/LandingPage/account-plus.svg"
-          style="filter: invert(100%); transform: translateY(125px)"
-          width="300px"
-        ></v-img>
+          <v-img
+            src="../../assets/LandingPage/account-plus.svg"
+            style="filter: invert(100%); transform: translateY(125px)"
+            width="300px"
+          ></v-img>
         </div>
       </div>
     </div>
@@ -111,7 +124,8 @@ export default {
       password: '',
       rePassword: '',
       error: '',
-      showPassword: false
+      showPassword: false,
+      loggedInUser: localStorage.getItem('username')
     }
   },
   computed: {
@@ -174,7 +188,7 @@ export default {
 <style scoped>
 .background-matte {
   position: fixed;
-  background: linear-gradient(#4286DE, #a4b8d2);
+  background: linear-gradient(#4286DE, #88a8d1);
   width: 100vw;
   height: 100vh;
 }

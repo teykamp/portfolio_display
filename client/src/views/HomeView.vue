@@ -58,6 +58,12 @@ export default {
       let oldValueIndex = this.sections.indexOf(oldValue);
       let newValueIndex = this.sections.indexOf(newValue);
       this.transitionDirection = oldValueIndex > newValueIndex ? 'up' : 'down';
+      this.$router.replace({
+        name: 'Home',
+        query: {
+          to: newValue
+        }
+      });
     }
   }
 }
@@ -71,7 +77,7 @@ export default {
   transform: translateY(0);
 }
 .slide-up-enter-active, .slide-up-leave-active, .slide-down-enter-active, .slide-down-leave-active {
-  transition: all 1250ms;
+  transition: all 750ms;
   position: fixed;
 }
 .slide-up-leave-to, .slide-down-enter {

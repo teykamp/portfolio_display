@@ -29,20 +29,33 @@
             v-model.trim="username"
             placeholder="username *"
             type="text" 
-            class="text-box text-h4 pl-3"
+            class="text-box text-h4 pl-3 mb-5"
           />
           <input
             v-model="password"
+            :type="passwordBoxType" 
             placeholder="password *"
-            type="password" 
-            class="text-box text-h4 pl-3"
+            class="text-box text-h4 pl-3 mb-5"
           />
           <input
             v-model="rePassword"
+            :type="passwordBoxType" 
             placeholder="re-enter password *"
-            type="password" 
             class="text-box text-h4 pl-3"
           />
+        </div>
+        <div style="display: flex; flex-direction: row; align-items: center;">
+          <v-checkbox
+            v-model="showPassword"
+            color="black"
+          ></v-checkbox>
+          <div 
+            @click.stop="showPassword = !showPassword"
+            class="text-h6"
+            style="font-weight: 300; cursor: pointer; user-select: none"
+          >
+            show password
+          </div>
         </div>
         <div 
           @click.stop="register"
@@ -51,10 +64,36 @@
         >
           Register Now
         </div>
+        <div
+          v-if="loggedInUser"
+          class="white--text text-h5 mt-3" 
+          style="font-weight: 300"
+        >
+          Logged in as {{ loggedInUser }}.
+          <span
+            @click.stop="login"
+            style="text-decoration: underline; cursor: pointer"
+          >
+            Logout here
+          </span>
+        </div>
+        <div 
+          v-else
+          class="white--text text-h5 mt-3" 
+          style="font-weight: 300"
+        >
+          Already have an account? 
+          <span
+            @click.stop="login"
+            style="text-decoration: underline; cursor: pointer"
+          >
+            Login here
+          </span>
+        </div>
         <div 
           v-show="error" 
           class="text-h5 error--text mt-4"
-          style="display: flex; flex-direction: row; align-items: center"
+          style="display: flex; flex-direction: row; align-items: center;"
         >
           <v-icon 
             color="error"
@@ -66,11 +105,11 @@
       </div>
       <div v-if="!sm" class="img-container">
         <div class="center">
-        <v-img
-          src="../../assets/LandingPage/account-plus.svg"
-          style="filter: invert(100%); transform: translateY(125px)"
-          width="300px"
-        ></v-img>
+          <v-img
+            src="../../assets/LandingPage/account-plus.svg"
+            style="filter: invert(100%); transform: translateY(125px)"
+            width="300px"
+          ></v-img>
         </div>
       </div>
     </div>
@@ -84,22 +123,37 @@ export default {
       username: '',
       password: '',
       rePassword: '',
-      error: ''
+      error: '',
+      showPassword: false,
+      loggedInUser: localStorage.getItem('username')
     }
   },
   computed: {
+    passwordBoxType() {
+      return this.showPassword ? 'text' : 'password';
+    },
     sm() {
       return !this.$vuetify.breakpoint.mdAndUp;
     }
   },
   methods: {
+    login() {
+      this.$router.push({
+        name: 'Auth',
+        query: {
+          type: 'login'
+        }
+      });
+    },
     register() {
-      if (!(this.username && this.password && this.rePassword)) {
-        return this.error = 'All Fields Must Be Filled';
-      }
       if (localStorage.getItem('username')) {
         return this.error = `Already Signed In As ${localStorage.getItem('username')}`;
       }
+
+      if (!(this.username && this.password && this.rePassword)) {
+        return this.error = 'All Fields Must Be Filled';
+      }
+
       const MIN_PASSWORD_LEN = 6;
       if (this.password.length < MIN_PASSWORD_LEN) {
         return this.error = `Password Too Short: Min Length ${MIN_PASSWORD_LEN}`;
@@ -134,7 +188,7 @@ export default {
 <style scoped>
 .background-matte {
   position: fixed;
-  background: linear-gradient(#4286DE, #FFFFFF);
+  background: linear-gradient(#4286DE, #88a8d1);
   width: 100vw;
   height: 100vh;
 }
@@ -183,7 +237,6 @@ export default {
   font-weight: 100;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   transition: 300ms;
-  margin-bottom: 30px;
 }
 
 .text-box:hover {

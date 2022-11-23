@@ -52,6 +52,18 @@
           Register Now
         </div>
         <div 
+          class="white--text text-h5 mt-3" 
+          style="font-weight: 300"
+        >
+          Already have an account? 
+          <span 
+            @click.stop="login"
+            style="text-decoration: underline; cursor: pointer"
+          >
+            Login here
+          </span>
+        </div>
+        <div 
           v-show="error" 
           class="text-h5 error--text mt-4"
           style="display: flex; flex-direction: row; align-items: center"
@@ -93,6 +105,15 @@ export default {
     }
   },
   methods: {
+    login() {
+      this.$router.push({
+        name: 'Auth',
+        query: {
+          type: 'login',
+          send: ''
+        }
+      });
+    },
     register() {
       if (!(this.username && this.password && this.rePassword)) {
         return this.error = 'All Fields Must Be Filled';
@@ -134,7 +155,7 @@ export default {
 <style scoped>
 .background-matte {
   position: fixed;
-  background: linear-gradient(#4286DE, #FFFFFF);
+  background: linear-gradient(#4286DE, #a4b8d2);
   width: 100vw;
   height: 100vh;
 }

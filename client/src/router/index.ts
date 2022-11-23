@@ -43,8 +43,12 @@ const router = new VueRouter({
   routes,
   mode: 'history',
   scrollBehavior (to, from, savedPosition) {
-    document.title = `${to.name} - Portfolio`
-    return { x: 0, y: 0 }
+    if (to.name === 'Home') document.title = 'Popout Portfolio';
+    else document.title = `${to.name} - Portfolio`;
+    return { 
+      x: 0, 
+      y: 0 
+    };
   }
 })
 

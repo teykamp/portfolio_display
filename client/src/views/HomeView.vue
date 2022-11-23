@@ -58,6 +58,12 @@ export default {
       let oldValueIndex = this.sections.indexOf(oldValue);
       let newValueIndex = this.sections.indexOf(newValue);
       this.transitionDirection = oldValueIndex > newValueIndex ? 'up' : 'down';
+      this.$router.replace({
+        name: 'Home',
+        query: {
+          to: newValue
+        }
+      });
     }
   }
 }

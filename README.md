@@ -1,6 +1,6 @@
 <br/>
 
-***Current Version 0.9.2***
+***Current Version 1.0.2***
 
 ---
 
@@ -10,7 +10,7 @@ A full stack web-based application to dynamically display resumé material in a 
 
 ## View Live Production Build
 
-https://portfolio-display-app.herokuapp.com/
+http://popoutportfolio.herokuapp.com/
 
 ## Getting Started
 

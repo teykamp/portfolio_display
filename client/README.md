@@ -1,10 +1,10 @@
 <br/>
 
-***Current Version 0.0.0***
+***Current Version 1.0.2***
 
 ---
 
-# Portfolio-Display
+# Popout Portfolio
 
 A full stack web based application to dynamically display resume material in a professional manner.
 

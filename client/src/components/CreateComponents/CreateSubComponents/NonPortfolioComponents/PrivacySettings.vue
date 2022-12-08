@@ -143,7 +143,7 @@ export default {
       return this.clipboardSuccess ? 'mdi-check-underline' : 'mdi-clipboard-multiple-outline';
     },
     link() {
-      return `http://portfolio-display-app.herokuapp.com/display/${this.username}?accesskey=${this.privacySettings.accesskey}`;
+      return `http://popoutportfolio.herokuapp.com/display/${this.username}?accesskey=${this.privacySettings.accesskey}`;
     }
   },
   methods: {

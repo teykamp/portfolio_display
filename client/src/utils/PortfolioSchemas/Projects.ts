@@ -11,5 +11,5 @@ export default class Project extends PortfolioEntry {
   technologies: Array<Tech> = [];
   linkToDeploy = '';
   linkToRepo = '';
-  type = ComponentType.PROJECT
+  type: ComponentType.PROJECT = ComponentType.PROJECT
 }

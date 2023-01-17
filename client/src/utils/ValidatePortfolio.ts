@@ -4,6 +4,10 @@ import Timeline from '../utils/PortfolioSchemas/Timeline'
 
 import { nonStandardComponents } from '../main'
 import { ComponentType } from '../utils/PortfolioSchemas/PortfolioEntry'
+import Accomplishment from '../utils/PortfolioSchemas/Accomplishments'
+import Education from '../utils/PortfolioSchemas/Education';
+import Experiences from '../utils/PortfolioSchemas/Experiences'
+import Project from '../utils/PortfolioSchemas/Projects'
 
 // takes full portfolio data (of type object) and returns an array<string> of components that are invalid
 export default function validatePortfolio(portfolioData: any) {
@@ -28,7 +32,9 @@ export default function validatePortfolio(portfolioData: any) {
   return invalidComponents;
 }
 
-export function validate(item: any): boolean {
+type Component = Accomplishment | Education | Experiences | Project
+
+export function validate(item: Component): boolean {
   
   switch (item.type) {
     case ComponentType.ACCOMPLISHMENT:

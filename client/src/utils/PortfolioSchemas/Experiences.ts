@@ -4,5 +4,5 @@ export default class Experience extends PortfolioEntry {
   title = '';
   company = '';
   companyImg = '';
-  type = ComponentType.EXPERIENCES
+  type: ComponentType.EXPERIENCES = ComponentType.EXPERIENCES
 }

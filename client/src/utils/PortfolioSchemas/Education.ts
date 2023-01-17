@@ -4,5 +4,5 @@ export default class Education extends PortfolioEntry {
   institution = '';
   degreeType = '';
   degreeField = '';
-  type = ComponentType.EDUCATION
+  type: ComponentType.EDUCATION = ComponentType.EDUCATION
 }

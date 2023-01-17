@@ -3,5 +3,5 @@ import PortfolioEntry, { ComponentType } from "../PortfolioSchemas/PortfolioEntr
 export default class Accomplishment extends PortfolioEntry {
   title = '';
   organization = '';
-  type = ComponentType.ACCOMPLISHMENT;
+  type: ComponentType.ACCOMPLISHMENT = ComponentType.ACCOMPLISHMENT;
 }

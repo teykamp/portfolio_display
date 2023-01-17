@@ -91,8 +91,8 @@
         </v-container>
       </div>
 
-      <display-engine 
-        v-else-if="showPreview" 
+      <display-engine  
+        v-else-if="showPreview"
         :portfolio="userData" 
       >
         <template #actions>
@@ -105,7 +105,7 @@
           </v-btn>
         </template>
       </display-engine>
-  
+
       <component 
         v-else
         :is="componentBeingEdited"

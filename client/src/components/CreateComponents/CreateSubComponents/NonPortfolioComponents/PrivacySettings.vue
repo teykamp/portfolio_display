@@ -1,9 +1,9 @@
 <template>
   <DialogBox
     title="Privacy Settings"
-    description="Setting portfolio to private ensures 
-    no one but you can view your work. Generating 
-    a link on private mode allows you to share your 
+    description="Setting portfolio to private ensures
+    no one but you can view your work. Generating
+    a link on private mode allows you to share your
     portfolio with others with the link."
     :visible="showPrivacySettingsDialog"
   >
@@ -15,10 +15,10 @@
           width="100%"
           type="paragraph"
         ></v-skeleton-loader>
-         
-        <v-row 
-          align="center" 
-          justify="center" 
+
+        <v-row
+          align="center"
+          justify="center"
           class="mt-7"
         >
           <v-skeleton-loader
@@ -36,8 +36,8 @@
         </v-row>
 
         <v-row>
-          <v-card-title 
-            class="pa-0" 
+          <v-card-title
+            class="pa-0"
             style="word-break: break-word"
           >
             Toggle Portfolio Visibility
@@ -65,7 +65,7 @@
             >{{ link }}</p>
             <v-col>
               <v-row dense>
-                <v-icon 
+                <v-icon
                   color="error"
                   class="mb-4 ml-2"
                   @click.stop="deleteLink"
@@ -81,8 +81,8 @@
             </v-col>
           </v-row>
         </v-row>
-        <v-row 
-          class="mt-12" 
+        <v-row
+          class="mt-12"
           justify="center"
           align="center"
         >
@@ -124,7 +124,7 @@ export default {
 
       // true when loading state is active
       loading: true,
-      
+
       // get name of logged in user
       username: localStorage.getItem('username')
     }
@@ -143,7 +143,7 @@ export default {
       return this.clipboardSuccess ? 'mdi-check-underline' : 'mdi-clipboard-multiple-outline';
     },
     link() {
-      return `http://popoutportfolio.herokuapp.com/display/${this.username}?accesskey=${this.privacySettings.accesskey}`;
+      return `https://popout.up.railway.app/display/${this.username}?accesskey=${this.privacySettings.accesskey}`;
     }
   },
   methods: {
@@ -161,7 +161,7 @@ export default {
       this.$store.state.snackbarText = "New link generated!";
     },
     deleteLink() {
-      this.privacySettings.accesskey = null; 
+      this.privacySettings.accesskey = null;
       this.$store.state.snackbarText = 'Link deleted.';
     }
   },
@@ -210,9 +210,9 @@ export default {
 
 <style scoped>
   .link-container {
-    user-select: all; 
-    background-color: rgb(240, 240, 240); 
-    width: 80%; 
+    user-select: all;
+    background-color: rgb(240, 240, 240);
+    width: 80%;
     border-radius: 5px;
   }
 </style>

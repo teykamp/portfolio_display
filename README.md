@@ -8,9 +8,9 @@
 
 A full stack web-based application to dynamically display resumé material in a professional manner.
 
-## View Live Production Build
+## Live Production Build
 
-http://popoutportfolio.herokuapp.com/
+[https://popout.up.railway.app/](Popout Portfolio)
 
 ## Getting Started
 
@@ -263,4 +263,3 @@ Please see the documentation section of the project under the [Documentation](ht
 
 <!-- for when the readme gets too long -->
 <p align="right"><a href="#top">Back to Top</a></p>
-

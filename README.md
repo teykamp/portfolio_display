@@ -12,6 +12,9 @@ A full stack web-based application to dynamically display resumé material in a 
 
 [Popout Portfolio](https://popout.up.railway.app/)
 
+![image](https://github.com/teykamp/portfolio_display/assets/46391052/b778c896-b94e-4012-9b41-6252a12d2012)
+
+
 ## Getting Started
 
 The following dependencies and tools must be installed for the project to work properly.
